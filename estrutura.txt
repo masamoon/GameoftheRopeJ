@@ -9,15 +9,19 @@ Information Shared Regions:
 		strength
 		state
 	Ops:
-		Sit
-		Stand
+		FollowCoachAdvice
+		GetReady
 		PullRope
-
-
+		Done
+		SitDown
 
 
 > Referee Site
+	- TrialState
+	- TrialScore
 	- Referee
+	- GameState
+	- MatchState
  	Ops:
  		StartMatch
  		StartGame
@@ -32,12 +36,10 @@ Information Shared Regions:
 
 > Playground
 	- flagPos/score (int)
-	- team1 (array)
-	- team2 (array)
+	- team1 (array of contestants)
+	- team2 (array of contestants)
 	- trialState
 	- trialNumber
-	Ops:
-		Play
 
 > Coach Site
 	- Coach
@@ -58,4 +60,3 @@ Information Shared Regions:
 	- Score (int)
 	- ContestantState (contestantS)
 	- CoachState (coachS)
-	- 
