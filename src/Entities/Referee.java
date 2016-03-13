@@ -1,5 +1,7 @@
 package Entities;
 
+import Monitors.Playground;
+import Monitors.RefereeSite;
 import States.RefereeState;
 
 /**
@@ -10,19 +12,27 @@ public class Referee extends Thread {
     /* todo: add comments */
 
     private RefereeState refstate;
+    private Playground playground;
+    private RefereeSite refereeSite;
+
+    public Referee(Playground playground, RefereeSite refereeSite){
+        this.playground = playground;
+        this.refereeSite = refereeSite;
+    }
 
     /* Life Cycle of the Referee Thread
     */
+
 
     @Override
     public void run(){
 
         while(true){
-            callTrial();
+            refereeSite.callTrial();
             waitingForTeamsReady();
-            startTrial();
+            playground.startTrial();
             waitingForTrialEnd();
-            assertTrialDecision();
+            playground.assertTrialDecision();
         }
 
     }
@@ -36,19 +46,7 @@ public class Referee extends Thread {
         this.refstate = state;
     }
 
-    /*
-    *   Referee calls the teams to assemble
-    */
-    public void callTrial(){
 
-    }
-
-    /*
-     *   Referee begins the trial
-    */
-    public void startTrial(){
-
-    }
 
     /*
      *Waiting for the last member of the teams to sit up */
@@ -60,6 +58,9 @@ public class Referee extends Thread {
         catch (InterruptedException e) {}
     }
 
+    /*
+    * Waiting for the trial's end
+     */
     public void waitingForTrialEnd(){
         try
         { sleep ((long) (1 + 40 * Math.random ()));
@@ -67,7 +68,5 @@ public class Referee extends Thread {
         catch (InterruptedException e) {}
     }
 
-    public void assertTrialDecision(){
 
-    }
 }
