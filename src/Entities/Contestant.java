@@ -36,27 +36,21 @@ public class Contestant extends Thread {
     @Override
     public void run() {
 
-        boolean selected = false;
 
         do{
             while(global.matchInProgress()){
-                selected = benchMon.followCoachAdvice(teamID, contestantID);
+                playgroundMon.followCoachAdvice(teamID, contestantID); // acorda o coach e fica em STAND_IN_POSITION
 
-                if(selected){
-                    playgroundMon.getReady(contestantID);
+                    playgroundMon.getReady(contestantID); // passa o seu estado interno para DO_YOUR_BEST
                     pullRope();
-                /* decrease strength */
-
-                    playgroundMon.done(contestantID);
+                    playgroundMon.done(contestantID); // acorda o Referee e fica em espera (sem alterar o seu estado)
 
                 }
-                else{
-                /* increase strength */
-                }
-                benchMon.sitDown(contestantID);
-            }
+            // todo: incrementar e decrementar força é chamado por outra entidade pq esta está bloqueada
+
+            benchMon.sitDown(contestantID); // entra no estado de espera SIT_AT_THE_BENCH
+
         }while(!global.endContestantOps());
-
 
     }
 
