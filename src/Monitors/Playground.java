@@ -23,7 +23,7 @@ public class Playground {
     /*
     * Contestant operation
      */
-    public synchronized  void getReady(){
+    public synchronized  void getReady(int contestantID){
 
     }
 
@@ -31,29 +31,31 @@ public class Playground {
    * Contestant operation
     */
 
-    public synchronized  void pullRope(){
+    public synchronized  void pullRope(int contestantID){
 
     }
 
      /*
     * Contestant operation
      */
-    public synchronized void done(){
+    public synchronized void done(int contestantID){
 
     }
 
     /* Coach operation
     *
      */
-    public synchronized  void informReferee(){
+    public synchronized  void informReferee(int teamID){
 
     }
 
     /*
     * Coach operation
      */
-    public synchronized void reviewNotes(){
+    public synchronized void reviewNotes(int teamID){
 
     }
+
+    public synchronized void callTrial(){}
 
 }

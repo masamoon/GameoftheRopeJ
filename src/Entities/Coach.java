@@ -10,7 +10,6 @@ import Monitors.Bench;
  */
 public class Coach extends Thread{
 
-    /* todo : comments */
 
     private int teamID;
 
@@ -20,14 +19,14 @@ public class Coach extends Thread{
 
     private Playground playgroundMon;
 
-    private Global globalMon;
+    private Global global;
 
-    public Coach(int teamID, int strategyID, Bench benchMon, Playground playgroundMon, Global globalMon) {
+    public Coach(int teamID, int strategyID, Bench benchMon, Playground playgroundMon, Global global) {
         this.strategyID = strategyID;
         this.teamID = teamID;
         this.benchMon = benchMon;
         this.playgroundMon = playgroundMon;
-        this.globalMon = globalMon;
+        this.global = global;
     }
 
     /**
@@ -37,13 +36,15 @@ public class Coach extends Thread{
     @Override
     public void run()
     {
-        /* todo
-        while(matchInProgress()){
-            Bench.callContestants();
-            Playground.InformReferee(); // enter WATCH_TRIAL blocking state
-            Playground.reviewNotes(); // enter WAIT_FOR_REFEREE_COMMAND   blocking state
+        int [] selection;
+
+        while(global.matchInProgress()){
+            selection = selectContestants(teamID);
+
+            benchMon.callContestants(selection);
+            playgroundMon.informReferee(teamID); // enter WATCH_TRIAL blocking state
+            playgroundMon.reviewNotes(teamID); // enter WAIT_FOR_REFEREE_COMMAND   blocking state
         }
-        */
     }
 
     public int getTeamID() {
@@ -53,5 +54,13 @@ public class Coach extends Thread{
     public int getStrategyID() {
         return strategyID;
     }
+
+    public int [] selectContestants(int teamID){
+        /* todo: algorithm of selection is used here */
+        int team [] = {1,2,3};
+        return team;
+    }
+
+
 
 }

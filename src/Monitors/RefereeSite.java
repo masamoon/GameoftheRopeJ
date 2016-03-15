@@ -14,4 +14,8 @@ public class RefereeSite {
      *   Referee Operation
      */
     public synchronized void callTrial(){}
+
+
+    public synchronized void announceMatch(){}
+
 }

@@ -1,5 +1,6 @@
 package Entities;
 
+import Monitors.Global;
 import Monitors.Playground;
 import Monitors.RefereeSite;
 import States.RefereeState;
@@ -7,6 +8,7 @@ import States.RefereeState;
 /**
  * Created by jonnybel on 3/8/16.
  */
+
 public class Referee extends Thread {
 
     /* todo: add comments */
@@ -15,9 +17,12 @@ public class Referee extends Thread {
     private Playground playground;
     private RefereeSite refereeSite;
 
-    public Referee(Playground playground, RefereeSite refereeSite){
+    private Global global;
+
+    public Referee(Playground playground, RefereeSite refereeSite, Global global){
         this.playground = playground;
         this.refereeSite = refereeSite;
+        this.global = global;
     }
 
     /* Life Cycle of the Referee Thread
@@ -27,13 +32,21 @@ public class Referee extends Thread {
     @Override
     public void run(){
 
-        while(true){
-            refereeSite.callTrial();
-            waitingForTeamsReady();
-            playground.startTrial();
-            waitingForTrialEnd();
-            playground.assertTrialDecision();
-        }
+
+        refereeSite.announceMatch();
+        do{
+            refereeSite.announceGame();
+            while(!gameFinished()){
+                playground.callTrial(); //  waitingForTeamsReady();
+                playground.startTrial(); // waitingForTrialEnd();
+                playground.assertTrialDecision();
+
+            }
+
+        }while(!global.matchFinished());
+
+
+
 
     }
 
@@ -46,27 +59,8 @@ public class Referee extends Thread {
         this.refstate = state;
     }
 
-
-
-    /*
-     *Waiting for the last member of the teams to sit up */
-
-    public void waitingForTeamsReady(){
-        try
-        { sleep ((long) (1 + 40 * Math.random ()));
-        }
-        catch (InterruptedException e) {}
+    public boolean gameFinished(){
+        return true;
     }
-
-    /*
-    * Waiting for the trial's end
-     */
-    public void waitingForTrialEnd(){
-        try
-        { sleep ((long) (1 + 40 * Math.random ()));
-        }
-        catch (InterruptedException e) {}
-    }
-
 
 }

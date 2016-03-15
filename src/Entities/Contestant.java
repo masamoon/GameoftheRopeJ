@@ -22,22 +22,50 @@ public class Contestant extends Thread {
 
     private Playground playgroundMon;
 
-    private Global globalMon;
+    private Global global;
 
-    public Contestant(int contestantID, int teamID, int strength, Bench benchMon, Playground playgroundMon, Global globalMon) {
+    public Contestant(int contestantID, int teamID, int strength, Bench benchMon, Playground playgroundMon, Global global) {
         this.contestantID = contestantID;
         this.teamID = teamID;
         this.strength = strength;
         this.benchMon = benchMon;
         this.playgroundMon = playgroundMon;
-        this.globalMon = globalMon;
+        this.global = global;
     }
 
     @Override
     public void run() {
 
-        /* todo */
+        boolean selected = false;
 
+        do{
+            while(global.matchInProgress()){
+                selected = benchMon.followCoachAdvice(teamID, contestantID);
+
+                if(selected){
+                    playgroundMon.getReady(contestantID);
+                    pullRope();
+                /* decrease strength */
+
+                    playgroundMon.done(contestantID);
+
+                }
+                else{
+                /* increase strength */
+                }
+                benchMon.sitDown(contestantID);
+            }
+        }while(!global.endContestantOps());
+
+
+    }
+
+    private void pullRope ()
+    {
+        try
+        { sleep ((long) (1 + 10 * Math.random ()));
+        }
+        catch (InterruptedException e) {}
     }
 
     public int getContestantID() {
