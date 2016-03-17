@@ -18,4 +18,13 @@ public class RefereeSite {
 
     public synchronized void announceMatch(){}
 
+
+    public synchronized void declareGameWinner (){
+
+    }
+
+    public synchronized void declareMatchWinner (){
+
+    }
+
 }

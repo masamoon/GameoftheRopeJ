@@ -7,7 +7,9 @@ public enum ContestantState {
 
     /* todo: add comments*/
 
-    SEAT_AT_THE_BENCH,
+    INIT,
+
+    SIT_AT_THE_BENCH,
 
     STAND_IN_POSITION,
 

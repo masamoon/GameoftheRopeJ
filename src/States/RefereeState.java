@@ -6,6 +6,7 @@ package States;
 public enum RefereeState {
 
     /* todo: add comments */
+
     START_OF_THE_MATCH,
 
     START_OF_A_GAME,

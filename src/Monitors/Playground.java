@@ -23,15 +23,7 @@ public class Playground {
     /*
     * Contestant operation
      */
-    public synchronized  void getReady(int contestantID){
-
-    }
-
-    /*
-   * Contestant operation
-    */
-
-    public synchronized  void pullRope(int contestantID){
+    public synchronized  void getReady(int contestantID) {
 
     }
 
@@ -54,8 +46,18 @@ public class Playground {
      */
     public synchronized void reviewNotes(int teamID){
 
+
     }
 
     public synchronized void callTrial(){}
+
+
+
+    public synchronized boolean followCoachAdvice (int teamID, int contestantID, Global global) {
+
+        // todo: in progress by jonnybel @quintafeira
+
+        return true;
+    }
 
 }

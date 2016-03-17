@@ -7,6 +7,8 @@ public enum CoachState {
 
     /* todo: add comments */
 
+    INIT,
+
     WAIT_FOR_REFEREE_COMMAND,
 
     ASSEMBLE_TEAM,

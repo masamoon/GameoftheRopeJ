@@ -39,7 +39,7 @@ public class Contestant extends Thread {
 
         do{
             while(global.matchInProgress()){
-                playgroundMon.followCoachAdvice(teamID, contestantID); // acorda o coach e fica em STAND_IN_POSITION
+                playgroundMon.followCoachAdvice(teamID, contestantID, global); // acorda o coach e fica em STAND_IN_POSITION
 
                     playgroundMon.getReady(contestantID); // passa o seu estado interno para DO_YOUR_BEST
                     pullRope();
@@ -48,7 +48,7 @@ public class Contestant extends Thread {
                 }
             // todo: incrementar e decrementar força é chamado por outra entidade pq esta está bloqueada
 
-            benchMon.sitDown(contestantID); // entra no estado de espera SIT_AT_THE_BENCH
+            benchMon.sitDown(contestantID, teamID, global); // entra no estado de espera SIT_AT_THE_BENCH
 
         }while(!global.endContestantOps());
 

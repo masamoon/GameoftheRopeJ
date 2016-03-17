@@ -33,34 +33,35 @@ public class Referee extends Thread {
     public void run(){
 
 
-        refereeSite.announceMatch();
+        refereeSite.announceMatch(); // state -> START_OF_THE_MATCH
+
+        // talvez seja desnecessário:
+        makeArrangements(); // prepare for the beginning of the match (sleep, while the other threads get in wait states)
         do{
-            refereeSite.announceGame();
-            while(!gameFinished()){
+            refereeSite.announceGame(); // state -> START_OF_THE_GAME
+            while(!global.gameFinished()){
                 playground.callTrial(); //  waitingForTeamsReady();
                 playground.startTrial(); // waitingForTrialEnd();
                 playground.assertTrialDecision();
-
             }
+            refereeSite.declareGameWinner ();
 
         }while(!global.matchFinished());
+        refereeSite.declareMatchWinner ();
 
 
 
 
     }
 
-
-    public RefereeState getrefstate() {
-        return refstate;
+    private void makeArrangements(){
+        try
+        {
+            sleep ((long) (1 + 10 * Math.random ()));
+        }
+        catch (InterruptedException e) {}
     }
 
-    public void setrefstate(RefereeState state) {
-        this.refstate = state;
-    }
 
-    public boolean gameFinished(){
-        return true;
-    }
 
 }
