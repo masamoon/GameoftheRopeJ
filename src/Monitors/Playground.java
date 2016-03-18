@@ -13,42 +13,47 @@ public class Playground {
 
     private int flagPos;
     private int teamSize;
-    private Contestant[] team1;
-    private Contestant[] team2;
+    private int[] team1;
+    private int[] team2;
+    private int team1vic;
+    private int team2vic;
     private Global global;
 
-    public Playground(Contestant[] team1, Contestant[] team2, Global global){
-        team1 = new Contestant[teamSize];
-        team2 = new Contestant[teamSize];
+    public Playground( Global global, int team1vic, int team2vic){
+        this.team1vic = team1vic;
+        this.team2vic = team2vic;
         this.global = global;
+
+        this.team1 = new int[3];
+        this.team2 = new int[3];
     }
 
     /*
-    *   Referee calls the teams to assemble
+    *   REFEREE OPERATIONS
+     */
+
+   /**
+    *   Referee decides who's the winner
     */
     public synchronized void assertTrialDecision(){
        if(flagPos > 0){
-           //team 1 wins
-           if(flagPos > 4) {
-               //knockout for team1
-           }
+           team1vic+=1; //team 1 wins
+
        }
         else if (flagPos < 0){
-           //team 2 wins
-           if(flagPos < -4){
-               //knockout for team2
-           }
+           team2vic+=1; //team 2 wins
+
        }
     }
 
-    /*
+    /**
      *   Referee begins the trial
-    */
+     */
     public synchronized  void startTrial(){
         global.setRefereeState(RefereeState.WAIT_FOR_TRIAL_CONCLUSION);
     }
 
-    /*
+    /**
     * Contestant operation
     * @param contestantID contestant's ID
      */
@@ -56,25 +61,25 @@ public class Playground {
         global.setContestantState(contestantID,ContestantState.DO_YOUR_BEST);
     }
 
-     /*
+   /**
     * Contestant operation
     * @param contestantID contestant's ID
-     */
+    */
     public synchronized void done(int contestantID){
         notifyAll();
     }
 
-    /* Coach operation
+    /** Coach informs Referee of the chosen team
     *@param teamID team's ID
-     */
+    */
     public synchronized  void informReferee(int teamID){
         global.setCoachState(teamID, CoachState.WATCH_TRIAL);
     }
 
-    /*
+   /**
     * Coach operation
     * @param teamID team's ID
-     */
+    */
     public synchronized void reviewNotes(int teamID){
 
 

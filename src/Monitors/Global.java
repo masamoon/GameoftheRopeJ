@@ -11,6 +11,10 @@ import States.RefereeState;
 public class Global {
 
 
+    private int gamescore_t1;
+
+    private int gamescore_t2;
+
     private ContestantState contestantStates [];
 
     private RefereeState refereeState;
@@ -45,7 +49,7 @@ public class Global {
 
     /* State controls */
 
-    /* contestants
+    /** contestants
     * @param contestantID contestant's ID
     * @param contestant's state to be updated to
     * */
@@ -55,7 +59,7 @@ public class Global {
         // todo: report status (log)
     }
 
-    /*
+    /**
     * get contestant State
     * @param contestantID contestant's ID
     * @return current contestant's state
@@ -65,7 +69,7 @@ public class Global {
 
     }
 
-    /* referee
+    /** referee
      @param referee's state to be updated to
     * */
     public synchronized void setRefereeState (RefereeState state){
@@ -74,7 +78,7 @@ public class Global {
         // todo: report status (log)
     }
 
-    /*
+    /**
     * get referee State
     * @return current Referee's State
      */
@@ -85,7 +89,7 @@ public class Global {
 
     /* coaches */
 
-    /*
+    /**
     * set Coach State to new state
     * @param teamID team's id
     * @param state coach's state to be updated to
@@ -96,7 +100,7 @@ public class Global {
         // todo: report status (log)
     }
 
-    /*
+  /**
    * get coach State
    * @return current coach's State
     */
