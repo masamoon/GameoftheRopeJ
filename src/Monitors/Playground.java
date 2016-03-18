@@ -50,6 +50,7 @@ public class Playground {
 
     /*
     * Contestant operation
+    * @param contestantID contestant's ID
      */
     public synchronized  void getReady(int contestantID) {
         global.setContestantState(contestantID,ContestantState.DO_YOUR_BEST);
@@ -57,13 +58,14 @@ public class Playground {
 
      /*
     * Contestant operation
+    * @param contestantID contestant's ID
      */
     public synchronized void done(int contestantID){
         notifyAll();
     }
 
     /* Coach operation
-    *
+    *@param teamID team's ID
      */
     public synchronized  void informReferee(int teamID){
         global.setCoachState(teamID, CoachState.WATCH_TRIAL);
@@ -71,6 +73,7 @@ public class Playground {
 
     /*
     * Coach operation
+    * @param teamID team's ID
      */
     public synchronized void reviewNotes(int teamID){
 

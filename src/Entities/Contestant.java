@@ -54,6 +54,9 @@ public class Contestant extends Thread {
 
     }
 
+    /*
+    * pulls the rope
+     */
     private void pullRope ()
     {
         try

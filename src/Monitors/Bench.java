@@ -11,11 +11,21 @@ public class Bench {
 
     /*
         Coach Operations
+        */
+    /*
+        call contestants to the rope
+        @param selection chosen contestants to pull rope
+
      */
     public synchronized void callContestants (int [] selection){
 
     }
 
+    /*
+    * execute the selection of the next contestant's to pull the rope
+    * @param teamID team's id
+    * @return selected contestants
+     */
     public int [] selectContestants(int teamID){
         /* todo: algorithm of selection is used here */
         int team [] = {1,2,3};
@@ -25,6 +35,9 @@ public class Bench {
 
     /*
         Contestant Operations
+        @param teamID team's ID
+        @param contestantID contestant's ID
+        @param global reference to global repository
      */
     public synchronized void sitDown(int teamID, int contestantID, Global global) {
 
