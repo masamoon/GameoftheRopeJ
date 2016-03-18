@@ -54,6 +54,10 @@ public class Referee extends Thread {
 
     }
 
+    public void setRefstate(RefereeState state){
+        refstate = state;
+    }
+
     private void makeArrangements(){
         try
         {
