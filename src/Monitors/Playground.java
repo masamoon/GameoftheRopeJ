@@ -20,9 +20,9 @@ public class Playground {
     private int trial_no;
     private Global global;
 
-    public Playground( Global global, int team1vic, int team2vic){
-        this.team1vic = team1vic;
-        this.team2vic = team2vic;
+    public Playground( Global global){
+        this.team1vic = 0;
+        this.team2vic = 0;
         this.global = global;
 
         this.team1 = new int[3];

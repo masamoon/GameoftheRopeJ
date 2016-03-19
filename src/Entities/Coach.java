@@ -23,8 +23,8 @@ public class Coach extends Thread{
 
     // todo: state
 
-    public Coach(int teamID, int strategyID, Bench benchMon, Playground playgroundMon, Global global) {
-        this.strategyID = strategyID;
+    public Coach(int teamID, Bench benchMon, Playground playgroundMon, Global global) {
+        this.strategyID = 0;
         this.teamID = teamID;
         this.benchMon = benchMon;
         this.playgroundMon = playgroundMon;
