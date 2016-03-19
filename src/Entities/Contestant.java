@@ -41,7 +41,7 @@ public class Contestant extends Thread {
             while(global.matchInProgress()){
                 playgroundMon.followCoachAdvice(teamID, contestantID, global); // acorda o coach e fica em STAND_IN_POSITION
 
-                    playgroundMon.getReady(contestantID); // passa o seu estado interno para DO_YOUR_BEST
+                    playgroundMon.getReady(teamID,contestantID); // passa o seu estado interno para DO_YOUR_BEST
                     pullRope();
                     playgroundMon.done(contestantID); // acorda o Referee e fica em espera (sem alterar o seu estado)
 

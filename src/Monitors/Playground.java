@@ -57,8 +57,8 @@ public class Playground {
     * Contestant operation
     * @param contestantID contestant's ID
      */
-    public synchronized  void getReady(int contestantID) {
-        global.setContestantState(contestantID,ContestantState.DO_YOUR_BEST);
+    public synchronized  void getReady(int teamID, int contestantID) {
+        global.setContestantState(teamID,contestantID,ContestantState.DO_YOUR_BEST);
     }
 
    /**

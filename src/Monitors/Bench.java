@@ -27,9 +27,9 @@ public class Bench {
      *  @param global reference to global repository
      *
      */
-    public synchronized void callContestants (int [] selection, Global global){
+    public synchronized void callContestants (int teamID, int [] selection, Global global){
         for(int id: selection){
-            global.setContestantState(id,ContestantState.STAND_IN_POSITION);
+            global.setContestantState(teamID,id,ContestantState.STAND_IN_POSITION);
         }
     }
 
@@ -69,7 +69,7 @@ public class Bench {
      */
     public synchronized void sitDown(int teamID, int contestantID, Global global) {
 
-        global.setContestantState(contestantID, ContestantState.SIT_AT_THE_BENCH);
+        global.setContestantState(teamID,contestantID, ContestantState.SIT_AT_THE_BENCH);
 
         while(global.getCoachState(teamID) != CoachState.ASSEMBLE_TEAM)
         { try
@@ -77,6 +77,28 @@ public class Bench {
             }
         catch (InterruptedException e) {}
         }
+    }
+
+
+    /**
+     * decrements the strength of a contestant
+     * @param teamID
+     * @param contestantID
+     * @param global
+     */
+    public void tireOut(int teamID, int contestantID, Global global){
+
+
+    }
+
+    /**
+     * increments the strength of a contestant
+     * @param teamID
+     * @param contestantID
+     * @param global
+     */
+    public void restUp(int teamID, int contestantID, Global global){
+
     }
 
 
