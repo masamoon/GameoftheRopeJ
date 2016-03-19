@@ -119,4 +119,16 @@ public class Global {
 
     }
 
+    /**
+     *
+     * @return
+     */
+    public int getGamescore_t1(){ return this.gamescore_t1; }
+
+    /**
+     *
+     * @return
+     */
+    public int getGamescore_t2(){ return this.gamescore_t2; }
+
 }

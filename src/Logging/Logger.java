@@ -34,7 +34,7 @@ public class Logger {
         }
 
 
-        String rope_pos;
+        int rope_pos = playground.getFlagPos();
         String trial_no;
 
 

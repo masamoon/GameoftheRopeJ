@@ -17,6 +17,7 @@ public class Playground {
     private int[] team2;
     private int team1vic;
     private int team2vic;
+    private int trial_no;
     private Global global;
 
     public Playground( Global global, int team1vic, int team2vic){
@@ -44,6 +45,8 @@ public class Playground {
            team2vic+=1; //team 2 wins
 
        }
+
+        trial_no+=1;
     }
 
     /**
@@ -97,5 +100,21 @@ public class Playground {
 
         return true;
     }
+
+    /**
+     *
+     * @return
+     */
+    public int getFlagPos(){ return this.flagPos; }
+
+    /**
+     *
+     * @return
+     */
+    public int getTrial_no(){ return this.trial_no; }
+
+
+
+
 
 }
