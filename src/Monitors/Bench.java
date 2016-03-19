@@ -13,8 +13,8 @@ import java.util.Random;
 public class Bench {
 
 
-    private Contestant[] team1;
-    private Contestant[] team2;
+    private int[] team1;
+    private int[] team2;
 
     /*
     *   COACH OPERATIONS
@@ -24,6 +24,7 @@ public class Bench {
     /**
      *  call contestants to the rope
      *  @param selection chosen contestants to pull rope
+     *  @param global reference to global repository
      *
      */
     public synchronized void callContestants (int [] selection, Global global){

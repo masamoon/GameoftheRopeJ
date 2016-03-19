@@ -15,7 +15,9 @@ public class Global {
 
     private int gamescore_t2;
 
-    private ContestantState contestantStates [];
+    private ContestantState contestantStates_t1 [];
+
+    private ContestantState contestantStates_t2 [];
 
     private RefereeState refereeState;
 
@@ -51,10 +53,14 @@ public class Global {
 
     /** contestants
     * @param contestantID contestant's ID
-    * @param contestant's state to be updated to
+    * @param state contestant's state to be updated to
+     *@param teamID team's ID
     * */
-    public synchronized void setContestantState (int contestantID, ContestantState state){
-        this.contestantStates[contestantID] = state;
+    public synchronized void setContestantState (int teamID, int contestantID, ContestantState state){
+       if(teamID == 0)
+           this.contestantStates_t1[contestantID] = state;
+        else
+           this.contestantStates_t2[contestantID] = state;
 
         // todo: report status (log)
     }
@@ -62,15 +68,18 @@ public class Global {
     /**
     * get contestant State
     * @param contestantID contestant's ID
+    * @param teamID team's ID
     * @return current contestant's state
      */
-    public synchronized ContestantState getContestantState (int contestantID){
-        return this.contestantStates[contestantID];
-
+    public synchronized ContestantState getContestantState (int teamID,int contestantID){
+        if(teamID == 0)
+            return this.contestantStates_t1[contestantID];
+        else
+            return this.contestantStates_t2[contestantID];
     }
 
     /** referee
-     @param referee's state to be updated to
+     @param state referee's state to be updated to
     * */
     public synchronized void setRefereeState (RefereeState state){
         this.refereeState = state;
@@ -102,6 +111,7 @@ public class Global {
 
   /**
    * get coach State
+   * @param teamID team's Id
    * @return current coach's State
     */
     public synchronized CoachState getCoachState (int teamID){
