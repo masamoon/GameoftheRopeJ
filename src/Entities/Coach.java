@@ -48,7 +48,7 @@ public class Coach extends Thread{
             // todo: fazer isto no banco:
             selection = benchMon.selectContestants(teamID);
 
-            benchMon.callContestants(selection,global);
+            benchMon.callContestants(teamID,selection,global);
             playgroundMon.informReferee(teamID); // enter WATCH_TRIAL blocking state
         }
     }

@@ -44,10 +44,10 @@ public class Referee extends Thread {
                 playground.startTrial(); // waitingForTrialEnd();
                 playground.assertTrialDecision();
             }
-            refereeSite.declareGameWinner ();
+            refereeSite.declareGameWinner (playground);
 
         }while(!global.matchFinished());
-        refereeSite.declareMatchWinner ();
+        refereeSite.declareMatchWinner (global);
 
 
 
