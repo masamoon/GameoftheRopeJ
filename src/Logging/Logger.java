@@ -2,13 +2,22 @@ package Logging;
 
 import Monitors.Global;
 import Monitors.Playground;
+import genclass.TextFile;
+import genclass.TextFile.*;
 
 /**
  * Created by Andre on 18/03/2016.
  */
 public class Logger {
 
+    private TextFile f;
+    private String path;
 
+    public Logger(String path){
+        f = new TextFile();
+        f.openForWriting(path,"log");
+        this.path = path;
+    }
 
     public void firstLine(){
 
@@ -35,7 +44,28 @@ public class Logger {
 
 
         int rope_pos = playground.getFlagPos();
-        String trial_no;
+        int trial_no = playground.getTrial_no();
+
+        int team1_score = global.getGamescore_t1();
+        int team2_score = global.getGamescore_t2();
+
+
+
+
+        StringBuilder t1_str_score = new StringBuilder();
+        StringBuilder t2_str_score = new StringBuilder();
+
+        for (int i = 0; i < team1_score ; i++) {
+            t1_str_score.append("*");
+        }
+
+        for (int i = 0; i < team2_score ; i++) {
+            t2_str_score.append("*");
+        }
+
+        String line = ref_state + coach_state_1 + team1.toString() + coach_state_2 + team2.toString() + t1_str_score.toString() + t2_str_score.toString() + trial_no + rope_pos;
+
+       f.writelnString(line);
 
 
 
