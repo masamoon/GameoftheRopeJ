@@ -23,26 +23,47 @@ public class Global {
 
     private CoachState coachStates [];
 
+
+    /**
+     *  Check is match is in progresss
+     * @return true if match is underway
+     */
     public boolean matchInProgress() {
 
         return true;
     }
 
+    /**
+     * Check if match is finished
+     * @return true if match is finished
+     */
     public boolean matchFinished() {
         return true;
     }
 
-
+    /**
+     * Check if game is in progress
+     * @return true if game is underway
+     */
     public boolean gameInProgress(){
 
         return true;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean endContestantOps(){
 
         return true;
     }
 
+
+    /**
+     *Check if game is finished
+     * @return true if game is finished
+     */
     public boolean gameFinished(){
         return true;
     }
@@ -120,15 +141,37 @@ public class Global {
     }
 
     /**
-     *
-     * @return
+     *Gets the score for team 1
+     * @return score for team1
      */
     public int getGamescore_t1(){ return this.gamescore_t1; }
 
     /**
-     *
-     * @return
+     *Gets the score for team 2
+     * @return score for team2
      */
     public int getGamescore_t2(){ return this.gamescore_t2; }
+
+    /**
+     * sets gamescore for team1 as new value
+     * @param score
+     */
+    public void setGamescore_t1(int score){this.gamescore_t1= score; }
+
+    /**
+     * sets gamescore for team2 as new value
+     * @param score
+     */
+    public void setGamescore_t2(int score){this.gamescore_t2= score; }
+
+    /**
+     * increment by 1 the score of team1
+     */
+    public void incGamescore_t1(){this.gamescore_t1+=1; }
+
+    /**
+     * increment by 1 the score of team2
+     */
+    public void incGamescore_t2(){this.gamescore_t2+=1; }
 
 }

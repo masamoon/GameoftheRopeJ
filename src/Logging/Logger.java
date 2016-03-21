@@ -70,4 +70,24 @@ public class Logger {
 
 
     }
+
+    public void matchWinnerLine(int score1, int score2, String winner){
+        f.writelnString("Match was won by team "+winner+ "("+score1+"-"+score2+").");
+    }
+
+    public void matchTieLine(){
+        f.writelnString("match was a draw");
+    }
+
+    public void gameWinnerLinePoints(int ngame, int nteam, int ntrials){
+       f.writelnString("Game "+ngame+" was won by team "+nteam+" by points in "+ntrials+" trials");
+    }
+
+    public void gameWinnerLineKO(int ngame, int nteam, int ntrials){
+        f.writelnString("Game "+ngame+" was won by team "+nteam+" by knock-out in "+ntrials+" trials");
+    }
+
+    public void gameTieLine(){
+        f.writelnString("game was a draw");
+    }
 }
