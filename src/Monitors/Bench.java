@@ -13,8 +13,19 @@ import java.util.Random;
 public class Bench {
 
 
-    private int[] team1;
-    private int[] team2;
+    private Contestant [] team1;
+    private Contestant [] team2;
+
+    private Global global;
+
+
+
+    public Bench(Global global){
+        this.team1 = new Contestant[5];
+        this.team2 = new Contestant[5];
+
+        this.global = global;
+    }
 
     /*
     *   COACH OPERATIONS
@@ -23,15 +34,20 @@ public class Bench {
 
     /**
      *  call contestants to the rope
+     *  coach changes the state of the selected contestants to SELECTED
+     *  coach wakes the contestants
+     *
      *  @param selection chosen contestants to pull rope
-     *  @param global reference to global repository
      *
      */
-    public synchronized void callContestants (int teamID, int [] selection, Global global){
+    public synchronized void callContestants (int teamID, int [] selection){
         for(int id: selection){
-            global.setContestantState(teamID,id,ContestantState.STAND_IN_POSITION);
+            global.setContestantState(teamID, id, ContestantState.SELECTED);
         }
+        notifyAll();
+
     }
+
 
    /**
     * execute the selection of the next contestant's to pull the rope
@@ -63,20 +79,27 @@ public class Bench {
 
     /**
         Contestant Operations
-        @param teamID team's ID
+     */
+
+
+    /**
+        sitDown:
+        the contestant's state is changed to SIT_AT_THE_BENCH and he waits until he is called by the coach
+
+        @param teamID team ID of both the contestant and his coach
         @param contestantID contestant's ID
         @param global reference to global repository
      */
-    public synchronized void sitDown(int teamID, int contestantID, Global global) {
+    public synchronized void sitDown(int contestantID, int teamID, Global global) {
 
-        global.setContestantState(teamID,contestantID, ContestantState.SIT_AT_THE_BENCH);
+        global.setContestantState(teamID, contestantID, ContestantState.SIT_AT_THE_BENCH);
 
-        while(global.getCoachState(teamID) != CoachState.ASSEMBLE_TEAM)
-        { try
-            { wait ();
-            }
-        catch (InterruptedException e) {}
-        }
+        do{
+            try
+                { wait ();
+                }
+            catch (InterruptedException e) {}
+        }while(global.getContestantState(contestantID, teamID) != ContestantState.SELECTED);
     }
 
 
@@ -84,9 +107,8 @@ public class Bench {
      * decrements the strength of a contestant
      * @param teamID
      * @param contestantID
-     * @param global
      */
-    public void tireOut(int teamID, int contestantID, Global global){
+    public void tireOut(int teamID, int contestantID){
 
 
     }
@@ -95,9 +117,8 @@ public class Bench {
      * increments the strength of a contestant
      * @param teamID
      * @param contestantID
-     * @param global
      */
-    public void restUp(int teamID, int contestantID, Global global){
+    public void restUp(int teamID, int contestantID){
 
     }
 

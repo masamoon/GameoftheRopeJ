@@ -43,13 +43,16 @@ public class Coach extends Thread{
         while(global.matchInProgress()){
 
             playgroundMon.reviewNotes(teamID); // enter WAIT_FOR_REFEREE_COMMAND   blocking state
-            // no reviewNotes é que se actualizam as forças dos contestants
 
-            // todo: fazer isto no banco:
             selection = benchMon.selectContestants(teamID);
 
-            benchMon.callContestants(teamID,selection,global);
+            benchMon.callContestants(teamID, selection); // altera o estado dos contestants selecionados para SELECTED (e acorda-os), entra no estado ASSEMBLE_TEAM
+            playgroundMon.waitForContestants(teamID, selection); // espera no playground que todos os contestants estejam STANDING
+
             playgroundMon.informReferee(teamID); // enter WATCH_TRIAL blocking state
+
+            // todo: no fim disto é preciso actualizar as forças (algures)
+
         }
     }
 

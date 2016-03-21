@@ -39,16 +39,19 @@ public class Contestant extends Thread {
 
         do{
             while(global.matchInProgress()){
-                playgroundMon.followCoachAdvice(teamID, contestantID, global); // acorda o coach e fica em STAND_IN_POSITION
 
-                    playgroundMon.getReady(teamID,contestantID); // passa o seu estado interno para DO_YOUR_BEST
+                benchMon.sitDown(contestantID, teamID, global); // entra no estado de espera SIT_AT_THE_BENCH
+
+                playgroundMon.followCoachAdvice(contestantID, teamID);
+
+                    playgroundMon.getReady(contestantID, teamID); // passa o seu estado interno para DO_YOUR_BEST
                     pullRope();
-                    playgroundMon.done(contestantID); // acorda o Referee e fica em espera (sem alterar o seu estado)
+                    playgroundMon.done(contestantID, teamID); // acorda o Referee e fica em espera (sem alterar o seu estado)
 
                 }
             // todo: incrementar e decrementar força é chamado por outra entidade pq esta está bloqueada
 
-            benchMon.sitDown(contestantID, teamID, global); // entra no estado de espera SIT_AT_THE_BENCH
+
 
         }while(!global.endContestantOps());
 
@@ -66,19 +69,23 @@ public class Contestant extends Thread {
     }
 
     public int getContestantID() {
-        return contestantID;
+        return this.contestantID;
     }
 
     public int getTeamID() {
-        return teamID;
+        return this.teamID;
     }
 
     public int getStrength() {
-        return strength;
+        return this.strength;
     }
 
-    public void setStrength(int strength) {
-        this.strength = strength;
+    public void increaseStrength() {
+        this.strength++;
+    }
+
+    public void decreaseStrength() {
+        this.strength--;
     }
 
 }

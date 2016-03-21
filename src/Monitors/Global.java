@@ -38,6 +38,8 @@ public class Global {
      * @return true if match is finished
      */
     public boolean matchFinished() {
+
+        // todo!!!
         return true;
     }
 
@@ -65,6 +67,8 @@ public class Global {
      * @return true if game is finished
      */
     public boolean gameFinished(){
+
+        // todo!!!
         return true;
     }
 
@@ -78,9 +82,9 @@ public class Global {
      *@param teamID team's ID
     * */
     public synchronized void setContestantState (int teamID, int contestantID, ContestantState state){
-       if(teamID == 0)
+       if(teamID == 1)
            this.contestantStates_t1[contestantID] = state;
-        else
+        else if (teamID == 2)
            this.contestantStates_t2[contestantID] = state;
 
         // todo: report status (log)
@@ -92,8 +96,8 @@ public class Global {
     * @param teamID team's ID
     * @return current contestant's state
      */
-    public synchronized ContestantState getContestantState (int teamID,int contestantID){
-        if(teamID == 0)
+    public synchronized ContestantState getContestantState (int contestantID, int teamID){
+        if(teamID == 1)
             return this.contestantStates_t1[contestantID];
         else
             return this.contestantStates_t2[contestantID];
@@ -114,7 +118,6 @@ public class Global {
      */
     public synchronized RefereeState getRefereeState (){
         return this.refereeState;
-
     }
 
     /* coaches */

@@ -7,6 +7,11 @@ import Logging.Logger;
  */
 public class RefereeSite {
 
+    private Global global;
+
+    public RefereeSite( Global global){
+        this.global = global;
+    }
     /*
     *   Referee Operations
      */
@@ -31,7 +36,7 @@ public class RefereeSite {
      * Checks what team is the game's winner
      * @param playground reference to the playground
      */
-    public synchronized void declareGameWinner (Playground playground, Global global,Logger logger){
+    public synchronized void declareGameWinner (Playground playground,Logger logger){
         if(playground.getTrial_no() >= 6){
             if(playground.getFlagPos() > 0){
                 //team1 winner
@@ -66,9 +71,8 @@ public class RefereeSite {
 
     /**
      * Checks what team is the match's winner
-     * @param global reference to the global repository
      */
-    public synchronized void declareMatchWinner (Global global, Logger logger){
+    public synchronized void declareMatchWinner (Logger logger){
         if(global.getGamescore_t1()> global.getGamescore_t2()){
             //team1 takes match
             logger.matchWinnerLine(global.getGamescore_t1(),global.getGamescore_t2(),"team1");
