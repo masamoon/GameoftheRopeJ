@@ -36,6 +36,7 @@ public class Contestant extends Thread {
     @Override
     public void run() {
 
+        System.out.println("ContestandID:" + contestantID);
 
         do{
             while(global.matchInProgress()){

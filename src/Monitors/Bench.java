@@ -13,16 +13,22 @@ import java.util.Random;
 public class Bench {
 
 
-    private Contestant [] team1;
-    private Contestant [] team2;
+    //private Contestant [] team1;
+    //private Contestant [] team2;
+    private int[] team1;
+    private int[] team2;
+
 
     private Global global;
 
 
 
     public Bench(Global global){
-        this.team1 = new Contestant[5];
-        this.team2 = new Contestant[5];
+       /* this.team1 = new Contestant[5];
+        this.team2 = new Contestant[5];*/
+
+        this.team1 = new int[5];
+        this.team2 = new int[5];
 
         this.global = global;
     }

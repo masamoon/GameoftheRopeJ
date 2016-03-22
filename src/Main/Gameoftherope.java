@@ -18,7 +18,7 @@ public class Gameoftherope {
 
     public static void main(String[] args){
 
-        Logger logger = new Logger("logging");
+        Logger logger = new Logger("/");
         Global global = new Global();
 
         Bench bench = new Bench(global);
@@ -27,7 +27,7 @@ public class Gameoftherope {
 
         RefereeSite refereeSite = new RefereeSite(global);
 
-        Referee referee = new Referee(playground, refereeSite, global);
+        Referee referee = new Referee(playground, refereeSite, global, logger);
 
         Coach coach_t1 = new Coach(0,bench,playground,global);
         Coach coach_t2 = new Coach(1,bench,playground,global);

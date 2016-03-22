@@ -15,7 +15,7 @@ public class Logger {
 
     public Logger(String path){
         f = new TextFile();
-        f.openForWriting(path,"log");
+        f.openForWriting(null,"log.txt");
         this.path = path;
     }
 

@@ -28,6 +28,30 @@ public class Global {
     private CoachState coachStates [];
 
 
+
+
+
+    public Global(){
+
+        contestantStates_t1 = new ContestantState[5];
+
+        for (int i = 0; i < contestantStates_t1.length ; i++) {
+            contestantStates_t1[i] = ContestantState.SIT_AT_THE_BENCH;
+        }
+
+        contestantStates_t2 = new ContestantState[5];
+
+        for (int i = 0; i < contestantStates_t2.length ; i++) {
+            contestantStates_t2[i] = ContestantState.SIT_AT_THE_BENCH;
+        }
+
+        coachStates = new CoachState[2];
+
+        for (int i = 0; i < coachStates.length ; i++) {
+            coachStates[i] = CoachState.INIT;
+        }
+    }
+
     /**
      *  Check is match is in progresss
      * @return true if match is underway
