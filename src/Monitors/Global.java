@@ -15,6 +15,10 @@ public class Global {
 
     private int gamescore_t2;
 
+    private int trialscore_t1;
+
+    private int trialscore_t2;
+
     private ContestantState contestantStates_t1 [];
 
     private ContestantState contestantStates_t2 [];
@@ -29,8 +33,8 @@ public class Global {
      * @return true if match is underway
      */
     public boolean matchInProgress() {
+        return ((gamescore_t1 + gamescore_t2) < 3) ? true : false;
 
-        return true;
     }
 
     /**
@@ -39,8 +43,7 @@ public class Global {
      */
     public boolean matchFinished() {
 
-        // todo!!!
-        return true;
+        return ((gamescore_t1 + gamescore_t2) >= 3) ? true : false;
     }
 
     /**
@@ -50,6 +53,7 @@ public class Global {
     public boolean gameInProgress(){
 
         return true;
+
     }
 
     /**
@@ -68,8 +72,8 @@ public class Global {
      */
     public boolean gameFinished(){
 
-        // todo!!!
-        return true;
+        return ((trialscore_t1 + trialscore_t2)<6) ? true : false;
+
     }
 
 
@@ -177,4 +181,28 @@ public class Global {
      */
     public void incGamescore_t2(){this.gamescore_t2+=1; }
 
+
+    public int getTrialscore_t1() {
+        return trialscore_t1;
+    }
+
+    public void setTrialscore_t1(int trialscore_t1) {
+        this.trialscore_t1 = trialscore_t1;
+    }
+
+    public int getTrialscore_t2(){
+        return trialscore_t2;
+    }
+
+    public void setTrialscore_t2(int trialscore_t2){
+        this.trialscore_t2 = trialscore_t2;
+    }
+
+    public void incTrialscore_t1(){
+        this.trialscore_t1+=1;
+    }
+
+    public void incTrialscore_t2(){
+        this.trialscore_t2+=1;
+    }
 }

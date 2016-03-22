@@ -1,5 +1,6 @@
 package Entities;
 
+import Logging.Logger;
 import Monitors.Global;
 import Monitors.Playground;
 import Monitors.RefereeSite;
@@ -16,13 +17,14 @@ public class Referee extends Thread {
     private RefereeState refstate;
     private Playground playground;
     private RefereeSite refereeSite;
-
+    private Logger logger;
     private Global global;
 
-    public Referee(Playground playground, RefereeSite refereeSite, Global global){
+    public Referee(Playground playground, RefereeSite refereeSite, Global global, Logger logger){
         this.playground = playground;
         this.refereeSite = refereeSite;
         this.global = global;
+        this.logger = logger;
     }
 
     /* Life Cycle of the Referee Thread
@@ -44,10 +46,10 @@ public class Referee extends Thread {
                 playground.startTrial(); // waitingForTrialEnd();
                 playground.assertTrialDecision();
             }
-            refereeSite.declareGameWinner (playground);
+            refereeSite.declareGameWinner (playground,logger);
 
         }while(!global.matchFinished());
-        refereeSite.declareMatchWinner (global);
+        refereeSite.declareMatchWinner(logger);
 
 
 

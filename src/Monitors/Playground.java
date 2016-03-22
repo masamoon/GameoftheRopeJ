@@ -15,8 +15,8 @@ public class Playground {
     private int teamSize;
     private int[] team1;
     private int[] team2;
-    private int team1vic;
-    private int team2vic;
+   // private int team1vic;
+    //private int team2vic;
     private int trial_no;
     private Global global;
 
@@ -25,8 +25,8 @@ public class Playground {
     private int contestantsDone;
 
     public Playground( Global global){
-        this.team1vic = 0;
-        this.team2vic = 0;
+        //this.team1vic = 0;
+        //this.team2vic = 0;
         this.global = global;
 
         this.teamsReady = 0;
@@ -45,11 +45,11 @@ public class Playground {
     */
     public synchronized void assertTrialDecision(){
        if(flagPos > 0){
-           team1vic+=1; //team 1 wins
+           global.incGamescore_t1(); //team 1 wins
 
        }
         else if (flagPos < 0){
-           team2vic+=1; //team 2 wins
+           global.incGamescore_t2(); //team 2 wins
 
        }
 

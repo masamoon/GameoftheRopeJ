@@ -3,6 +3,7 @@ package Main;
 import Entities.Coach;
 import Entities.Contestant;
 import Entities.Referee;
+import Logging.Logger;
 import Monitors.Bench;
 import Monitors.Global;
 import Monitors.Playground;
@@ -16,13 +17,15 @@ import java.util.ArrayList;
 public class Gameoftherope {
 
     public static void main(String[] args){
+
+        Logger logger = new Logger("logging");
         Global global = new Global();
 
-        Bench bench = new Bench();
+        Bench bench = new Bench(global);
 
         Playground playground = new Playground(global);
 
-        RefereeSite refereeSite = new RefereeSite();
+        RefereeSite refereeSite = new RefereeSite(global);
 
         Referee referee = new Referee(playground, refereeSite, global);
 
