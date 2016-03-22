@@ -35,12 +35,12 @@ public class Gameoftherope {
         ArrayList<Contestant> contestants_t1 = new ArrayList<>();
         ArrayList<Contestant> contestants_t2 = new ArrayList<>();
 
-        for (int i = 0; i < 4 ; i++) {
+        for (int i = 0; i < 5 ; i++) {
             Contestant c = new Contestant(i,0,5,bench,playground,global); //todo: remove static strength
             contestants_t1.add(c);
         }
 
-        for (int i = 0; i < 4 ; i++) {
+        for (int i = 0; i < 5 ; i++) {
             Contestant c = new Contestant(i,1,5,bench,playground,global); //todo: remove static strength
             contestants_t2.add(c);
         }

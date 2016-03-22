@@ -48,6 +48,7 @@ public class Bench {
      */
     public synchronized void callContestants (int teamID, int [] selection){
         for(int id: selection){
+            System.out.println("calling: "+id);
             global.setContestantState(teamID, id, ContestantState.SELECTED);
         }
         notifyAll();
@@ -78,7 +79,7 @@ public class Bench {
 
         int team [] = {first,second,third};
 
-
+        System.out.println("Selected: "+first+second+third);
         return team;
     }
 
@@ -99,7 +100,7 @@ public class Bench {
     public synchronized void sitDown(int contestantID, int teamID, Global global) {
 
         global.setContestantState(teamID, contestantID, ContestantState.SIT_AT_THE_BENCH);
-
+        System.out.println("Contestant "+contestantID+" from team "+teamID+" sitting down");
         do{
             try
                 { wait ();

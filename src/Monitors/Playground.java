@@ -46,10 +46,12 @@ public class Playground {
     public synchronized void assertTrialDecision(){
        if(flagPos > 0){
            global.incGamescore_t1(); //team 1 wins
-
+            System.out.println("team 1 wins trial ");
        }
         else if (flagPos < 0){
            global.incGamescore_t2(); //team 2 wins
+
+           System.out.println("team 2 wins trial ");
 
        }
 
@@ -63,6 +65,7 @@ public class Playground {
      */
     public synchronized  void startTrial(){
 
+        System.out.println("starting trial");
         contestantsDone=0;
         global.setRefereeState(RefereeState.WAIT_FOR_TRIAL_CONCLUSION);
 
@@ -82,6 +85,7 @@ public class Playground {
     * @param contestantID contestant's ID
      */
     public synchronized  void getReady( int contestantID, int teamID) {
+        System.out.println("Contestant "+contestantID+" from team "+ teamID+ " getting ready");
         global.setContestantState(teamID,contestantID,ContestantState.DO_YOUR_BEST);
 
         // todo!!!
@@ -95,6 +99,7 @@ public class Playground {
      */
     public synchronized void followCoachAdvice (int contestantID, int teamID) {
 
+        System.out.println("Contestant "+contestantID+" from team "+teamID+" standing in position");
         global.setContestantState(teamID, contestantID, ContestantState.STAND_IN_POSITION);
 
         notifyAll();
@@ -124,6 +129,7 @@ public class Playground {
     */
     public synchronized  void informReferee(int teamID){
 
+        System.out.println(teamID+" informing referee");
         global.setCoachState(teamID, CoachState.WATCH_TRIAL);
 
         teamsReady++;
@@ -164,6 +170,7 @@ public class Playground {
      */
     public synchronized void waitForContestants(int teamID, int [] selection){
 
+        System.out.println("team "+teamID+" assembling team");
         global.setCoachState(teamID, CoachState.ASSEMBLE_TEAM);
 
         boolean contestantsStanding=false;
