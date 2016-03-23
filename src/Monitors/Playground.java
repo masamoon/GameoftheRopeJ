@@ -45,6 +45,7 @@ public class Playground {
     *   Referee decides who's the winner
     */
     public synchronized void assertTrialDecision(){
+        System.out.println("trial decision:");
        if(flagPos > 0){
            global.incGamescore_t1(); //team 1 wins
             System.out.println("team 1 wins trial ");
@@ -77,7 +78,6 @@ public class Playground {
                 wait();
             } catch (InterruptedException e) {}
         }
-
 
     }
 
@@ -152,6 +152,8 @@ public class Playground {
     */
     public synchronized void reviewNotes(int teamID) {
 
+        System.out.println(teamID +" team reviewing notes ");
+
         global.setCoachState(teamID, CoachState.WAIT_FOR_REFEREE_COMMAND);
         System.out.println("coach "+teamID+" state: WAIT_FOR_REFEREE_COMMAND ");
 
@@ -204,6 +206,8 @@ public class Playground {
 
 
     public synchronized void callTrial(){
+
+        System.out.println("calling trial");
 
         teamsReady=0;
 

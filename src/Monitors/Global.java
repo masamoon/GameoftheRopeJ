@@ -50,6 +50,11 @@ public class Global {
         for (int i = 0; i < coachStates.length ; i++) {
             coachStates[i] = CoachState.INIT;
         }
+
+        gamescore_t1 =0;
+        gamescore_t2= 0;
+        trialscore_t1= 0;
+        trialscore_t2 =0;
     }
 
     /**
@@ -57,7 +62,12 @@ public class Global {
      * @return true if match is underway
      */
     public boolean matchInProgress() {
-        return ((gamescore_t1 + gamescore_t2) < 3) ? true : false;
+        if((gamescore_t1 + gamescore_t2) < 3)
+            return true;
+        else
+            return false;
+
+        //return ((gamescore_t1 + gamescore_t2) < 3) ? true : false;
 
     }
 
@@ -67,7 +77,12 @@ public class Global {
      */
     public boolean matchFinished() {
 
-        return ((gamescore_t1 + gamescore_t2) >= 3) ? true : false;
+        if((gamescore_t1 + gamescore_t2) >= 3)
+            return true;
+        else
+            return false;
+
+        //return ((gamescore_t1 + gamescore_t2) >= 3) ? false : true ;
     }
 
     /**
@@ -95,8 +110,11 @@ public class Global {
      * @return true if game is finished
      */
     public boolean gameFinished(){
-
-        return ((trialscore_t1 + trialscore_t2)<6) ? true : false;
+        if((trialscore_t1+trialscore_t2)<6)
+            return false;
+        else
+            return true;
+        //return ((trialscore_t1 + trialscore_t2)<6) ? true : false;
 
     }
 

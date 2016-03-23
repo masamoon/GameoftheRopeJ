@@ -1,6 +1,7 @@
 package Monitors;
 
 import Logging.Logger;
+import States.RefereeState;
 
 /**
  * Created by jonnybel on 3/8/16.
@@ -19,7 +20,15 @@ public class RefereeSite {
     /**
      * Announces new game
      */
-    public synchronized void announceGame(){}
+    public synchronized void announceGame(){
+        //System.out.println("RefereeState: START_OF_A_GAME");
+        global.setRefereeState(RefereeState.START_OF_A_GAME);
+    }
+
+    public synchronized void announceMatch(){
+       // System.out.println("RefereeState: START_OF_THE_MATCH");
+        global.setRefereeState(RefereeState.START_OF_THE_MATCH);
+    }
 
 
 
