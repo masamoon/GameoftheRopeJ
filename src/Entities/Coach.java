@@ -42,7 +42,6 @@ public class Coach extends Thread{
 
         while(global.matchInProgress()){
 
-            System.out.println("Coach teamID: "+teamID);
             playgroundMon.reviewNotes(teamID); // enter WAIT_FOR_REFEREE_COMMAND   blocking state
 
             selection = benchMon.selectContestants(teamID);

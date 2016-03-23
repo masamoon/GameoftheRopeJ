@@ -21,15 +21,6 @@ public class RefereeSite {
      */
     public synchronized void announceGame(){}
 
-    /**
-     * Calls new Trial
-     */
-    public synchronized void callTrial(){}
-
-    /**
-     * Announces new match
-     */
-    public synchronized void announceMatch(){}
 
 
     /**

@@ -31,6 +31,7 @@ public class Playground {
 
         this.teamsReady = 0;
         this.trialDecided = false;
+        this.contestantsDone = 0;
 
         this.team1 = new int[3];
         this.team2 = new int[3];
@@ -152,12 +153,16 @@ public class Playground {
     public synchronized void reviewNotes(int teamID) {
 
         global.setCoachState(teamID, CoachState.WAIT_FOR_REFEREE_COMMAND);
+        System.out.println("coach "+teamID+" state: WAIT_FOR_REFEREE_COMMAND ");
 
         while(global.getRefereeState() != RefereeState.TEAMS_READY || global.matchFinished()) {
+            System.out.println("Coach " +teamID+ " is now waiting");
             try {
                 wait();
             } catch (InterruptedException e) {}
+            System.out.println("Coach "+teamID+" was woken up!");
         }
+        System.out.println("Coach "+teamID+" exited the waiting cycle in reviewNotes!");
 
     }
 
@@ -170,21 +175,25 @@ public class Playground {
      */
     public synchronized void waitForContestants(int teamID, int [] selection){
 
-        System.out.println("team "+teamID+" assembling team");
         global.setCoachState(teamID, CoachState.ASSEMBLE_TEAM);
+        System.out.println("coach "+teamID+"state: ASSEMBLE_TEAM ");
 
         boolean contestantsStanding=false;
         do{
-            { try
-                { wait ();
+            try
+                {
+                    System.out.println("Coach " +teamID+ " is now waiting");
+                    wait ();
             }
             catch (InterruptedException e) {}
-            }
+
+            System.out.println("Coach "+teamID+" was woken up!");
             for(int id: selection){
                 contestantsStanding = global.getContestantState(teamID, id) == ContestantState.STAND_IN_POSITION;
-                if(!contestantsStanding) break;
+                if(!contestantsStanding){ System.out.println("Coach "+teamID+": my whole team is not yet ready!"); break; }
             }
         }while(!contestantsStanding);
+        System.out.println("Coach "+teamID+" exited the waiting cycle in waitForContestants! (which means my team is ready");
     }
 
 
