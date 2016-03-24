@@ -15,8 +15,8 @@ public class Playground {
     private int teamSize;
     private int[] team1;
     private int[] team2;
-   // private int team1vic;
-    //private int team2vic;
+    // private int team1vic;
+    // private int team2vic;
     private int trial_no;
     private Global global;
 
@@ -89,7 +89,7 @@ public class Playground {
         System.out.println("Contestant "+contestantID+" from team "+ teamID+ " getting ready");
         global.setContestantState(contestantID,teamID,ContestantState.DO_YOUR_BEST);
 
-        // todo!!!
+        // todo (not sure what, yet)!!!
     }
 
 
@@ -100,6 +100,7 @@ public class Playground {
      */
     public synchronized void followCoachAdvice (int contestantID, int teamID) {
 
+        System.out.println("yo");
         System.out.println("Contestant "+contestantID+" from team "+teamID+" standing in position");
         global.setContestantState(contestantID, teamID, ContestantState.STAND_IN_POSITION);
 
@@ -193,9 +194,9 @@ public class Playground {
             }
             catch (InterruptedException e) {}
 
-            System.out.println("Coach "+teamID+" was woken up!");
+            System.out.println("Coach "+teamID+" was woken up, checking selection:");
             for(int id: selection){
-                contestantsStanding = global.getContestantState(teamID, id) == ContestantState.STAND_IN_POSITION;
+                contestantsStanding = global.getContestantState(id, teamID) == ContestantState.STAND_IN_POSITION;
                 if(!contestantsStanding){ System.out.println("Coach "+teamID+": my whole team is not yet ready!"); break; }
             }
         }while(!contestantsStanding);

@@ -41,11 +41,13 @@ public class Contestant extends Thread {
 
                 benchMon.sitDown(contestantID, teamID, global); // entra no estado de espera SIT_AT_THE_BENCH
 
+                System.out.println("contestant " + contestantID + " about to followCoachAdvice...");
                 playgroundMon.followCoachAdvice(contestantID, teamID);
 
-                    playgroundMon.getReady(contestantID, teamID); // passa o seu estado interno para DO_YOUR_BEST
-                    pullRope();
-                    playgroundMon.done(contestantID, teamID); // acorda o Referee e fica em espera (sem alterar o seu estado)
+                System.out.println("yo");
+                playgroundMon.getReady(contestantID, teamID); // passa o seu estado interno para DO_YOUR_BEST
+                pullRope();
+                playgroundMon.done(contestantID, teamID); // acorda o Referee e fica em espera (sem alterar o seu estado)
 
                 }
             // todo: incrementar e decrementar força é chamado por outra entidade pq esta está bloqueada
