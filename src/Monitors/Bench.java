@@ -21,6 +21,8 @@ public class Bench {
 
     private Global global;
 
+    private int contestantsSitting;
+
 
 
     public Bench(Global global){
@@ -48,7 +50,7 @@ public class Bench {
      */
     public synchronized void callContestants (int teamID, int [] selection){
         for(int id: selection){
-            System.out.println("calling: "+id);
+            System.out.println("coach "+ teamID + "calling: "+id);
             global.setContestantState(teamID, id, ContestantState.SELECTED);
         }
         notifyAll();
@@ -79,7 +81,7 @@ public class Bench {
 
         int team [] = {first,second,third};
 
-        System.out.println("Selected: "+first+second+third);
+        System.out.println("coach " + teamID + " selected: "+first+second+third);
         return team;
     }
 
@@ -101,12 +103,20 @@ public class Bench {
 
         global.setContestantState(teamID, contestantID, ContestantState.SIT_AT_THE_BENCH);
         System.out.println("Contestant "+contestantID+" from team "+teamID+" sitting down");
+        global.incrementSittingAtBench(teamID);
+
         do{
             try
-                { wait ();
+                { System.out.println("Contestant "+contestantID+" from team "+teamID+" waiting");
+                    wait ();
                 }
             catch (InterruptedException e) {}
+            System.out.println("Contestant "+contestantID+" from team "+teamID+" was woken up!");
         }while(global.getContestantState(contestantID, teamID) != ContestantState.SELECTED);
+        System.out.println("Contestant "+contestantID+" from team "+teamID+": exited the waiting cycle and standing up because im selected");
+
+        global.decrementSittingAtBench(teamID);
+
     }
 
 

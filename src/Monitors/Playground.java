@@ -121,7 +121,7 @@ public class Playground {
     */
     public synchronized void done(int contestantID, int teamID){
 
-        // todo !!!
+        contestantsDone++;
         notifyAll();
     }
 
@@ -157,13 +157,17 @@ public class Playground {
         global.setCoachState(teamID, CoachState.WAIT_FOR_REFEREE_COMMAND);
         System.out.println("coach "+teamID+" state: WAIT_FOR_REFEREE_COMMAND ");
 
-        while(global.getRefereeState() != RefereeState.TEAMS_READY || global.matchFinished()) {
-            System.out.println("Coach " +teamID+ " is now waiting");
-            try {
-                wait();
-            } catch (InterruptedException e) {}
-            System.out.println("Coach "+teamID+" was woken up!");
+        while(global.getSittingAtBench(teamID) < 5)
+        {
+            while(global.getRefereeState() != RefereeState.TEAMS_READY || global.matchFinished())  {
+                System.out.println("Coach " +teamID+ " is now waiting");
+                try {
+                    wait();
+                } catch (InterruptedException e) {}
+                System.out.println("Coach "+teamID+" was woken up!");
+            }
         }
+
         System.out.println("Coach "+teamID+" exited the waiting cycle in reviewNotes!");
 
     }

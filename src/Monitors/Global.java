@@ -27,22 +27,22 @@ public class Global {
 
     private CoachState coachStates [];
 
+    private int benchTeam1;
 
-
-
+    private int benchTeam2;
 
     public Global(){
 
         contestantStates_t1 = new ContestantState[5];
 
         for (int i = 0; i < contestantStates_t1.length ; i++) {
-            contestantStates_t1[i] = ContestantState.SIT_AT_THE_BENCH;
+            contestantStates_t1[i] = ContestantState.INIT;
         }
 
         contestantStates_t2 = new ContestantState[5];
 
         for (int i = 0; i < contestantStates_t2.length ; i++) {
-            contestantStates_t2[i] = ContestantState.SIT_AT_THE_BENCH;
+            contestantStates_t2[i] = ContestantState.INIT;
         }
 
         coachStates = new CoachState[2];
@@ -55,6 +55,9 @@ public class Global {
         gamescore_t2= 0;
         trialscore_t1= 0;
         trialscore_t2 =0;
+
+        benchTeam1 = 0;
+        benchTeam2 = 0;
     }
 
     /**
@@ -246,5 +249,38 @@ public class Global {
 
     public void incTrialscore_t2(){
         this.trialscore_t2+=1;
+    }
+
+
+
+    public void incrementSittingAtBench(int teamID){
+        if(teamID==1){
+            benchTeam1++;
+            System.out.println("Total contestants sitting on bench of team " + teamID + ":"+ benchTeam1);
+        }
+        else{
+            benchTeam2++;
+            System.out.println("Total contestants sitting on bench of team " + teamID + ":"+ benchTeam2);
+        }
+
+
+    }
+
+    public void decrementSittingAtBench(int teamID){
+        if(teamID==1){
+            benchTeam1--;
+            System.out.println("Total contestants sitting on bench of team " + teamID + ":"+ benchTeam1);
+        }
+        else {
+            benchTeam2--;
+            System.out.println("Total contestants sitting on bench of team " + teamID + ":" + benchTeam2);
+        }
+    }
+
+    public int getSittingAtBench(int teamID) {
+        if(teamID==1)
+            return benchTeam1;
+        else
+            return benchTeam2;
     }
 }
