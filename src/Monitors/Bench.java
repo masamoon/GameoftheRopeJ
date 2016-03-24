@@ -51,7 +51,7 @@ public class Bench {
     public synchronized void callContestants (int teamID, int [] selection){
         for(int id: selection){
             System.out.println("coach "+ teamID + "calling: "+id);
-            global.setContestantState(teamID, id, ContestantState.SELECTED);
+            global.setContestantState(id, teamID, ContestantState.SELECTED);
         }
         notifyAll();
 
@@ -101,7 +101,7 @@ public class Bench {
      */
     public synchronized void sitDown(int contestantID, int teamID, Global global) {
 
-        global.setContestantState(teamID, contestantID, ContestantState.SIT_AT_THE_BENCH);
+        global.setContestantState(contestantID, teamID, ContestantState.SIT_AT_THE_BENCH);
         System.out.println("Contestant "+contestantID+" from team "+teamID+" sitting down");
         global.incrementSittingAtBench(teamID);
 
@@ -111,7 +111,7 @@ public class Bench {
                     wait ();
                 }
             catch (InterruptedException e) {}
-            System.out.println("Contestant "+contestantID+" from team "+teamID+" was woken up!");
+            System.out.println("Contestant "+contestantID+" from team "+teamID+" was woken up!\n My state is:" +global.getContestantState(contestantID, teamID) );
         }while(global.getContestantState(contestantID, teamID) != ContestantState.SELECTED);
         System.out.println("Contestant "+contestantID+" from team "+teamID+": exited the waiting cycle and standing up because im selected");
 

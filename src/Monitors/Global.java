@@ -130,10 +130,10 @@ public class Global {
     * @param state contestant's state to be updated to
      *@param teamID team's ID
     * */
-    public synchronized void setContestantState (int teamID, int contestantID, ContestantState state){
-       if(teamID == 1)
+    public synchronized void setContestantState (int contestantID, int teamID, ContestantState state){
+       if(teamID == 0)
            this.contestantStates_t1[contestantID] = state;
-        else if (teamID == 2)
+        else if (teamID == 1)
            this.contestantStates_t2[contestantID] = state;
 
         // todo: report status (log)
@@ -146,7 +146,7 @@ public class Global {
     * @return current contestant's state
      */
     public synchronized ContestantState getContestantState (int contestantID, int teamID){
-        if(teamID == 1)
+        if(teamID == 0)
             return this.contestantStates_t1[contestantID];
         else
             return this.contestantStates_t2[contestantID];

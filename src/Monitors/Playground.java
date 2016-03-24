@@ -87,7 +87,7 @@ public class Playground {
      */
     public synchronized  void getReady( int contestantID, int teamID) {
         System.out.println("Contestant "+contestantID+" from team "+ teamID+ " getting ready");
-        global.setContestantState(teamID,contestantID,ContestantState.DO_YOUR_BEST);
+        global.setContestantState(contestantID,teamID,ContestantState.DO_YOUR_BEST);
 
         // todo!!!
     }
@@ -101,7 +101,7 @@ public class Playground {
     public synchronized void followCoachAdvice (int contestantID, int teamID) {
 
         System.out.println("Contestant "+contestantID+" from team "+teamID+" standing in position");
-        global.setContestantState(teamID, contestantID, ContestantState.STAND_IN_POSITION);
+        global.setContestantState(contestantID, teamID, ContestantState.STAND_IN_POSITION);
 
         notifyAll();
 
