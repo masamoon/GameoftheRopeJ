@@ -62,6 +62,7 @@ public class Contestant extends Thread {
      */
     private void pullRope ()
     {
+        System.out.println("* LE ROPE PULL* from"+teamID+" "+contestantID);
         try
         { sleep ((long) (1 + 10 * Math.random ()));
         }

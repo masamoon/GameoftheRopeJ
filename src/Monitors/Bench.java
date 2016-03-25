@@ -105,6 +105,12 @@ public class Bench {
         System.out.println("Contestant "+contestantID+" from team "+teamID+" sitting down");
         global.incrementSittingAtBench(teamID);
 
+        if(global.getSittingAtBench(teamID)==5){
+            System.out.println("*** Last man Sitting***");
+            notifyAll();
+        }
+
+
         do{
             try
                 { System.out.println("Contestant "+contestantID+" from team "+teamID+" waiting");

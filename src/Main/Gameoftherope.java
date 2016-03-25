@@ -35,6 +35,9 @@ public class Gameoftherope {
         ArrayList<Contestant> contestants_t1 = new ArrayList<>();
         ArrayList<Contestant> contestants_t2 = new ArrayList<>();
 
+        coach_t1.start();
+        coach_t2.start();
+
         for (int i = 0; i < 5 ; i++) {
             Contestant c = new Contestant(i,0,5,bench,playground,global); //todo: remove static strength
             contestants_t1.add(c);
@@ -45,8 +48,7 @@ public class Gameoftherope {
             contestants_t2.add(c);
         }
 
-        coach_t1.start();
-        coach_t2.start();
+
         referee.start();
 
         for(Contestant c : contestants_t1){
