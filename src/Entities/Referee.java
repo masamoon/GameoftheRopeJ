@@ -37,12 +37,14 @@ public class Referee extends Thread {
 
         refereeSite.announceMatch(); // state -> START_OF_THE_MATCH
 
-        // talvez seja desnecessário:
-        //makeArrangements(); // prepare for the beginning of the match (sleep, while the other threads get in wait states)
         do{
             refereeSite.announceGame(); // state -> START_OF_THE_GAME
+
           //  System.out.println(global.gameFinished());
             while(!global.gameFinished()){
+
+                makeArrangements();
+
                 playground.callTrial(); //  waitingForTeamsReady();
                 playground.startTrial(); // waitingForTrialEnd();
                 playground.assertTrialDecision();

@@ -1,7 +1,5 @@
 package Monitors;
 
-import Entities.Contestant;
-import Entities.Referee;
 import States.CoachState;
 import States.ContestantState;
 import States.RefereeState;
@@ -15,83 +13,92 @@ public class Playground {
     private int teamSize;
     private int[] team1;
     private int[] team2;
-    // private int team1vic;
-    // private int team2vic;
     private int trial_no;
     private Global global;
 
     private int teamsReady;
-    boolean trialDecided;
+    boolean trialInProgress;
     private int contestantsDone;
 
     public Playground( Global global){
-        //this.team1vic = 0;
-        //this.team2vic = 0;
         this.global = global;
 
+        this.trialInProgress = false;
+
         this.teamsReady = 0;
-        this.trialDecided = false;
         this.contestantsDone = 0;
 
         this.team1 = new int[3];
         this.team2 = new int[3];
+
     }
 
-    /*
-    *   REFEREE OPERATIONS
-     */
 
-   /**
-    *   Referee decides who's the winner
-    */
-    public synchronized void assertTrialDecision(){
-        System.out.println("trial decision:");
-       if(flagPos > 0){
-           global.incGamescore_t1(); //team 1 wins
-            System.out.println("team 1 wins trial ");
-       }
-        else if (flagPos < 0) {
-           global.incGamescore_t2(); //team 2 wins
+    public synchronized void waitForCalling(int teamID){
 
-           System.out.println("team 2 wins trial ");
+        global.setCoachState(teamID, CoachState.WAIT_FOR_REFEREE_COMMAND);
+        System.out.println("coach "+teamID+" state: WAIT_FOR_REFEREE_COMMAND ");
 
-       }
-        else System.out.println("draw!");
-        trialDecided = true;
-
-        notifyAll();
-        trial_no+=1;
-    }
-
-    /**
-     *   Referee begins the trial
-     *   waits for the all the contestants to be done
-     */
-    public synchronized  void startTrial(){
-
-        System.out.println("starting trial");
-        contestantsDone=0;
-        global.setRefereeState(RefereeState.WAIT_FOR_TRIAL_CONCLUSION);
-
-        notifyAll();
-
-        while(contestantsDone<6){
+        while(global.getSittingAtBench(teamID) < 5 || !trialInProgress)
+        {
+            System.out.println("Coach " +teamID+ " is now waiting");
             try {
                 wait();
             } catch (InterruptedException e) {}
+            System.out.println("Coach "+teamID+" was woken up!");
         }
+    }
 
+    public synchronized void benchWakeCoach (){
+        notifyAll();
     }
 
     /**
-    * Contestant operation
-    * @param contestantID contestant's ID
+     *  Referee calls the trial: wakes the coaches and waits for them to have their teams ready
+     *
      */
-    public synchronized  void getReady( int contestantID, int teamID) {
-        System.out.println("Contestant "+contestantID+" from team "+ teamID+ " getting ready");
-        global.setContestantState(contestantID,teamID,ContestantState.DO_YOUR_BEST);
 
-        // todo (not sure what, yet)!!!
+    public synchronized void callTrial(){
+
+        System.out.println("Referee calling trial");
+
+        teamsReady=0;
+
+        global.setRefereeState(RefereeState.TEAMS_READY);
+        trialInProgress = true;
+
+        notifyAll();
+
+        while(teamsReady<2)
+        {
+            try{
+                wait ();
+            }
+            catch (InterruptedException e) {}
+        }
+    }
+
+    public synchronized void waitForContestants(int teamID){
+
+        global.setCoachState(teamID, CoachState.ASSEMBLE_TEAM);
+        System.out.println("coach "+teamID+"state: ASSEMBLE_TEAM ");
+
+        boolean contestantsStanding=false;
+        do{
+            try
+            {
+                System.out.println("Coach " +teamID+ " is now waiting");
+                wait ();
+            }
+            catch (InterruptedException e) {}
+
+            System.out.println("Coach "+teamID+" was woken up, checking selection:");
+            for(int id: global.getSelection(teamID)){
+                contestantsStanding = global.getContestantState(id, teamID) == ContestantState.STAND_IN_POSITION;
+                if(!contestantsStanding){ System.out.println("Coach "+teamID+": my whole team is not yet ready!"); break; }
+            }
+        }while(!contestantsStanding);
+        System.out.println("Coach "+teamID+" exited the waiting cycle in waitForContestants! (which means my team is ready");
     }
 
 
@@ -118,35 +125,106 @@ public class Playground {
     }
 
 
-   /**
-    * Contestant operation
-    * @param contestantID contestant's ID
-    */
-    public synchronized void done(int contestantID, int teamID){
-
-        contestantsDone++;
-        notifyAll();
-    }
-
     /** Coach informs Referee of the readiness of his team
-    *@param teamID team's ID
-    */
+     *@param teamID team's ID
+     */
     public synchronized  void informReferee(int teamID){
 
         System.out.println(teamID+" informing referee");
         global.setCoachState(teamID, CoachState.WATCH_TRIAL);
 
+        System.out.println("Coach " + teamID + " is now watching Trial...");
         teamsReady++;
 
         notifyAll();
 
 
-        while(!trialDecided) {
+        while(trialInProgress) {
+            System.out.println("Coach " + teamID + " is waiting.");
+            try {
+                wait();
+            } catch (InterruptedException e) {}
+            System.out.println("Coach " + teamID + " woke up!");
+        }
+
+    }
+
+    /**
+     *   Referee begins the trial
+     *   waits for the all the contestants to be done
+     */
+    public synchronized  void startTrial(){
+
+        System.out.println("starting trial");
+        contestantsDone=0;
+        global.setRefereeState(RefereeState.WAIT_FOR_TRIAL_CONCLUSION);
+
+        notifyAll();
+
+        while(contestantsDone<6){
             try {
                 wait();
             } catch (InterruptedException e) {}
         }
 
+    }
+
+
+    /**
+     * Contestant operation
+     * @param contestantID contestant's ID
+     */
+    public synchronized  void getReady( int contestantID, int teamID) {
+        System.out.println("Contestant "+contestantID+" from team "+ teamID+ " getting ready");
+        global.setContestantState(contestantID,teamID,ContestantState.DO_YOUR_BEST);
+
+    }
+
+
+    /**
+     * Contestant operation
+     */
+    public synchronized void done(){
+
+        contestantsDone++;
+        notifyAll();
+
+        while(trialInProgress)
+            try{
+                wait();
+            } catch (InterruptedException e){}
+
+    }
+
+    /**
+     *  coach changes state to blocking state ASSEMBLE_TEAM
+     *  waits for the selected contestants to be standing in position
+     *
+     */
+
+   /**
+    *   Referee decides who's the winner
+    */
+    public synchronized void assertTrialDecision(){
+
+        System.out.println("trial decision:");
+        if(flagPos > 0){
+            global.incGamescore_t1(); //team 1 wins
+              System.out.println("team 1 wins trial ");
+        }
+        else if (flagPos < 0) {
+            global.incGamescore_t2(); //team 2 wins
+            // System.out.println("team 2 wins trial ");
+
+        }
+        else System.out.println("draw!");
+
+        trialInProgress = false;
+
+        global.eraseTeamSelections();
+
+        notifyAll();
+        trial_no+=1;
     }
 
    /**
@@ -155,84 +233,15 @@ public class Playground {
     */
     public synchronized void reviewNotes(int teamID) {
 
-        trialDecided=false;
 
         System.out.println(teamID +" team reviewing notes ");
 
-        global.setCoachState(teamID, CoachState.WAIT_FOR_REFEREE_COMMAND);
-        System.out.println("coach "+teamID+" state: WAIT_FOR_REFEREE_COMMAND ");
 
-        while(global.getSittingAtBench(teamID) < 5)
-        {
-            while(global.getRefereeState() != RefereeState.TEAMS_READY || global.matchFinished())  {
-                System.out.println("Coach " +teamID+ " is now waiting");
-                try {
-                    wait();
-                } catch (InterruptedException e) {}
-                System.out.println("Coach "+teamID+" was woken up!");
-            }
-        }
+        // todo: increment/decrementar forças aqui
 
         System.out.println("Coach "+teamID+" exited the waiting cycle in reviewNotes!");
 
     }
-
-    /**
-     *  coach changes state to blocking state ASSEMBLE_TEAM
-     *  waits for the selected contestants to be standing in position
-     *
-     *  @param selection chosen contestants to pull rope
-     *
-     */
-    public synchronized void waitForContestants(int teamID, int [] selection){
-
-        global.setCoachState(teamID, CoachState.ASSEMBLE_TEAM);
-        System.out.println("coach "+teamID+"state: ASSEMBLE_TEAM ");
-
-        boolean contestantsStanding=false;
-        do{
-            try
-                {
-                    System.out.println("Coach " +teamID+ " is now waiting");
-                    wait ();
-            }
-            catch (InterruptedException e) {}
-
-            System.out.println("Coach "+teamID+" was woken up, checking selection:");
-            for(int id: selection){
-                contestantsStanding = global.getContestantState(id, teamID) == ContestantState.STAND_IN_POSITION;
-                if(!contestantsStanding){ System.out.println("Coach "+teamID+": my whole team is not yet ready!"); break; }
-            }
-        }while(!contestantsStanding);
-        System.out.println("Coach "+teamID+" exited the waiting cycle in waitForContestants! (which means my team is ready");
-    }
-
-
-    /**
-     *  Referee calls the trial: wakes the coaches and waits for them to have their teams ready
-     *
-     */
-
-
-    public synchronized void callTrial(){
-
-        System.out.println("calling trial");
-
-        teamsReady=0;
-
-        global.setRefereeState(RefereeState.TEAMS_READY);
-
-        notifyAll();
-
-        while(teamsReady<2)
-        {
-            try{
-                wait ();
-            }
-            catch (InterruptedException e) {}
-        }
-    }
-
 
 
 

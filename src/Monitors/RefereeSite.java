@@ -28,6 +28,7 @@ public class RefereeSite {
     public synchronized void announceMatch(){
        // System.out.println("RefereeState: START_OF_THE_MATCH");
         global.setRefereeState(RefereeState.START_OF_THE_MATCH);
+
     }
 
 

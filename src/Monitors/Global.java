@@ -5,6 +5,8 @@ import States.CoachState;
 import States.ContestantState;
 import States.RefereeState;
 
+import java.util.Arrays;
+
 /**
  * Created by jonnybel on 3/8/16.
  */
@@ -30,8 +32,12 @@ public class Global {
     private int benchTeam1;
     private int benchTeam2;
 
+    private int [] selectedTeam1;
+    private int [] selectedTeam2;
+
     private int standingTeam1;
     private int standingTeam2;
+
 
     public Global(){
 
@@ -53,14 +59,39 @@ public class Global {
             coachStates[i] = CoachState.INIT;
         }
 
-        gamescore_t1 =0;
-        gamescore_t2= 0;
-        trialscore_t1= 0;
-        trialscore_t2 =0;
+        this.gamescore_t1 =0;
+        this.gamescore_t2= 0;
+        this.trialscore_t1= 0;
+        this.trialscore_t2 =0;
 
-        benchTeam1 = 0;
-        benchTeam2 = 0;
+        this.benchTeam1 = 0;
+        this.benchTeam2 = 0;
+
+        this.selectedTeam1 = new int [] {-1,-1,-1};
+        this.selectedTeam2 = new int [] {-1,-1,-1};
+
     }
+
+
+    public void selectTeam(int teamID, int first, int second, int third) {
+        if(teamID==0)
+            this.selectedTeam1 = new int [] {first,second,third};
+        else
+            this.selectedTeam2 = new int [] {first,second,third};
+    }
+
+    public int[] getSelection(int teamID) {
+        if(teamID==0)
+            return selectedTeam1;
+        else
+            return selectedTeam2;
+    }
+    public void eraseTeamSelections(){
+        this.selectedTeam1 = new int [] {-1,-1,-1};
+        this.selectedTeam2 = new int [] {-1,-1,-1};
+    }
+
+
 
     /**
      *  Check is match is in progresss
@@ -75,7 +106,6 @@ public class Global {
         //return ((gamescore_t1 + gamescore_t2) < 3) ? true : false;
 
     }
-
     /**
      * Check if match is finished
      * @return true if match is finished
@@ -86,29 +116,7 @@ public class Global {
             return true;
         else
             return false;
-
-        //return ((gamescore_t1 + gamescore_t2) >= 3) ? false : true ;
     }
-
-    /**
-     * Check if game is in progress
-     * @return true if game is underway
-     */
-    public boolean gameInProgress(){
-
-        return true;
-
-    }
-
-    /**
-     *
-     * @return
-     */
-    public boolean endContestantOps(){
-
-        return true;
-    }
-
 
     /**
      *Check if game is finished
@@ -122,8 +130,6 @@ public class Global {
         //return ((trialscore_t1 + trialscore_t2)<6) ? true : false;
 
     }
-
-
 
     /* State controls */
 

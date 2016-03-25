@@ -41,23 +41,20 @@ public class Gameoftherope {
         for (int i = 0; i < 5 ; i++) {
             Contestant c = new Contestant(i,0,5,bench,playground,global); //todo: remove static strength
             contestants_t1.add(c);
+            c.start();
         }
 
         for (int i = 0; i < 5 ; i++) {
             Contestant c = new Contestant(i,1,5,bench,playground,global); //todo: remove static strength
             contestants_t2.add(c);
+            c.start();
         }
 
 
         referee.start();
 
-        for(Contestant c : contestants_t1){
-            c.start();
-        }
 
-        for(Contestant c : contestants_t2){
-            c.start();
-        }
+        // todo: cenas para as threads ficarem "arrumadas" no fim
 
     }
 }

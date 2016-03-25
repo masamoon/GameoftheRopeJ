@@ -11,9 +11,7 @@ public enum ContestantState {
 
     SIT_AT_THE_BENCH,
 
-    SELECTED,
-
     STAND_IN_POSITION,
 
-    DO_YOUR_BEST,
+    DO_YOUR_BEST
 }
