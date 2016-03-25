@@ -12,19 +12,11 @@ import java.util.Random;
  */
 public class Bench {
 
-
-    private int[] team1;
-    private int[] team2;
-
-
     private Global global;
 
 
 
     public Bench(Global global){
-
-        this.team1 = new int[5];
-        this.team2 = new int[5];
 
         this.global = global;
     }
@@ -55,9 +47,12 @@ public class Bench {
             playground.benchWakeCoach();
         }
 
-        while (!imSelected(contestantID, teamID)){
+
+        while (!imSelected(contestantID, teamID) || !global.isTrialInProgress() ){
             try
             { System.out.println("Contestant "+contestantID+" from team "+teamID+" waiting");
+                System.out.println(imSelected(contestantID, teamID) + " " + global.isTrialInProgress());
+
                 wait ();
             }
             catch (InterruptedException e) {}

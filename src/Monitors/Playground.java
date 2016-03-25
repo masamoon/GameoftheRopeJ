@@ -10,20 +10,20 @@ import States.RefereeState;
 public class Playground {
 
     private int flagPos;
-    private int teamSize;
+
     private int[] team1;
     private int[] team2;
     private int trial_no;
     private Global global;
 
     private int teamsReady;
-    boolean trialInProgress;
+
     private int contestantsDone;
+
+    private boolean trialStart;
 
     public Playground( Global global){
         this.global = global;
-
-        this.trialInProgress = false;
 
         this.teamsReady = 0;
         this.contestantsDone = 0;
@@ -31,6 +31,7 @@ public class Playground {
         this.team1 = new int[3];
         this.team2 = new int[3];
 
+        this.trialStart = false;
     }
 
 
@@ -39,9 +40,11 @@ public class Playground {
         global.setCoachState(teamID, CoachState.WAIT_FOR_REFEREE_COMMAND);
         System.out.println("coach "+teamID+" state: WAIT_FOR_REFEREE_COMMAND ");
 
-        while(global.getSittingAtBench(teamID) < 5 || !trialInProgress)
+        while(global.getSittingAtBench(teamID) < 5 || !global.isTrialInProgress())
         {
             System.out.println("Coach " +teamID+ " is now waiting");
+            System.out.println(global.getSittingAtBench(teamID) + " " + global.isTrialInProgress());
+
             try {
                 wait();
             } catch (InterruptedException e) {}
@@ -65,7 +68,7 @@ public class Playground {
         teamsReady=0;
 
         global.setRefereeState(RefereeState.TEAMS_READY);
-        trialInProgress = true;
+        global.setTrialInProgress(true);
 
         notifyAll();
 
@@ -115,7 +118,7 @@ public class Playground {
         notifyAll();
 
 
-        while(global.getRefereeState() != RefereeState.WAIT_FOR_TRIAL_CONCLUSION)
+        while(!trialStart)
         {
             try {
                 wait();
@@ -139,7 +142,7 @@ public class Playground {
         notifyAll();
 
 
-        while(trialInProgress) {
+        while(global.isTrialInProgress()) {
             System.out.println("Coach " + teamID + " is waiting.");
             try {
                 wait();
@@ -159,6 +162,8 @@ public class Playground {
         contestantsDone=0;
         global.setRefereeState(RefereeState.WAIT_FOR_TRIAL_CONCLUSION);
 
+        trialStart = true;
+
         notifyAll();
 
         while(contestantsDone<6){
@@ -166,6 +171,8 @@ public class Playground {
                 wait();
             } catch (InterruptedException e) {}
         }
+
+        trialStart = false;
 
     }
 
@@ -189,7 +196,7 @@ public class Playground {
         contestantsDone++;
         notifyAll();
 
-        while(trialInProgress)
+        while(global.isTrialInProgress())
             try{
                 wait();
             } catch (InterruptedException e){}
@@ -219,7 +226,7 @@ public class Playground {
         }
         else System.out.println("draw!");
 
-        trialInProgress = false;
+        global.setTrialInProgress(false);
 
         global.eraseTeamSelections();
 

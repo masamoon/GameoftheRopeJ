@@ -43,7 +43,7 @@ public class Referee extends Thread {
           //  System.out.println(global.gameFinished());
             while(!global.gameFinished()){
 
-                makeArrangements();
+                //makeArrangements();
 
                 playground.callTrial(); //  waitingForTeamsReady();
                 playground.startTrial(); // waitingForTrialEnd();
@@ -53,10 +53,6 @@ public class Referee extends Thread {
 
         }while(!global.matchFinished());
         refereeSite.declareMatchWinner(logger);
-
-
-
-
     }
 
     public void setRefstate(RefereeState state){

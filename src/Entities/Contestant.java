@@ -8,6 +8,7 @@ import States.ContestantState;
 /**
  * Created by jonnybel on 3/8/16.
  */
+
 public class Contestant extends Thread {
 
     /* todo: add comments */
