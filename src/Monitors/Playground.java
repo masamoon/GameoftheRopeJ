@@ -4,6 +4,8 @@ import States.CoachState;
 import States.ContestantState;
 import States.RefereeState;
 
+import static java.lang.Thread.sleep;
+
 /**
  * Created by jonnybel on 3/8/16.
  */
@@ -40,7 +42,7 @@ public class Playground {
         global.setCoachState(teamID, CoachState.WAIT_FOR_REFEREE_COMMAND);
         System.out.println("coach "+teamID+" state: WAIT_FOR_REFEREE_COMMAND ");
 
-        while(global.getSittingAtBench(teamID) < 5 || !global.isTrialInProgress())
+        while(!global.isTrialInProgress())
         {
             System.out.println("Coach " +teamID+ " is now waiting");
             System.out.println(global.getSittingAtBench(teamID) + " " + global.isTrialInProgress());
@@ -63,6 +65,12 @@ public class Playground {
 
     public synchronized void callTrial(){
 
+        while(!global.getBenchReady()){
+            try {
+                wait();
+            } catch (InterruptedException e) {}
+        }
+
         System.out.println("Referee calling trial");
 
         teamsReady=0;
@@ -72,13 +80,7 @@ public class Playground {
 
         notifyAll();
 
-        while(teamsReady<2)
-        {
-            try{
-                wait ();
-            }
-            catch (InterruptedException e) {}
-        }
+
     }
 
     public synchronized void waitForContestants(int teamID){
@@ -158,21 +160,22 @@ public class Playground {
      */
     public synchronized  void startTrial(){
 
+        while(teamsReady<2)
+        {
+            try{
+                wait ();
+            }
+            catch (InterruptedException e) {}
+        }
+
         System.out.println("starting trial");
         contestantsDone=0;
+
         global.setRefereeState(RefereeState.WAIT_FOR_TRIAL_CONCLUSION);
 
         trialStart = true;
 
         notifyAll();
-
-        while(contestantsDone<6){
-            try {
-                wait();
-            } catch (InterruptedException e) {}
-        }
-
-        trialStart = false;
 
     }
 
@@ -194,7 +197,9 @@ public class Playground {
     public synchronized void done(){
 
         contestantsDone++;
-        notifyAll();
+
+        if(contestantsDone==6)
+            notifyAll();
 
         while(global.isTrialInProgress())
             try{
@@ -213,6 +218,14 @@ public class Playground {
     *   Referee decides who's the winner
     */
     public synchronized void assertTrialDecision(){
+
+        while(contestantsDone<6){
+            try {
+                wait();
+            } catch (InterruptedException e) {}
+        }
+
+        trialStart = false;
 
         System.out.println("trial decision:");
         if(flagPos > 0){

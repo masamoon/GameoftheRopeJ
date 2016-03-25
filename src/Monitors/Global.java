@@ -40,6 +40,8 @@ public class Global {
 
     boolean trialInProgress;
 
+    boolean benchReady;
+
 
     public Global(){
 
@@ -73,6 +75,8 @@ public class Global {
 
         this.selectedTeam1 = new int [] {-1,-1,-1};
         this.selectedTeam2 = new int [] {-1,-1,-1};
+
+        this.benchReady = false;
 
     }
 
@@ -301,6 +305,14 @@ public class Global {
             return benchTeam1;
         else
             return benchTeam2;
+    }
+
+    public boolean getBenchReady() {
+        return benchReady;
+    }
+
+    public void setBenchReady(boolean benchReady){
+        this.benchReady = benchReady;
     }
 
 

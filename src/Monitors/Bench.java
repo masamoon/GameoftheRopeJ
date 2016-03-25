@@ -14,11 +14,14 @@ public class Bench {
 
     private Global global;
 
+    private int numSitting;
+
 
 
     public Bench(Global global){
 
         this.global = global;
+        this.numSitting=0;
     }
 
 
@@ -38,12 +41,15 @@ public class Bench {
 
         global.setContestantState(contestantID, teamID, ContestantState.SIT_AT_THE_BENCH);
         System.out.println("Contestant "+contestantID+" from team "+teamID+" sitting down");
-        global.incrementSittingAtBench(teamID);
+        //global.incrementSittingAtBench(teamID);
+        this.numSitting++;
 
 
-        if(global.getSittingAtBench(teamID)==5){
+        //if(global.getSittingAtBench(teamID)==5){
+        if(numSitting==10){
             // this is in case a contestant is sitting after the coach began waiting for the next trial
-            System.out.println("*** Last man from my Team Sitting***");
+            System.out.println("*** Last man Sitting***");
+            global.setBenchReady(true);
             playground.benchWakeCoach();
         }
 
@@ -60,7 +66,9 @@ public class Bench {
         }
         System.out.println("Contestant " + contestantID + ": I'm Selected!! Standing up...");
 
-        global.decrementSittingAtBench(teamID);
+        //global.decrementSittingAtBench(teamID);
+        this.numSitting--;
+        global.setBenchReady(false);
 
     }
 

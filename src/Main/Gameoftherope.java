@@ -35,6 +35,8 @@ public class Gameoftherope {
         ArrayList<Contestant> contestants_t1 = new ArrayList<>();
         ArrayList<Contestant> contestants_t2 = new ArrayList<>();
 
+        referee.start();
+
         coach_t1.start();
         coach_t2.start();
 
@@ -50,8 +52,6 @@ public class Gameoftherope {
             c.start();
         }
 
-
-        referee.start();
 
 
         // todo: cenas para as threads ficarem "arrumadas" no fim
