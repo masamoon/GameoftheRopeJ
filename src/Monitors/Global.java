@@ -28,8 +28,10 @@ public class Global {
     private CoachState coachStates [];
 
     private int benchTeam1;
-
     private int benchTeam2;
+
+    private int standingTeam1;
+    private int standingTeam2;
 
     public Global(){
 
@@ -282,5 +284,37 @@ public class Global {
             return benchTeam1;
         else
             return benchTeam2;
+    }
+
+
+    public void incrementStandingInPosition(int teamID){
+        if(teamID==1){
+            standingTeam1++;
+            System.out.println("Total contestants standing up for team" + teamID + ": "+ standingTeam1);
+        }
+        else{
+            standingTeam2++;
+            System.out.println("Total contestants standing up for team" + teamID + ": "+ standingTeam2);
+        }
+
+
+    }
+
+    public void decrementStandingInPosition(int teamID){
+        if(teamID==1){
+            standingTeam1--;
+            System.out.println("Total contestants sitting on bench of team " + teamID + ": "+ standingTeam1);
+        }
+        else {
+            standingTeam2--;
+            System.out.println("Total contestants standing up for team  " + teamID + ": " + standingTeam2);
+        }
+    }
+
+    public int getStandingInPosition(int teamID) {
+        if(teamID==1)
+            return standingTeam1;
+        else
+            return standingTeam2;
     }
 }

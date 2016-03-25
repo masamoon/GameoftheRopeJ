@@ -50,14 +50,16 @@ public class Playground {
            global.incGamescore_t1(); //team 1 wins
             System.out.println("team 1 wins trial ");
        }
-        else if (flagPos < 0){
+        else if (flagPos < 0) {
            global.incGamescore_t2(); //team 2 wins
 
            System.out.println("team 2 wins trial ");
 
        }
-
+        else System.out.println("draw!");
         trialDecided = true;
+
+        notifyAll();
         trial_no+=1;
     }
 
@@ -100,11 +102,11 @@ public class Playground {
      */
     public synchronized void followCoachAdvice (int contestantID, int teamID) {
 
-        System.out.println("yo");
         System.out.println("Contestant "+contestantID+" from team "+teamID+" standing in position");
         global.setContestantState(contestantID, teamID, ContestantState.STAND_IN_POSITION);
 
         notifyAll();
+
 
         while(global.getRefereeState() != RefereeState.WAIT_FOR_TRIAL_CONCLUSION)
         {
@@ -152,6 +154,8 @@ public class Playground {
     * @param teamID team's ID
     */
     public synchronized void reviewNotes(int teamID) {
+
+        trialDecided=false;
 
         System.out.println(teamID +" team reviewing notes ");
 
