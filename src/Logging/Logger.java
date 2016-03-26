@@ -45,10 +45,16 @@ public class Logger {
 
         for (int i = 0; i <= 4 ; i++) {
             team1.append(global.getContestantState(0,i).getAcronym());
+            team1.append(" ");
+            team1.append(global.getStrength(0,i));
+            team1.append(" ");
         }
 
         for (int i = 0; i <= 4 ; i++) {
             team2.append(global.getContestantState(1,i).getAcronym());
+            team2.append(" ");
+            team2.append(global.getStrength(1,i));
+            team2.append(" ");
         }
 
 
@@ -58,6 +64,20 @@ public class Logger {
         int team1_score = global.getGamescore_t1();
         int team2_score = global.getGamescore_t2();
 
+        int[] sel1 = global.getSelection(0);
+        int[] sel2 = global.getSelection(1);
+
+        StringBuilder selection1 = new StringBuilder();
+        StringBuilder selection2 = new StringBuilder();
+
+        for(int sel: sel1){
+            selection1.append(sel);
+        }
+
+
+        for(int sel: sel2){
+            selection2.append(sel);
+        }
 
 
 
@@ -72,7 +92,8 @@ public class Logger {
             t2_str_score.append("*");
         }
 
-        String line = ref_state +" " + coach_state_1+" " +  team1.toString()+" " + coach_state_2 + team2.toString()+" " + t1_str_score.toString()+" " + t2_str_score.toString()+" " + trial_no+" " + rope_pos;
+        String line = ref_state +" " + coach_state_1+" " +  team1.toString()+" " + coach_state_2 + team2.toString()+" " + t1_str_score.toString()
+                +" " + t2_str_score.toString()+" "+selection1.toString()+"  "+selection2.toString()+" " + trial_no+" " + rope_pos;
 
        f.writelnString(line);
 
