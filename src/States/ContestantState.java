@@ -7,11 +7,28 @@ public enum ContestantState {
 
     /* todo: add comments*/
 
-    INIT,
+    INIT("I"),
 
-    SIT_AT_THE_BENCH,
+    SIT_AT_THE_BENCH("SATB"),
 
-    STAND_IN_POSITION,
+    STAND_IN_POSITION("SIP"),
 
-    DO_YOUR_BEST
+    DO_YOUR_BEST("DYB");
+
+
+    private final String acronym;
+
+    private ContestantState(String acronym)
+    {
+        this.acronym = acronym;
+    }
+
+    /**
+     * Returns a smaller representation of the state (an acronym)
+     *
+     * @return state as an acronym
+     */
+    public String getAcronym() {
+        return acronym;
+    }
 }

@@ -27,19 +27,19 @@ public class Logger {
 
     public void insertLine(Global global, Playground playground){
 
-        String ref_state = global.getRefereeState().toString();
-        String coach_state_1 = global.getCoachState(0).toString();
-        String coach_state_2 = global.getCoachState(1).toString();
+        String ref_state = global.getRefereeState().getAcronym();
+        String coach_state_1 = global.getCoachState(0).getAcronym();
+        String coach_state_2 = global.getCoachState(1).getAcronym();
 
         StringBuilder team1 = new StringBuilder();
         StringBuilder team2 = new StringBuilder();
 
         for (int i = 0; i <= 4 ; i++) {
-            team1.append(global.getContestantState(0,i));
+            team1.append(global.getContestantState(0,i).getAcronym());
         }
 
         for (int i = 0; i <= 4 ; i++) {
-            team2.append(global.getContestantState(1,i));
+            team2.append(global.getContestantState(1,i).getAcronym());
         }
 
 

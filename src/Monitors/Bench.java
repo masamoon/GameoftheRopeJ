@@ -84,7 +84,7 @@ public class Bench {
      *  select and call contestants to the rope
      *  coach changes the state of the selected contestants to SELECTED
      *  coach wakes the contestants
-     *
+     * @param teamID
      *
      */
     public synchronized void callContestants (int teamID){

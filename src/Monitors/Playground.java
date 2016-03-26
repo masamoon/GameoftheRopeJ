@@ -4,6 +4,8 @@ import States.CoachState;
 import States.ContestantState;
 import States.RefereeState;
 
+import java.util.stream.IntStream;
+
 import static java.lang.Thread.sleep;
 
 /**
@@ -261,8 +263,23 @@ public class Playground {
         System.out.println(teamID +" team reviewing notes ");
 
 
-        // todo: increment/decrementar forças aqui
+        for(int i=0; i<5; i++){
+            final int finalI = i;
+            boolean contains = IntStream.of(global.getSelection(teamID)).anyMatch(x -> x == finalI);
 
+            if(contains){
+                int str = global.getStrength(teamID,i);
+                global.setStrength(teamID,i,--str);
+            }
+            else{
+                int str = global.getStrength(teamID,i);
+                global.setStrength(teamID,i,++str);
+            }
+
+
+        }
+
+        System.out.println("Coach "+teamID+" exited the waiting cycle in reviewNotes!");
 
     }
 

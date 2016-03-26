@@ -6,6 +6,7 @@ import States.ContestantState;
 import States.RefereeState;
 
 import java.util.Arrays;
+import java.util.Random;
 
 /**
  * Created by jonnybel on 3/8/16.
@@ -20,6 +21,9 @@ public class Global {
     private int trialscore_t1;
 
     private int trialscore_t2;
+
+    private int [] strength_t1;
+    private int [] strength_t2;
 
     private ContestantState contestantStates_t1 [];
 
@@ -76,6 +80,18 @@ public class Global {
 
         this.selectedTeam1 = new int [] {-1,-1,-1};
         this.selectedTeam2 = new int [] {-1,-1,-1};
+
+        this.benchReady = false;
+
+        this.strength_t1 = new int[5];
+        this.strength_t2 = new int[5];
+
+        Random r = new Random();
+
+        for (int i = 0; i < this.strength_t1.length ; i++) {
+            strength_t1[i] = r.nextInt(10);
+            strength_t2[i] = r.nextInt(10);
+        }
 
     }
 
@@ -344,5 +360,21 @@ public class Global {
             return standingTeam1;
         else
             return standingTeam2;
+    }
+
+    public int getStrength(int teamID, int id){
+        if(teamID==1)
+            return strength_t1[id];
+        else
+            return strength_t2[id];
+
+    }
+
+    public void setStrength(int teamID, int id, int str){
+        if(teamID==1)
+            strength_t1[id] = str;
+        else
+            strength_t2[id] = str;
+
     }
 }

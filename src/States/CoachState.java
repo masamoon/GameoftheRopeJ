@@ -7,11 +7,27 @@ public enum CoachState {
 
     /* todo: add comments */
 
-    INIT,
+    INIT("I"),
 
-    WAIT_FOR_REFEREE_COMMAND,
+    WAIT_FOR_REFEREE_COMMAND("WFRC"),
 
-    ASSEMBLE_TEAM,
+    ASSEMBLE_TEAM("AT"),
 
-    WATCH_TRIAL
+    WATCH_TRIAL("WT");
+
+    private final String acronym;
+
+    private CoachState(String acronym)
+    {
+        this.acronym = acronym;
+    }
+
+    /**
+     * Returns a smaller representation of the state (an acronym)
+     *
+     * @return state as an acronym
+     */
+    public String getAcronym() {
+        return acronym;
+    }
 }
