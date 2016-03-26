@@ -1,6 +1,7 @@
 package Monitors;
 
 import Entities.Coach;
+import Logging.Logger;
 import States.CoachState;
 import States.ContestantState;
 import States.RefereeState;
@@ -46,8 +47,16 @@ public class Global {
 
     boolean benchReady;
 
+    private int flagPos;
+
+    private int trial_no;
+
+
+
 
     public Global(){
+
+        refereeState = RefereeState.START_OF_THE_MATCH;
 
         contestantStates_t1 = new ContestantState[5];
 
@@ -192,13 +201,13 @@ public class Global {
     * @param state contestant's state to be updated to
      *@param teamID team's ID
     * */
-    public synchronized void setContestantState (int contestantID, int teamID, ContestantState state){
+    public synchronized void setContestantState (int contestantID, int teamID, ContestantState state, Logger logger){
        if(teamID == 0)
            this.contestantStates_t1[contestantID] = state;
         else if (teamID == 1)
            this.contestantStates_t2[contestantID] = state;
 
-        // todo: report status (log)
+        logger.insertLine();
     }
 
     /**
@@ -217,10 +226,10 @@ public class Global {
     /** referee
      @param state referee's state to be updated to
     * */
-    public synchronized void setRefereeState (RefereeState state){
+    public synchronized void setRefereeState (RefereeState state, Logger logger){
         this.refereeState = state;
 
-        // todo: report status (log)
+        logger.insertLine();
     }
 
     /**
@@ -238,10 +247,9 @@ public class Global {
     * @param teamID team's id
     * @param state coach's state to be updated to
      */
-    public synchronized void setCoachState (int teamID, CoachState state){
+    public synchronized void setCoachState (int teamID, CoachState state, Logger logger){
         this.coachStates[teamID] = state;
-
-        // todo: report status (log)
+        logger.insertLine();
     }
 
   /**
@@ -465,5 +473,24 @@ public class Global {
         else
             strength_t2[id] = str;
 
+    }
+
+    /**
+     *
+     * @return
+     */
+    public int getFlagPos(){ return this.flagPos; }
+
+    /**
+     *
+     * @return
+     */
+    public int getTrial_no(){ return this.trial_no; }
+
+    /**
+     *
+     */
+    public void incTrial_no(){
+        trial_no+=1;
     }
 }

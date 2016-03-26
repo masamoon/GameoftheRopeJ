@@ -9,9 +9,12 @@ import States.RefereeState;
 public class RefereeSite {
 
     private Global global;
+    private Logger logger;
 
-    public RefereeSite( Global global){
+    public RefereeSite( Global global, Logger logger){
+
         this.global = global;
+        this.logger = logger;
     }
     /*
     *   Referee Operations
@@ -22,12 +25,12 @@ public class RefereeSite {
      */
     public synchronized void announceGame(){
         //System.out.println("RefereeState: START_OF_A_GAME");
-        global.setRefereeState(RefereeState.START_OF_A_GAME);
+        global.setRefereeState(RefereeState.START_OF_A_GAME,logger);
     }
 
     public synchronized void announceMatch(){
        // System.out.println("RefereeState: START_OF_THE_MATCH");
-        global.setRefereeState(RefereeState.START_OF_THE_MATCH);
+        global.setRefereeState(RefereeState.START_OF_THE_MATCH,logger);
 
     }
 
@@ -35,19 +38,19 @@ public class RefereeSite {
 
     /**
      * Checks what team is the game's winner
-     * @param playground reference to the playground
+     * @param logger
      */
-    public synchronized void declareGameWinner (Playground playground,Logger logger){
-        if(playground.getTrial_no() >= 6){
-            if(playground.getFlagPos() > 0){
+    public synchronized void declareGameWinner (Logger logger){
+        if(global.getTrial_no() >= 6){
+            if(global.getFlagPos() > 0){
                 //team1 winner
                 global.incGamescore_t1();
-                logger.gameWinnerLinePoints(global.getGamescore_t1()+global.getGamescore_t2(),1,playground.getTrial_no());
+                logger.gameWinnerLinePoints(global.getGamescore_t1()+global.getGamescore_t2(),1,global.getTrial_no());
             }
-            else if(playground.getFlagPos() < 0){
+            else if(global.getFlagPos() < 0){
                 //team 2 winner
                 global.incGamescore_t2();
-                logger.gameWinnerLinePoints(global.getGamescore_t1()+global.getGamescore_t2(),2,playground.getTrial_no());
+                logger.gameWinnerLinePoints(global.getGamescore_t1()+global.getGamescore_t2(),2,global.getTrial_no());
             }
             else{
                 //tie
@@ -57,15 +60,15 @@ public class RefereeSite {
             }
         }
         else{
-            if(playground.getFlagPos() >= 4){
+            if(global.getFlagPos() >= 4){
                 //team1 knockout
                 global.incGamescore_t1();
-                logger.gameWinnerLineKO(global.getGamescore_t1()+global.getGamescore_t2(),1,playground.getTrial_no());
+                logger.gameWinnerLineKO(global.getGamescore_t1()+global.getGamescore_t2(),1,global.getTrial_no());
             }
-            else if(playground.getFlagPos() <= -4){
+            else if(global.getFlagPos() <= -4){
                 //team2 knockout
                 global.incGamescore_t2();
-                logger.gameWinnerLineKO(global.getGamescore_t1()+global.getGamescore_t2(),2,playground.getTrial_no());
+                logger.gameWinnerLineKO(global.getGamescore_t1()+global.getGamescore_t2(),2,global.getTrial_no());
             }
         }
     }

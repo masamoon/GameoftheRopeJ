@@ -1,5 +1,6 @@
 package Monitors;
 
+import Logging.Logger;
 import States.ContestantState;
 
 import java.util.Random;
@@ -13,12 +14,15 @@ public class Bench {
 
     private int numSitting;
 
+    private Logger logger;
 
 
-    public Bench(Global global){
+
+    public Bench(Global global, Logger logger){
 
         this.global = global;
         this.numSitting=0;
+        this.logger = logger;
     }
 
 
@@ -36,7 +40,7 @@ public class Bench {
      */
     public synchronized void sitDown(int contestantID, int teamID, Global global, Playground playground) {
 
-        global.setContestantState(contestantID, teamID, ContestantState.SIT_AT_THE_BENCH);
+        global.setContestantState(contestantID, teamID, ContestantState.SIT_AT_THE_BENCH,logger);
         System.out.println("Contestant "+contestantID+" from team "+teamID+" sitting down");
         //global.incrementSittingAtBench(teamID);
         this.numSitting++;

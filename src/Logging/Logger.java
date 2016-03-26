@@ -12,26 +12,30 @@ public class Logger {
 
     private TextFile f;
     private String path;
+    private Global global;
 
-    public Logger(String path){
+    public Logger(String path, Global global){
         f = new TextFile();
         f.openForWriting(null,"log.txt");
-        this.path = path;
-    }
-
-    public void firstLine(){
-
-        String str =  "Ref Coa 1 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5 Coa 2 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5 Trial";
+        String str =  "Ref Coa1 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5 Coa2 Cont 1 Cont 2  Cont 3 Cont 4 Cont 5 Trial";
         String str2 = "Sta Stat Sta SG Sta SG Sta SG Sta SG Sta SG Stat Sta SG Sta SG Sta SG Sta SG Sta SG 3 2 1 . 1 2 3 NB PS";
+        f.writelnString(str);
+        f.writelnString(str2);
+
+        this.path = path;
+        this.global = global;
     }
+
+
 
     /**
      *
-     * @param global
-     * @param playground
+     *
+     *
      */
-    public void insertLine(Global global, Playground playground){
+    public synchronized void insertLine(){
 
+       // f.openForWriting(null,"log.txt");
         String ref_state = global.getRefereeState().getAcronym();
         String coach_state_1 = global.getCoachState(0).getAcronym();
         String coach_state_2 = global.getCoachState(1).getAcronym();
@@ -48,8 +52,8 @@ public class Logger {
         }
 
 
-        int rope_pos = playground.getFlagPos();
-        int trial_no = playground.getTrial_no();
+        int rope_pos = global.getFlagPos();
+        int trial_no = global.getTrial_no();
 
         int team1_score = global.getGamescore_t1();
         int team2_score = global.getGamescore_t2();
@@ -68,7 +72,7 @@ public class Logger {
             t2_str_score.append("*");
         }
 
-        String line = ref_state + coach_state_1 + team1.toString() + coach_state_2 + team2.toString() + t1_str_score.toString() + t2_str_score.toString() + trial_no + rope_pos;
+        String line = ref_state +" " + coach_state_1+" " +  team1.toString()+" " + coach_state_2 + team2.toString()+" " + t1_str_score.toString()+" " + t2_str_score.toString()+" " + trial_no+" " + rope_pos;
 
        f.writelnString(line);
 
@@ -77,22 +81,37 @@ public class Logger {
     }
 
     public void matchWinnerLine(int score1, int score2, String winner){
+      //  f.openForWriting(null,"log.txt");
         f.writelnString("Match was won by team "+winner+ "("+score1+"-"+score2+").");
+       // f.close();
     }
 
     public void matchTieLine(){
+      //  f.openForWriting(null,"log.txt");
         f.writelnString("match was a draw");
+      //  f.close();
     }
 
     public void gameWinnerLinePoints(int ngame, int nteam, int ntrials){
+      //  f.openForWriting(null,"log.txt");
        f.writelnString("Game "+ngame+" was won by team "+nteam+" by points in "+ntrials+" trials");
+     //  f.close();
     }
 
     public void gameWinnerLineKO(int ngame, int nteam, int ntrials){
+      //  f.openForWriting(null,"log.txt");
         f.writelnString("Game "+ngame+" was won by team "+nteam+" by knock-out in "+ntrials+" trials");
+      //  f.close();
     }
 
     public void gameTieLine(){
+     //   f.openForWriting(null,"log.txt");
         f.writelnString("game was a draw");
+       // f.close();
+    }
+
+    public void closeFile(){
+        f.endOfFile();
+        f.close();
     }
 }

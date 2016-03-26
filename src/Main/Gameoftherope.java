@@ -18,14 +18,15 @@ public class Gameoftherope {
 
     public static void main(String[] args){
 
-        Logger logger = new Logger("/");
         Global global = new Global();
+        Logger logger = new Logger("/",global);
 
-        Bench bench = new Bench(global);
 
-        Playground playground = new Playground(global);
+        Bench bench = new Bench(global,logger);
 
-        RefereeSite refereeSite = new RefereeSite(global);
+        Playground playground = new Playground(global,logger);
+
+        RefereeSite refereeSite = new RefereeSite(global,logger);
 
         Referee referee = new Referee(playground, refereeSite, global, logger);
 
@@ -34,6 +35,7 @@ public class Gameoftherope {
 
         ArrayList<Contestant> contestants_t1 = new ArrayList<>();
         ArrayList<Contestant> contestants_t2 = new ArrayList<>();
+
 
         referee.start();
 

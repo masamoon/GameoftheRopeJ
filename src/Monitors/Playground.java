@@ -1,5 +1,6 @@
 package Monitors;
 
+import Logging.Logger;
 import States.CoachState;
 import States.ContestantState;
 import States.RefereeState;
@@ -13,12 +14,12 @@ import static java.lang.Thread.sleep;
  */
 public class Playground {
 
-    private int flagPos;
+
 
     private int[] team1;
     private int[] team2;
 
-    private int trial_no;
+
     private Global global;
 
     private int teamsReady;
@@ -30,7 +31,9 @@ public class Playground {
 
     private boolean trialStarted;
 
-    public Playground( Global global){
+    private Logger logger;
+
+    public Playground( Global global, Logger logger){
         this.global = global;
 
         this.teamsReady = 0;
@@ -41,12 +44,16 @@ public class Playground {
 
         this.trialStarted = false;
         this.trialCalled = false;
+
+        this.logger = logger;
+
+
     }
 
 
     public synchronized void waitForCalling(int teamID){
 
-        global.setCoachState(teamID, CoachState.WAIT_FOR_REFEREE_COMMAND);
+        global.setCoachState(teamID, CoachState.WAIT_FOR_REFEREE_COMMAND,logger);
         System.out.println("coach "+teamID+" state: WAIT_FOR_REFEREE_COMMAND ");
 
         while(!trialCalled)
@@ -88,7 +95,7 @@ public class Playground {
 
         teamsReady=0;
 
-        global.setRefereeState(RefereeState.TEAMS_READY);
+        global.setRefereeState(RefereeState.TEAMS_READY,logger);
         global.eraseTeamSelections();
         trialCalled = true;
 
@@ -103,7 +110,7 @@ public class Playground {
      */
     public synchronized void waitForContestants(int teamID){
 
-        global.setCoachState(teamID, CoachState.ASSEMBLE_TEAM);
+        global.setCoachState(teamID, CoachState.ASSEMBLE_TEAM,logger);
         System.out.println("coach "+teamID+"state: ASSEMBLE_TEAM ");
 
         boolean contestantsStanding=false;
@@ -133,7 +140,7 @@ public class Playground {
     public synchronized void followCoachAdvice (int contestantID, int teamID) {
 
         System.out.println("Contestant "+contestantID+" from team "+teamID+" standing in position");
-        global.setContestantState(contestantID, teamID, ContestantState.STAND_IN_POSITION);
+        global.setContestantState(contestantID, teamID, ContestantState.STAND_IN_POSITION,logger);
 
         notifyAll();
 
@@ -154,7 +161,7 @@ public class Playground {
     public synchronized  void informReferee(int teamID){
 
         System.out.println(teamID+" informing referee");
-        global.setCoachState(teamID, CoachState.WATCH_TRIAL);
+        global.setCoachState(teamID, CoachState.WATCH_TRIAL,logger);
 
         System.out.println("Coach " + teamID + " is now watching Trial...");
         teamsReady++;
@@ -190,7 +197,7 @@ public class Playground {
         System.out.println("starting trial");
         contestantsDone=0;
 
-        global.setRefereeState(RefereeState.WAIT_FOR_TRIAL_CONCLUSION);
+        global.setRefereeState(RefereeState.WAIT_FOR_TRIAL_CONCLUSION,logger);
 
         trialStarted = true;
         trialCalled = false;
@@ -206,7 +213,7 @@ public class Playground {
      */
     public synchronized  void getReady( int contestantID, int teamID) {
         System.out.println("Contestant "+contestantID+" from team "+ teamID+ " getting ready");
-        global.setContestantState(contestantID,teamID,ContestantState.DO_YOUR_BEST);
+        global.setContestantState(contestantID,teamID,ContestantState.DO_YOUR_BEST,logger);
 
     }
 
@@ -240,11 +247,11 @@ public class Playground {
         }
 
         System.out.println("trial decision:");
-        if(flagPos > 0){
+        if(global.getFlagPos() > 0){
             global.incGamescore_t1(); //team 1 wins
               System.out.println("team 1 wins trial ");
         }
-        else if (flagPos < 0) {
+        else if (global.getFlagPos() < 0) {
             global.incGamescore_t2(); //team 2 wins
             // System.out.println("team 2 wins trial ");
 
@@ -254,7 +261,7 @@ public class Playground {
         trialStarted = false;
 
         notifyAll();
-        trial_no+=1;
+        global.incTrial_no();
     }
 
    /**
@@ -289,17 +296,7 @@ public class Playground {
 
 
 
-    /**
-     *
-     * @return
-     */
-    public int getFlagPos(){ return this.flagPos; }
 
-    /**
-     *
-     * @return
-     */
-    public int getTrial_no(){ return this.trial_no; }
 
 
 
