@@ -1,9 +1,6 @@
 package Monitors;
 
-import Entities.Contestant;
-import States.CoachState;
 import States.ContestantState;
-import States.RefereeState;
 
 import java.util.Random;
 
@@ -43,31 +40,33 @@ public class Bench {
         System.out.println("Contestant "+contestantID+" from team "+teamID+" sitting down");
         //global.incrementSittingAtBench(teamID);
         this.numSitting++;
-
+        System.out.println("Sitting on bench: "+ numSitting);
 
         //if(global.getSittingAtBench(teamID)==5){
         if(numSitting==10){
             // this is in case a contestant is sitting after the coach began waiting for the next trial
             System.out.println("*** Last man Sitting***");
             global.setBenchReady(true);
-            playground.benchWakeCoach();
+            playground.benchWakeRef();
         }
 
-
-        while (!imSelected(contestantID, teamID) || !global.isTrialInProgress() ){
+        System.out.println(imSelected(contestantID, teamID) + " " + global.benchCalled());
+        while (!global.benchCalled() || !imSelected(contestantID, teamID)){
             try
             { System.out.println("Contestant "+contestantID+" from team "+teamID+" waiting");
-                System.out.println(imSelected(contestantID, teamID) + " " + global.isTrialInProgress());
+                System.out.println(imSelected(contestantID, teamID) + " " + global.benchCalled());
 
                 wait ();
             }
             catch (InterruptedException e) {}
             System.out.println("Contestant "+contestantID+" from team "+teamID+" was woken up!");
         }
-        System.out.println("Contestant " + contestantID + ": I'm Selected!! Standing up...");
+        System.out.println("Contestant " + contestantID + " from team "+teamID+": I'm Selected!! Standing up...");
 
         //global.decrementSittingAtBench(teamID);
         this.numSitting--;
+
+        System.out.println("Sitting on bench: "+ numSitting);
         global.setBenchReady(false);
 
     }
@@ -104,6 +103,7 @@ public class Bench {
 
         global.selectTeam(teamID, first,second,third);
 
+        global.setBenchCalled(true);
         System.out.println("coach " + teamID + " selected: "+first+second+third);
 
         notifyAll();

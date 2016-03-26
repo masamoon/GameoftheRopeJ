@@ -15,6 +15,7 @@ public class Playground {
 
     private int[] team1;
     private int[] team2;
+
     private int trial_no;
     private Global global;
 
@@ -22,7 +23,10 @@ public class Playground {
 
     private int contestantsDone;
 
-    private boolean trialStart;
+
+    private boolean trialCalled;
+
+    private boolean trialStarted;
 
     public Playground( Global global){
         this.global = global;
@@ -33,7 +37,8 @@ public class Playground {
         this.team1 = new int[3];
         this.team2 = new int[3];
 
-        this.trialStart = false;
+        this.trialStarted = false;
+        this.trialCalled = false;
     }
 
 
@@ -42,10 +47,10 @@ public class Playground {
         global.setCoachState(teamID, CoachState.WAIT_FOR_REFEREE_COMMAND);
         System.out.println("coach "+teamID+" state: WAIT_FOR_REFEREE_COMMAND ");
 
-        while(!global.isTrialInProgress())
+        while(!trialCalled)
         {
             System.out.println("Coach " +teamID+ " is now waiting");
-            System.out.println(global.getSittingAtBench(teamID) + " " + global.isTrialInProgress());
+            System.out.println(global.getSittingAtBench(teamID) + " " + trialCalled);
 
             try {
                 wait();
@@ -54,12 +59,18 @@ public class Playground {
         }
     }
 
-    public synchronized void benchWakeCoach (){
+
+    /**
+    *   The last contestant to sit wakes the Ref
+     */
+    public synchronized void benchWakeRef(){
         notifyAll();
     }
 
+
+
     /**
-     *  Referee calls the trial: wakes the coaches and waits for them to have their teams ready
+     *  Referee calls the trial:
      *
      */
 
@@ -76,7 +87,8 @@ public class Playground {
         teamsReady=0;
 
         global.setRefereeState(RefereeState.TEAMS_READY);
-        global.setTrialInProgress(true);
+        global.eraseTeamSelections();
+        trialCalled = true;
 
         notifyAll();
 
@@ -120,7 +132,7 @@ public class Playground {
         notifyAll();
 
 
-        while(!trialStart)
+        while(!trialStarted)
         {
             try {
                 wait();
@@ -144,7 +156,7 @@ public class Playground {
         notifyAll();
 
 
-        while(global.isTrialInProgress()) {
+        while(trialCalled || trialStarted) {
             System.out.println("Coach " + teamID + " is waiting.");
             try {
                 wait();
@@ -168,12 +180,14 @@ public class Playground {
             catch (InterruptedException e) {}
         }
 
+        global.setBenchCalled(false);
         System.out.println("starting trial");
         contestantsDone=0;
 
         global.setRefereeState(RefereeState.WAIT_FOR_TRIAL_CONCLUSION);
 
-        trialStart = true;
+        trialStarted = true;
+        trialCalled = false;
 
         notifyAll();
 
@@ -201,18 +215,12 @@ public class Playground {
         if(contestantsDone==6)
             notifyAll();
 
-        while(global.isTrialInProgress())
+        while(trialStarted)
             try{
                 wait();
             } catch (InterruptedException e){}
 
     }
-
-    /**
-     *  coach changes state to blocking state ASSEMBLE_TEAM
-     *  waits for the selected contestants to be standing in position
-     *
-     */
 
    /**
     *   Referee decides who's the winner
@@ -224,8 +232,6 @@ public class Playground {
                 wait();
             } catch (InterruptedException e) {}
         }
-
-        trialStart = false;
 
         System.out.println("trial decision:");
         if(flagPos > 0){
@@ -239,9 +245,7 @@ public class Playground {
         }
         else System.out.println("draw!");
 
-        global.setTrialInProgress(false);
-
-        global.eraseTeamSelections();
+        trialStarted = false;
 
         notifyAll();
         trial_no+=1;
@@ -259,7 +263,6 @@ public class Playground {
 
         // todo: increment/decrementar forças aqui
 
-        System.out.println("Coach "+teamID+" exited the waiting cycle in reviewNotes!");
 
     }
 

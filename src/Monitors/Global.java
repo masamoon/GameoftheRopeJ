@@ -38,7 +38,7 @@ public class Global {
     private int standingTeam1;
     private int standingTeam2;
 
-    boolean trialInProgress;
+    boolean benchCalled;
 
     boolean benchReady;
 
@@ -63,7 +63,8 @@ public class Global {
             coachStates[i] = CoachState.INIT;
         }
 
-        this.trialInProgress = false;
+        this.benchReady = false;
+        this.benchCalled = false;
 
         this.gamescore_t1 =0;
         this.gamescore_t2= 0;
@@ -76,16 +77,14 @@ public class Global {
         this.selectedTeam1 = new int [] {-1,-1,-1};
         this.selectedTeam2 = new int [] {-1,-1,-1};
 
-        this.benchReady = false;
-
     }
 
-    public boolean isTrialInProgress() {
-        return trialInProgress;
+    public boolean benchCalled() {
+        return benchCalled;
     }
 
-    public void setTrialInProgress(boolean trialInProgress) {
-        this.trialInProgress = trialInProgress;
+    public void setBenchCalled(boolean benchCalled) {
+        this.benchCalled = benchCalled;
     }
 
     public void selectTeam(int teamID, int first, int second, int third) {

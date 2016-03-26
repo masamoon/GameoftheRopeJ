@@ -47,9 +47,7 @@ public class Contestant extends Thread {
             playgroundMon.getReady(contestantID, teamID); // passa o seu estado interno para DO_YOUR_BEST
             pullRope();
             playgroundMon.done(); // acorda o Referee e fica em espera (sem alterar o seu estado)
-
         }
-
     }
 
     /*
