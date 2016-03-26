@@ -55,17 +55,15 @@ public class Referee extends Thread {
         refereeSite.declareMatchWinner(logger);
     }
 
+    /**
+     *
+     * @param state
+     */
     public void setRefstate(RefereeState state){
         refstate = state;
     }
 
-    private void makeArrangements(){
-        try
-        {
-            sleep ((long) (1 + 10 * Math.random ()));
-        }
-        catch (InterruptedException e) {}
-    }
+
 
 
 

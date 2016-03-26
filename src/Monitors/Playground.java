@@ -97,6 +97,10 @@ public class Playground {
 
     }
 
+    /**
+     *
+     * @param teamID
+     */
     public synchronized void waitForContestants(int teamID){
 
         global.setCoachState(teamID, CoachState.ASSEMBLE_TEAM);

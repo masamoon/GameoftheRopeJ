@@ -25,6 +25,11 @@ public class Logger {
         String str2 = "Sta Stat Sta SG Sta SG Sta SG Sta SG Sta SG Stat Sta SG Sta SG Sta SG Sta SG Sta SG 3 2 1 . 1 2 3 NB PS";
     }
 
+    /**
+     *
+     * @param global
+     * @param playground
+     */
     public void insertLine(Global global, Playground playground){
 
         String ref_state = global.getRefereeState().getAcronym();

@@ -95,14 +95,29 @@ public class Global {
 
     }
 
+    /**
+     *gets benchCalled
+     * @return
+     */
     public boolean benchCalled() {
         return benchCalled;
     }
 
+    /**
+     *sets benchCalled
+     * @param benchCalled
+     */
     public void setBenchCalled(boolean benchCalled) {
         this.benchCalled = benchCalled;
     }
 
+    /**
+     * sets the selected team for a trial on a team
+     * @param teamID team's id
+     * @param first first contestant
+     * @param second second contestant
+     * @param third third contestant
+     */
     public void selectTeam(int teamID, int first, int second, int third) {
         if(teamID==0)
             this.selectedTeam1 = new int [] {first,second,third};
@@ -110,12 +125,21 @@ public class Global {
             this.selectedTeam2 = new int [] {first,second,third};
     }
 
+    /**
+     *gets the selected team for a trial
+     * @param teamID
+     * @return selected team for trial
+     */
     public int[] getSelection(int teamID) {
         if(teamID==0)
             return selectedTeam1;
         else
             return selectedTeam2;
     }
+
+    /**
+     * erases the selected teams
+     */
     public void eraseTeamSelections(){
         this.selectedTeam1 = new int [] {-1,-1,-1};
         this.selectedTeam2 = new int [] {-1,-1,-1};
@@ -264,33 +288,57 @@ public class Global {
      */
     public void incGamescore_t2(){this.gamescore_t2+=1; }
 
-
+    /**
+     *
+     * @return
+     */
     public int getTrialscore_t1() {
         return trialscore_t1;
     }
 
+    /**
+     *
+     * @param trialscore_t1
+     */
     public void setTrialscore_t1(int trialscore_t1) {
         this.trialscore_t1 = trialscore_t1;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getTrialscore_t2(){
         return trialscore_t2;
     }
 
+    /**
+     *
+     * @param trialscore_t2
+     */
     public void setTrialscore_t2(int trialscore_t2){
         this.trialscore_t2 = trialscore_t2;
     }
 
+    /**
+     *
+     */
     public void incTrialscore_t1(){
         this.trialscore_t1+=1;
     }
 
+    /**
+     *
+     */
     public void incTrialscore_t2(){
         this.trialscore_t2+=1;
     }
 
 
-
+    /**
+     * increments number o contestants sitting on the bench
+     * @param teamID contestant's team's id
+     */
     public void incrementSittingAtBench(int teamID){
         if(teamID==1){
             benchTeam1++;
@@ -304,6 +352,10 @@ public class Global {
 
     }
 
+    /**
+     * decrements number o contestants sitting on the bench
+     * @param teamID contestant's team's id
+     */
     public void decrementSittingAtBench(int teamID){
         if(teamID==1){
             benchTeam1--;
@@ -315,6 +367,11 @@ public class Global {
         }
     }
 
+    /**
+     * gets number of contestants sitting on the bench
+     * @param teamID contestants team's id
+     * @return number of contestants sitting on the bench
+     */
     public int getSittingAtBench(int teamID) {
         if(teamID==1)
             return benchTeam1;
@@ -322,15 +379,26 @@ public class Global {
             return benchTeam2;
     }
 
+    /**
+     * gets benchReady
+     * @return
+     */
     public boolean getBenchReady() {
         return benchReady;
     }
 
+    /**
+     * sets benchReady
+     * @param benchReady
+     */
     public void setBenchReady(boolean benchReady){
         this.benchReady = benchReady;
     }
 
-
+    /**
+     *increments number of contestants in position for trial beginning
+     * @param teamID contestants team's id
+     */
     public void incrementStandingInPosition(int teamID){
         if(teamID==1){
             standingTeam1++;
@@ -344,6 +412,10 @@ public class Global {
 
     }
 
+    /**
+     * decrements number of contestants in position for trial beginning
+     * @param teamID contestants team's id
+     */
     public void decrementStandingInPosition(int teamID){
         if(teamID==1){
             standingTeam1--;
@@ -355,6 +427,11 @@ public class Global {
         }
     }
 
+    /**
+     * gets number of contestants standing in position for trial beginning
+     * @param teamID
+     * @return
+     */
     public int getStandingInPosition(int teamID) {
         if(teamID==1)
             return standingTeam1;
@@ -362,6 +439,12 @@ public class Global {
             return standingTeam2;
     }
 
+    /**
+     *
+     * @param teamID
+     * @param id
+     * @return
+     */
     public int getStrength(int teamID, int id){
         if(teamID==1)
             return strength_t1[id];
@@ -370,6 +453,12 @@ public class Global {
 
     }
 
+    /**
+     *
+     * @param teamID
+     * @param id
+     * @param str
+     */
     public void setStrength(int teamID, int id, int str){
         if(teamID==1)
             strength_t1[id] = str;

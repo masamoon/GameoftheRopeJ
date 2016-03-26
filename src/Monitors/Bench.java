@@ -71,6 +71,12 @@ public class Bench {
 
     }
 
+    /**
+     * Checks if contestant is selected for trial
+     * @param contestantID
+     * @param teamID
+     * @return
+     */
     private boolean imSelected (int contestantID, int teamID)
     {
         for(int id : global.getSelection(teamID)){
