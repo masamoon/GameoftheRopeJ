@@ -104,6 +104,7 @@ public class Global {
 
     /**
      *gets benchCalled
+     * @param teamID team's id
      * @return true if bench is called
      */
     public boolean benchCalled(int teamID) {
@@ -116,7 +117,7 @@ public class Global {
     /**
      *sets benchCalled
      * @param teamID team's id
-     * @param benchCalled
+     * @param benchCalled boolean indicating if bench was called
      */
     public void setBenchCalled(int teamID, boolean benchCalled) {
         if(teamID==0)
@@ -141,7 +142,7 @@ public class Global {
 
     /**
      *gets the selected team for a trial
-     * @param teamID
+     * @param teamID team's id
      * @return selected team for trial
      */
     public int[] getSelection(int teamID) {
@@ -159,7 +160,10 @@ public class Global {
         this.selectedTeam2 = new int [] {-1,-1,-1};
     }
 
-
+    /**
+     *
+     * @param matchInProgress boolean that indicates if match is in progress
+     */
     public void setMatchInProgress(boolean matchInProgress) {
         this.matchInProgress = matchInProgress;
     }
@@ -189,6 +193,7 @@ public class Global {
     * @param contestantID contestant's ID
     * @param state contestant's state to be updated to
      *@param teamID team's ID
+     *@param logger reference to logger Object
     * */
     public synchronized void setContestantState (int contestantID, int teamID, ContestantState state, Logger logger){
        if(teamID == 0)
@@ -214,6 +219,7 @@ public class Global {
 
     /** referee
      @param state referee's state to be updated to
+     @param logger reference to logger Object
     * */
     public synchronized void setRefereeState (RefereeState state, Logger logger){
         this.refereeState = state;
@@ -233,6 +239,7 @@ public class Global {
     * set Coach State to new state
     * @param teamID team's id
     * @param state coach's state to be updated to
+     *@param logger reference to logger object
      */
     public synchronized void setCoachState (int teamID, CoachState state, Logger logger){
         this.coachStates[teamID] = state;
@@ -261,10 +268,8 @@ public class Global {
      */
     public int getGamescore_t2(){ return this.gamescore_t2; }
 
-    /**
-     * sets gamescore for team1 as new value
-     * @param score
-     */
+
+
     /**
      * increment by 1 the score of team1
      */
@@ -278,7 +283,7 @@ public class Global {
 
     /**
      * gets benchReady
-     * @return
+     * @return returns benchReady
      */
     public boolean getBenchReady() {
         return benchReady;
@@ -286,7 +291,7 @@ public class Global {
 
     /**
      * sets benchReady
-     * @param benchReady
+     * @param benchReady boolean that indicates if bench is ready
      */
     public void setBenchReady(boolean benchReady){
         this.benchReady = benchReady;
@@ -322,8 +327,8 @@ public class Global {
 
     /**
      * gets number of contestants standing in position for trial beginning
-     * @param teamID
-     * @return
+     * @param teamID team's id
+     * @return number of contestants standing in position
      */
     public int getStandingInPosition(int teamID) {
         if(teamID==1)
@@ -334,8 +339,8 @@ public class Global {
 
     /**
      *
-     * @param id
-     * @param teamID
+     * @param id Contestant's id
+     * @param teamID team's id
      * @return the strength of this contestant
      */
     public int getStrength(int id, int teamID){
@@ -348,9 +353,9 @@ public class Global {
 
     /**
      *
-     * @param id
-     * @param teamID
-     * @param str
+     * @param id Contestant's id
+     * @param teamID team's id
+     * @param str the strength of this contestant to bet set
      */
     public void setStrength(int id, int teamID, int str){
         if(teamID==1)

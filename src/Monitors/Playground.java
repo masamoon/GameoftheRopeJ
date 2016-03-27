@@ -182,6 +182,7 @@ public class Playground {
     /**
      * Contestant operation
      * @param contestantID contestant's ID
+     * @param teamID team's id
      */
     public synchronized  void getReady( int contestantID, int teamID) {
         global.setContestantState(contestantID,teamID,ContestantState.DO_YOUR_BEST,logger);
@@ -191,6 +192,8 @@ public class Playground {
 
     /**
      * Contestant operation
+     * @param contestantID contestant's id
+     * @param teamID team's id
      */
     public synchronized void done(int contestantID, int teamID){
 
@@ -253,6 +256,7 @@ public class Playground {
    /**
     * Coach operation
     * @param teamID team's ID
+    * @param bench reference to the Bench
     */
    public synchronized void reviewNotes(int teamID, Bench bench) {
 

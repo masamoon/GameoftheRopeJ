@@ -82,6 +82,7 @@ public class RefereeSite {
 
     /**
      * Checks what team is the match's winner
+     * @param logger reference to Logger object
      */
     public synchronized void declareMatchWinner (Logger logger){
         if(global.getGamescore_t1()> global.getGamescore_t2()){
