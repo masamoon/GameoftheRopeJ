@@ -515,4 +515,8 @@ public class Global {
     public void incrementGamesNum() {
         this.gamesNum+=1;
     }
+
+    public int[] getStrength_t1(){ return this.strength_t1;}
+
+    public int[] getStrength_t2(){ return this.strength_t2;}
 }

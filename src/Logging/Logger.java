@@ -91,7 +91,7 @@ public class Logger {
         }
 
         String line = ref_state +" " + coach_state_1+" " +  team1.toString()+" " + coach_state_2 + team2.toString()+" " + t1_str_score.toString()
-                +" " + t2_str_score.toString()+" "+selection1.toString()+"  "+selection2.toString()+" " + trial_no+" " + rope_pos;
+                +" " + t2_str_score.toString()+" "+selection2.toString()+"  "+selection1.toString()+" " + trial_no+" " + rope_pos;
 
        f.writelnString(line);
 

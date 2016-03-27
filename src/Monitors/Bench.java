@@ -3,6 +3,9 @@ package Monitors;
 import Logging.Logger;
 import States.ContestantState;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Random;
 
 /**
@@ -98,6 +101,26 @@ public class Bench {
      *
      */
     public synchronized void callContestants (int teamID){
+
+        Random r = new Random();
+        int strategy = r.nextInt(1);
+
+        int team[];
+        if(strategy == 0)
+            team = selectRandom(teamID);
+        else
+            team = selectTopteam(teamID);
+
+        global.selectTeam(teamID, team[0],team[1],team[2]);
+
+        global.setBenchCalled(teamID, true);
+        System.out.println("coach " + teamID + " selected: "+team[0]+team[1]+team[2]);
+
+        notifyAll();
+
+    }
+
+    public int[] selectRandom(int teamID){
         Random r = new Random();
         int first = r.nextInt(4);
         int second;
@@ -111,13 +134,34 @@ public class Bench {
             third = r.nextInt(4);
         }while( third == first || third == second);
 
-        global.selectTeam(teamID, first,second,third);
+        return new int[]{first,second,third};
+    }
 
-        global.setBenchCalled(teamID, true);
-        System.out.println("coach " + teamID + " selected: "+first+second+third);
 
-        notifyAll();
+    public int[] selectTopteam(int teamID){
+        int[] str;
+        if(teamID ==0)
+            str=global.getStrength_t1();
+        else
+            str = global.getStrength_t2();
+        int[] tmp = new int[5];
+        tmp = Arrays.copyOf(str,5);
 
+        HashMap<Integer,Integer> map = new HashMap<Integer,Integer>();
+
+        for (int i = 0; i <5 ; i++) {
+
+            map.put(i,str[i]);
+
+        }
+
+        int first = Collections.max(map.entrySet(), (entry1, entry2) -> entry1.getValue() > entry2.getValue() ? 1 : -1).getKey();
+        map.remove(first);
+        int second = Collections.max(map.entrySet(), (entry1, entry2) -> entry1.getValue() > entry2.getValue() ? 1 : -1).getKey();
+        map.remove(second);
+        int third = Collections.max(map.entrySet(), (entry1, entry2) -> entry1.getValue() > entry2.getValue() ? 1 : -1).getKey();
+
+        return new int[]{first,second,third};
     }
 
 

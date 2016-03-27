@@ -43,13 +43,13 @@ public class Gameoftherope {
         coach_t2.start();
 
         for (int i = 0; i < 5 ; i++) {
-            Contestant c = new Contestant(i,0,bench,playground,global); //todo: remove static strength
+            Contestant c = new Contestant(i,0,bench,playground,global);
             contestants_t1.add(c);
             c.start();
         }
 
         for (int i = 0; i < 5 ; i++) {
-            Contestant c = new Contestant(i,1,bench,playground,global); //todo: remove static strength
+            Contestant c = new Contestant(i,1,bench,playground,global);
             contestants_t2.add(c);
             c.start();
         }
