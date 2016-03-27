@@ -292,11 +292,13 @@ public class Playground {
 
             if(contains){
                 int str = global.getStrength(teamID,i);
-                global.setStrength(teamID,i,--str);
+                if(str > 0)
+                    global.setStrength(teamID,i,--str);
             }
             else{
                 int str = global.getStrength(teamID,i);
-                global.setStrength(teamID,i,++str);
+                if(str < 10)
+                    global.setStrength(teamID,i,++str);
             }
 
 

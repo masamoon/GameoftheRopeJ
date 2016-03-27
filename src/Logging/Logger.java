@@ -28,7 +28,7 @@ public class Logger {
 
     /**
      *
-     *
+     * Inserts new line into logger
      *
      */
     public synchronized void insertLine(){
