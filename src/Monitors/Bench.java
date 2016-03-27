@@ -54,11 +54,11 @@ public class Bench {
             playground.benchWakeRef();
         }
 
-        System.out.println(imSelected(contestantID, teamID) + " " + global.benchCalled());
-        while (!global.benchCalled() || !imSelected(contestantID, teamID)){
+        System.out.println(imSelected(contestantID, teamID) + " " + global.benchCalled(teamID));
+        while (!global.benchCalled(teamID) || !imSelected(contestantID, teamID)){
             try
             { System.out.println("Contestant "+contestantID+" from team "+teamID+" waiting");
-                System.out.println(imSelected(contestantID, teamID) + " " + global.benchCalled());
+                System.out.println(imSelected(contestantID, teamID) + " " + global.benchCalled(teamID));
 
                 wait ();
             }
@@ -113,7 +113,7 @@ public class Bench {
 
         global.selectTeam(teamID, first,second,third);
 
-        global.setBenchCalled(true);
+        global.setBenchCalled(teamID, true);
         System.out.println("coach " + teamID + " selected: "+first+second+third);
 
         notifyAll();

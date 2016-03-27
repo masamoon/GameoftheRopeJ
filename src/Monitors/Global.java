@@ -1,12 +1,10 @@
 package Monitors;
 
-import Entities.Coach;
 import Logging.Logger;
 import States.CoachState;
 import States.ContestantState;
 import States.RefereeState;
 
-import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -15,13 +13,10 @@ import java.util.Random;
 public class Global {
 
 
+    private int gamesNum;
+
     private int gamescore_t1;
-
     private int gamescore_t2;
-
-    private int trialscore_t1;
-
-    private int trialscore_t2;
 
     private int [] strength_t1;
     private int [] strength_t2;
@@ -43,15 +38,16 @@ public class Global {
     private int standingTeam1;
     private int standingTeam2;
 
-    boolean benchCalled;
+    boolean benchCalled1;
+    boolean benchCalled2;
 
     boolean benchReady;
 
     private int flagPos;
 
-    private int trial_no;
+    private int trialNum;
 
-
+    private boolean matchInProgress;
 
 
     public Global(){
@@ -76,13 +72,14 @@ public class Global {
             coachStates[i] = CoachState.INIT;
         }
 
+        this.gamesNum = 0;
+
         this.benchReady = false;
-        this.benchCalled = false;
+        this.benchCalled1 = false;
+        this.benchCalled2 = false;
 
         this.gamescore_t1 =0;
         this.gamescore_t2= 0;
-        this.trialscore_t1= 0;
-        this.trialscore_t2 =0;
 
         this.benchTeam1 = 0;
         this.benchTeam2 = 0;
@@ -94,6 +91,13 @@ public class Global {
 
         this.strength_t1 = new int[5];
         this.strength_t2 = new int[5];
+
+        this.flagPos = 0;
+
+        this.standingTeam1 = 0;
+        this.standingTeam2 = 0;
+
+        this.matchInProgress = true;
 
         Random r = new Random();
 
@@ -108,16 +112,22 @@ public class Global {
      *gets benchCalled
      * @return
      */
-    public boolean benchCalled() {
-        return benchCalled;
+    public boolean benchCalled(int teamID) {
+        if(teamID==0)
+            return benchCalled1;
+        else
+            return benchCalled2;
     }
 
     /**
      *sets benchCalled
      * @param benchCalled
      */
-    public void setBenchCalled(boolean benchCalled) {
-        this.benchCalled = benchCalled;
+    public void setBenchCalled(int teamID, boolean benchCalled) {
+        if(teamID==0)
+            this.benchCalled1 = benchCalled;
+        else
+            this.benchCalled2 = benchCalled;
     }
 
     /**
@@ -155,30 +165,16 @@ public class Global {
     }
 
 
+    public void setMatchInProgress(boolean matchInProgress) {
+        this.matchInProgress = matchInProgress;
+    }
 
     /**
      *  Check is match is in progresss
      * @return true if match is underway
      */
     public boolean matchInProgress() {
-        if((gamescore_t1 + gamescore_t2) < 3)
-            return true;
-        else
-            return false;
-
-        //return ((gamescore_t1 + gamescore_t2) < 3) ? true : false;
-
-    }
-    /**
-     * Check if match is finished
-     * @return true if match is finished
-     */
-    public boolean matchFinished() {
-
-        if((gamescore_t1 + gamescore_t2) >= 3)
-            return true;
-        else
-            return false;
+        return this.matchInProgress;
     }
 
     /**
@@ -186,12 +182,10 @@ public class Global {
      * @return true if game is finished
      */
     public boolean gameFinished(){
-        if((trialscore_t1+trialscore_t2)<6)
-            return false;
-        else
+        if((Math.abs(flagPos)>=4) || trialNum>=6)
             return true;
-        //return ((trialscore_t1 + trialscore_t2)<6) ? true : false;
-
+        else
+            return false;
     }
 
     /* State controls */
@@ -296,51 +290,66 @@ public class Global {
      */
     public void incGamescore_t2(){this.gamescore_t2+=1; }
 
-    /**
+/*
+
+    */
+/**
      *
      * @return
-     */
+     *//*
+
     public int getTrialscore_t1() {
         return trialscore_t1;
     }
 
-    /**
+    */
+/**
      *
      * @param trialscore_t1
-     */
+     *//*
+
     public void setTrialscore_t1(int trialscore_t1) {
         this.trialscore_t1 = trialscore_t1;
     }
 
-    /**
+    */
+/**
      *
      * @return
-     */
+     *//*
+
     public int getTrialscore_t2(){
         return trialscore_t2;
     }
 
-    /**
+    */
+/**
      *
      * @param trialscore_t2
-     */
+     *//*
+
     public void setTrialscore_t2(int trialscore_t2){
         this.trialscore_t2 = trialscore_t2;
     }
 
-    /**
+    */
+/**
      *
-     */
+     *//*
+
     public void incTrialscore_t1(){
         this.trialscore_t1+=1;
     }
 
-    /**
+    */
+/**
      *
-     */
+     *//*
+
     public void incTrialscore_t2(){
         this.trialscore_t2+=1;
     }
+*/
 
 
     /**
@@ -475,22 +484,35 @@ public class Global {
 
     }
 
-    /**
-     *
-     * @return
-     */
-    public int getFlagPos(){ return this.flagPos; }
 
-    /**
-     *
-     * @return
-     */
-    public int getTrial_no(){ return this.trial_no; }
 
-    /**
-     *
-     */
-    public void incTrial_no(){
-        trial_no+=1;
+    public int getTrialNum(){
+        return this.trialNum;
+    }
+
+    public void incrementTrialNum(){
+        this.trialNum +=1;
+    }
+
+
+    public void resetTrialNum(){
+        this.trialNum =0;
+    }
+
+
+    public int getFlagPos() {
+        return flagPos;
+    }
+
+    public void setFlagPos(int flagPos) {
+        this.flagPos = flagPos;
+    }
+
+    public int getGamesNum() {
+        return gamesNum;
+    }
+
+    public void incrementGamesNum() {
+        this.gamesNum+=1;
     }
 }

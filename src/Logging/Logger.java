@@ -1,9 +1,7 @@
 package Logging;
 
 import Monitors.Global;
-import Monitors.Playground;
 import genclass.TextFile;
-import genclass.TextFile.*;
 
 /**
  * Created by Andre on 18/03/2016.
@@ -59,7 +57,7 @@ public class Logger {
 
 
         int rope_pos = global.getFlagPos();
-        int trial_no = global.getTrial_no();
+        int trial_no = global.getTrialNum();
 
         int team1_score = global.getGamescore_t1();
         int team2_score = global.getGamescore_t2();

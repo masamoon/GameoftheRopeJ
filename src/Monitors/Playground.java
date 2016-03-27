@@ -7,7 +7,6 @@ import States.RefereeState;
 
 import java.util.stream.IntStream;
 
-import static java.lang.Thread.sleep;
 
 /**
  * Created by jonnybel on 3/8/16.
@@ -15,9 +14,6 @@ import static java.lang.Thread.sleep;
 public class Playground {
 
 
-
-    private int[] team1;
-    private int[] team2;
 
 
     private Global global;
@@ -38,9 +34,6 @@ public class Playground {
 
         this.teamsReady = 0;
         this.contestantsDone = 0;
-
-        this.team1 = new int[3];
-        this.team2 = new int[3];
 
         this.trialStarted = false;
         this.trialCalled = false;
@@ -85,6 +78,7 @@ public class Playground {
 
     public synchronized void callTrial(){
 
+        global.incrementTrialNum();
         while(!global.getBenchReady()){
             try {
                 wait();
@@ -94,14 +88,13 @@ public class Playground {
         System.out.println("Referee calling trial");
 
         teamsReady=0;
+        contestantsDone=0;
 
         global.setRefereeState(RefereeState.TEAMS_READY,logger);
         global.eraseTeamSelections();
         trialCalled = true;
 
         notifyAll();
-
-
     }
 
     /**
@@ -113,8 +106,7 @@ public class Playground {
         global.setCoachState(teamID, CoachState.ASSEMBLE_TEAM,logger);
         System.out.println("coach "+teamID+"state: ASSEMBLE_TEAM ");
 
-        boolean contestantsStanding=false;
-        do{
+        while(global.getStandingInPosition(teamID)<3){
             try
             {
                 System.out.println("Coach " +teamID+ " is now waiting");
@@ -123,11 +115,7 @@ public class Playground {
             catch (InterruptedException e) {}
 
             System.out.println("Coach "+teamID+" was woken up, checking selection:");
-            for(int id: global.getSelection(teamID)){
-                contestantsStanding = global.getContestantState(id, teamID) == ContestantState.STAND_IN_POSITION;
-                if(!contestantsStanding){ System.out.println("Coach "+teamID+": my whole team is not yet ready!"); break; }
-            }
-        }while(!contestantsStanding);
+        }
         System.out.println("Coach "+teamID+" exited the waiting cycle in waitForContestants! (which means my team is ready");
     }
 
@@ -140,10 +128,14 @@ public class Playground {
     public synchronized void followCoachAdvice (int contestantID, int teamID) {
 
         System.out.println("Contestant "+contestantID+" from team "+teamID+" standing in position");
+
+        global.incrementStandingInPosition(teamID);
         global.setContestantState(contestantID, teamID, ContestantState.STAND_IN_POSITION,logger);
 
-        notifyAll();
-
+        if(global.getStandingInPosition(teamID)==3)
+        {
+            notifyAll();
+        }
 
         while(!trialStarted)
         {
@@ -165,6 +157,8 @@ public class Playground {
 
         System.out.println("Coach " + teamID + " is now watching Trial...");
         teamsReady++;
+
+        global.setBenchCalled(teamID, false);
 
         notifyAll();
 
@@ -193,9 +187,7 @@ public class Playground {
             catch (InterruptedException e) {}
         }
 
-        global.setBenchCalled(false);
         System.out.println("starting trial");
-        contestantsDone=0;
 
         global.setRefereeState(RefereeState.WAIT_FOR_TRIAL_CONCLUSION,logger);
 
@@ -221,17 +213,24 @@ public class Playground {
     /**
      * Contestant operation
      */
-    public synchronized void done(){
+    public synchronized void done(int contestantID, int teamID){
 
         contestantsDone++;
 
-        if(contestantsDone==6)
+        System.out.println("Contestant "+contestantID+" from team "+teamID+" DONE");
+        if(contestantsDone==6) {
+            System.out.println("ALL DONE");
             notifyAll();
+        }
 
-        while(trialStarted)
-            try{
+        while(trialStarted) {
+            try {
+                System.out.println("Contestant "+contestantID+" from team "+teamID+" DONE");
                 wait();
-            } catch (InterruptedException e){}
+            } catch (InterruptedException e) {}
+        }
+
+        global.decrementStandingInPosition(teamID);
 
     }
 
@@ -246,22 +245,34 @@ public class Playground {
             } catch (InterruptedException e) {}
         }
 
-        System.out.println("trial decision:");
-        if(global.getFlagPos() > 0){
-            global.incGamescore_t1(); //team 1 wins
-              System.out.println("team 1 wins trial ");
-        }
-        else if (global.getFlagPos() < 0) {
-            global.incGamescore_t2(); //team 2 wins
-            // System.out.println("team 2 wins trial ");
+        int team1Power = IntStream.of(global.getSelection(0)).sum();
+        int team2Power = IntStream.of(global.getSelection(1)).sum();
 
-        }
-        else System.out.println("draw!");
+        System.out.println("trial assertion:");
+        System.out.println("trial number: " + global.getTrialNum());
+
+        System.out.println("team 1 power " + team1Power);
+        System.out.println("team 2 power " + team2Power);
+
+        global.setFlagPos((global.getFlagPos()+(team2Power-team1Power)));
+
+        System.out.println("new flag pos: " + global.getFlagPos());
 
         trialStarted = false;
 
+
+        if(global.gameFinished()){
+            System.out.println("GAME FINISHED, NUMBER OF GAMES PLAYED TILL NOW: "+ global.getGamesNum());
+            if(global.getGamesNum()==3)
+            {
+                global.setMatchInProgress(false);
+            }
+        }
+
+
+
         notifyAll();
-        global.incTrial_no();
+
     }
 
    /**
@@ -289,8 +300,6 @@ public class Playground {
 
 
         }
-
-        System.out.println("Coach "+teamID+" exited the waiting cycle in reviewNotes!");
 
     }
 

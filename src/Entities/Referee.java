@@ -49,9 +49,15 @@ public class Referee extends Thread {
                 playground.startTrial(); // waitingForTrialEnd();
                 playground.assertTrialDecision();
             }
+            System.out.println("REF EXITED GAME CYCLE: "+ global.getGamesNum());
             refereeSite.declareGameWinner (logger);
 
-        }while(!global.matchFinished());
+
+            System.out.println("REFEREE: MATCH FINISHED?" + !global.matchInProgress());
+
+        }while(global.matchInProgress());
+
+        System.out.println("REFEREE: MATCH FINISHED \uD83D\uDC4C\uD83D\uDE02");
         refereeSite.declareMatchWinner(logger);
     }
 

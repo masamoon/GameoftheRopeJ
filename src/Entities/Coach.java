@@ -13,18 +13,13 @@ public class Coach extends Thread{
 
     private int teamID;
 
-    private int strategyID;
-
     private Bench benchMon;
 
     private Playground playgroundMon;
 
     private Global global;
 
-    // todo: state
-
     public Coach(int teamID, Bench benchMon, Playground playgroundMon, Global global) {
-        this.strategyID = 0;
         this.teamID = teamID;
         this.benchMon = benchMon;
         this.playgroundMon = playgroundMon;
@@ -48,22 +43,11 @@ public class Coach extends Thread{
 
             playgroundMon.informReferee(teamID); // enter WATCH_TRIAL blocking state
 
-            // todo: no fim disto é preciso actualizar as forças:
             playgroundMon.reviewNotes(teamID);
 
+            System.out.println("COACH MATCH IN PROGRESS?: "+ global.matchInProgress());
         }
+        System.out.println("COACH FINISHED");
     }
-
-    public int getTeamID() {
-        return teamID;
-    }
-
-    public int getStrategyID() {
-        return strategyID;
-    }
-
-
-
-
 
 }
