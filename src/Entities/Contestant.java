@@ -17,7 +17,7 @@ public class Contestant extends Thread {
 
     private int teamID;
 
-    private int strength;
+   // private int strength;
 
     private Bench benchMon;
 
@@ -25,10 +25,10 @@ public class Contestant extends Thread {
 
     private Global global;
 
-    public Contestant(int contestantID, int teamID, int strength, Bench benchMon, Playground playgroundMon, Global global) {
+    public Contestant(int contestantID, int teamID,  Bench benchMon, Playground playgroundMon, Global global) {
         this.contestantID = contestantID;
         this.teamID = teamID;
-        this.strength = strength;
+       // this.strength = strength;
         this.benchMon = benchMon;
         this.playgroundMon = playgroundMon;
         this.global = global;
@@ -73,16 +73,5 @@ public class Contestant extends Thread {
         return this.teamID;
     }
 
-    public int getStrength() {
-        return this.strength;
-    }
-
-    public void increaseStrength() {
-        this.strength++;
-    }
-
-    public void decreaseStrength() {
-        this.strength--;
-    }
 
 }
