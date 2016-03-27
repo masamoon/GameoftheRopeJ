@@ -29,9 +29,6 @@ public class Global {
 
     private CoachState coachStates [];
 
-    private int benchTeam1;
-    private int benchTeam2;
-
     private int [] selectedTeam1;
     private int [] selectedTeam2;
 
@@ -80,9 +77,6 @@ public class Global {
 
         this.gamescore_t1 =0;
         this.gamescore_t2= 0;
-
-        this.benchTeam1 = 0;
-        this.benchTeam2 = 0;
 
         this.selectedTeam1 = new int [] {-1,-1,-1};
         this.selectedTeam2 = new int [] {-1,-1,-1};
