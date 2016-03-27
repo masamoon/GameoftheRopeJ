@@ -44,15 +44,12 @@ public class Bench {
     public synchronized void sitDown(int contestantID, int teamID, Global global, Playground playground) {
 
         global.setContestantState(contestantID, teamID, ContestantState.SIT_AT_THE_BENCH,logger);
-        System.out.println("Contestant "+contestantID+" from team "+teamID+" sitting down");
         this.numSitting++;
 
         if(numSitting==10){
             global.setBenchReady(true);
             playground.benchWakeRef();
         }
-
-        System.out.println(imSelected(contestantID, teamID) + " " + global.benchCalled(teamID));
         while ((!global.benchCalled(teamID) || !imSelected(contestantID, teamID)) && global.matchInProgress()){
             try
             {
@@ -95,7 +92,7 @@ public class Bench {
         int strategy = r.nextInt(2);
 
         int team[];
-        System.out.println("Coach from team " + teamID + " rolled the strategy: "+strategy);
+        //System.out.println("Coach from team " + teamID + " rolled the strategy: "+strategy);
         if(strategy == 0)
             team = selectRandom();
         else
@@ -103,6 +100,7 @@ public class Bench {
 
         global.selectTeam(teamID, team[0],team[1],team[2]);
 
+        //System.out.println("Coach " + teamID + "picked:" + team[0]+team[1]+team[2]);
         global.setBenchCalled(teamID, true);
 
         notifyAll();

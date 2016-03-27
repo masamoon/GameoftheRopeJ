@@ -12,9 +12,6 @@ import States.RefereeState;
 
 public class Referee extends Thread {
 
-    /* todo: add comments */
-
-    private RefereeState refstate;
     private Playground playground;
     private RefereeSite refereeSite;
     private Logger logger;
@@ -30,46 +27,21 @@ public class Referee extends Thread {
     /* Life Cycle of the Referee Thread
     */
 
-
     @Override
     public void run(){
-
-
-        refereeSite.announceMatch(); // state -> START_OF_THE_MATCH
-
+        refereeSite.announceMatch();
         do{
-            refereeSite.announceGame(); // state -> START_OF_THE_GAME
-
-          //  System.out.println(global.gameFinished());
+            refereeSite.announceGame();
             while(!global.gameFinished()){
-
-                //makeArrangements();
-
-                playground.callTrial(); //  waitingForTeamsReady();
-                playground.startTrial(); // waitingForTrialEnd();
+                playground.callTrial();
+                playground.startTrial();
                 playground.assertTrialDecision();
             }
-            System.out.println("REF EXITED GAME CYCLE: "+ global.getGamesNum());
             refereeSite.declareGameWinner (logger);
-
-
         }while(global.matchInProgress());
-
-        System.out.println("REFEREE: MATCH FINISHED \uD83D\uDC4C\uD83D\uDE02");
         refereeSite.declareMatchWinner(logger);
         logger.closeFile();
     }
-
-    /**
-     *
-     * @param state
-     */
-    public void setRefstate(RefereeState state){
-        refstate = state;
-    }
-
-
-
 
 
 }

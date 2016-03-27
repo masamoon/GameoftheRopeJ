@@ -5,13 +5,12 @@ package States;
  */
 public enum ContestantState {
 
-    /* todo: add comments*/
 
-    INIT("I"),
+    INIT("   "),
 
-    SIT_AT_THE_BENCH("SATB"),
+    SIT_AT_THE_BENCH("SIT"),
 
-    STAND_IN_POSITION("SIP"),
+    STAND_IN_POSITION("POS"),
 
     DO_YOUR_BEST("DYB");
 

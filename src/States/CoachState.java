@@ -5,15 +5,13 @@ package States;
  */
 public enum CoachState {
 
-    /* todo: add comments */
-
-    INIT("I"),
+    INIT("    "),
 
     WAIT_FOR_REFEREE_COMMAND("WFRC"),
 
-    ASSEMBLE_TEAM("AT"),
+    ASSEMBLE_TEAM("ASMT"),
 
-    WATCH_TRIAL("WT");
+    WATCH_TRIAL("WTRL");
 
     private final String acronym;
 

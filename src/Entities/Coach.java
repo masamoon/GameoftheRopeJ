@@ -36,18 +36,16 @@ public class Coach extends Thread{
 
         while(global.matchInProgress()){
 
-            playgroundMon.waitForCalling(teamID); // enter WAIT_FOR_REFEREE_COMMAND   blocking state
+            playgroundMon.waitForCalling(teamID);
 
-            benchMon.callContestants(teamID); // seleciona os contestants e acorda-os
-            playgroundMon.waitForContestants(teamID); // entra no estado ASSEMBLE_TEAM e espera no playground que todos os contestants estejam STANDING
+            benchMon.callContestants(teamID);
+            playgroundMon.waitForContestants(teamID);
 
-            playgroundMon.informReferee(teamID); // enter WATCH_TRIAL blocking state
+            playgroundMon.informReferee(teamID);
 
             playgroundMon.reviewNotes(teamID, benchMon);
 
-            System.out.println("COACH MATCH IN PROGRESS?: "+ global.matchInProgress());
         }
-        System.out.println("COACH FINISHED");
     }
 
 }

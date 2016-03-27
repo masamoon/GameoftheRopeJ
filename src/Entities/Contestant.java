@@ -11,13 +11,10 @@ import States.ContestantState;
 
 public class Contestant extends Thread {
 
-    /* todo: add comments */
 
     private int contestantID;
 
     private int teamID;
-
-   // private int strength;
 
     private Bench benchMon;
 
@@ -28,7 +25,6 @@ public class Contestant extends Thread {
     public Contestant(int contestantID, int teamID,  Bench benchMon, Playground playgroundMon, Global global) {
         this.contestantID = contestantID;
         this.teamID = teamID;
-       // this.strength = strength;
         this.benchMon = benchMon;
         this.playgroundMon = playgroundMon;
         this.global = global;
@@ -39,20 +35,17 @@ public class Contestant extends Thread {
 
         while(global.matchInProgress()){
 
-            benchMon.sitDown(contestantID, teamID, global, playgroundMon); // entra no estado de espera SIT_AT_THE_BENCH
+            benchMon.sitDown(contestantID, teamID, global, playgroundMon);
 
             if(global.matchInProgress()){
-                System.out.println("contestant " + contestantID + " from team " + teamID +" about to followCoachAdvice...");
                 playgroundMon.followCoachAdvice(contestantID, teamID);
 
-                playgroundMon.getReady(contestantID, teamID); // passa o seu estado interno para DO_YOUR_BEST
+                playgroundMon.getReady(contestantID, teamID);
                 pullRope();
-                playgroundMon.done(contestantID, teamID); // acorda o Referee e fica em espera (sem alterar o seu estado)
+                playgroundMon.done(contestantID, teamID);
 
-                System.out.println("MATCH IN PROGRESS?: "+ global.matchInProgress());
             }
         }
-        System.out.println("CONTESTANT FINISHED");
     }
 
     /*
@@ -60,19 +53,10 @@ public class Contestant extends Thread {
      */
     private void pullRope ()
     {
-        System.out.println("* LE ROPE PULL* from"+teamID+" "+contestantID);
         try
         { sleep ((long) (1 + 10 * Math.random ()));
         }
         catch (InterruptedException e) {}
-    }
-
-    public int getContestantID() {
-        return this.contestantID;
-    }
-
-    public int getTeamID() {
-        return this.teamID;
     }
 
 

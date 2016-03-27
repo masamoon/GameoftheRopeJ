@@ -7,17 +7,17 @@ public enum RefereeState {
 
     /* todo: add comments */
 
-    START_OF_THE_MATCH("SOTM"),
+    START_OF_THE_MATCH("SOM"),
 
-    START_OF_A_GAME("SOAG"),
+    START_OF_A_GAME("SOG"),
 
-    TEAMS_READY("TR"),
+    TEAMS_READY("TMR"),
 
-    WAIT_FOR_TRIAL_CONCLUSION("WFTC"),
+    WAIT_FOR_TRIAL_CONCLUSION("WTC"),
 
-    END_OF_A_GAME("EOAG"),
+    END_OF_A_GAME("EOG"),
 
-    END_OF_THE_MATCH("EOTM");
+    END_OF_THE_MATCH("EOM");
 
     private final String acronym;
 

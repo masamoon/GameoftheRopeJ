@@ -234,8 +234,6 @@ public class Global {
         return this.refereeState;
     }
 
-    /* coaches */
-
     /**
     * set Coach State to new state
     * @param teamID team's id
@@ -272,14 +270,6 @@ public class Global {
      * sets gamescore for team1 as new value
      * @param score
      */
-    public void setGamescore_t1(int score){this.gamescore_t1= score; }
-
-    /**
-     * sets gamescore for team2 as new value
-     * @param score
-     */
-    public void setGamescore_t2(int score){this.gamescore_t2= score; }
-
     /**
      * increment by 1 the score of team1
      */
@@ -289,100 +279,6 @@ public class Global {
      * increment by 1 the score of team2
      */
     public void incGamescore_t2(){this.gamescore_t2+=1; }
-
-/*
-
-    */
-/**
-     *
-     * @return
-     *//*
-
-    public int getTrialscore_t1() {
-        return trialscore_t1;
-    }
-
-    */
-/**
-     *
-     * @param trialscore_t1
-     *//*
-
-    public void setTrialscore_t1(int trialscore_t1) {
-        this.trialscore_t1 = trialscore_t1;
-    }
-
-    */
-/**
-     *
-     * @return
-     *//*
-
-    public int getTrialscore_t2(){
-        return trialscore_t2;
-    }
-
-    */
-/**
-     *
-     * @param trialscore_t2
-     *//*
-
-    public void setTrialscore_t2(int trialscore_t2){
-        this.trialscore_t2 = trialscore_t2;
-    }
-
-    */
-/**
-     *
-     *//*
-
-    public void incTrialscore_t1(){
-        this.trialscore_t1+=1;
-    }
-
-    */
-/**
-     *
-     *//*
-
-    public void incTrialscore_t2(){
-        this.trialscore_t2+=1;
-    }
-*/
-
-
-    /**
-     * increments number o contestants sitting on the bench
-     * @param teamID contestant's team's id
-     */
-    public void incrementSittingAtBench(int teamID){
-        if(teamID==1){
-            benchTeam1++;
-            System.out.println("Total contestants sitting on bench of team " + teamID + ":"+ benchTeam1);
-        }
-        else{
-            benchTeam2++;
-            System.out.println("Total contestants sitting on bench of team " + teamID + ":"+ benchTeam2);
-        }
-
-
-    }
-
-    /**
-     * decrements number o contestants sitting on the bench
-     * @param teamID contestant's team's id
-     */
-    public void decrementSittingAtBench(int teamID){
-        if(teamID==1){
-            benchTeam1--;
-            System.out.println("Total contestants sitting on bench of team " + teamID + ":"+ benchTeam1);
-        }
-        else {
-            benchTeam2--;
-            System.out.println("Total contestants sitting on bench of team " + teamID + ":" + benchTeam2);
-        }
-    }
 
     /**
      * gets number of contestants sitting on the bench
@@ -419,11 +315,9 @@ public class Global {
     public void incrementStandingInPosition(int teamID){
         if(teamID==1){
             standingTeam1++;
-            System.out.println("Total contestants standing up for team" + teamID + ": "+ standingTeam1);
         }
         else{
             standingTeam2++;
-            System.out.println("Total contestants standing up for team" + teamID + ": "+ standingTeam2);
         }
 
 
@@ -436,11 +330,9 @@ public class Global {
     public void decrementStandingInPosition(int teamID){
         if(teamID==1){
             standingTeam1--;
-            System.out.println("Total contestants sitting on bench of team " + teamID + ": "+ standingTeam1);
         }
         else {
             standingTeam2--;
-            System.out.println("Total contestants standing up for team  " + teamID + ": " + standingTeam2);
         }
     }
 
@@ -458,11 +350,11 @@ public class Global {
 
     /**
      *
-     * @param teamID
      * @param id
-     * @return
+     * @param teamID
+     * @return the strength of this contestant
      */
-    public int getStrength(int teamID, int id){
+    public int getStrength(int id, int teamID){
         if(teamID==1)
             return strength_t1[id];
         else
@@ -472,11 +364,11 @@ public class Global {
 
     /**
      *
-     * @param teamID
      * @param id
+     * @param teamID
      * @param str
      */
-    public void setStrength(int teamID, int id, int str){
+    public void setStrength(int id, int teamID, int str){
         if(teamID==1)
             strength_t1[id] = str;
         else
@@ -494,11 +386,9 @@ public class Global {
         this.trialNum +=1;
     }
 
-
     public void resetTrialNum(){
         this.trialNum =0;
     }
-
 
     public int getFlagPos() {
         return flagPos;

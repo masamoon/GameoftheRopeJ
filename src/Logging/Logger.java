@@ -15,7 +15,7 @@ public class Logger {
     public Logger(String path, Global global){
         f = new TextFile();
         f.openForWriting(null,"log.txt");
-        String str =  "Ref Coa1 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5 Coa2 Cont 1 Cont 2  Cont 3 Cont 4 Cont 5      Trial";
+        String str =  "Ref Coa1 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5 Coa2 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5      Trial";
         String str2 = "Sta Stat Sta SG Sta SG Sta SG Sta SG Sta SG Stat Sta SG Sta SG Sta SG Sta SG Sta SG 3 2 1 . 1 2 3 NB PS";
         f.writelnString(str);
         f.writelnString(str2);
@@ -33,7 +33,6 @@ public class Logger {
      */
     public synchronized void insertLine(){
 
-       // f.openForWriting(null,"log.txt");
         String ref_state = global.getRefereeState().getAcronym();
         String coach_state_1 = global.getCoachState(0).getAcronym();
         String coach_state_2 = global.getCoachState(1).getAcronym();
@@ -42,16 +41,20 @@ public class Logger {
         StringBuilder team2 = new StringBuilder();
 
         for (int i = 0; i <= 4 ; i++) {
-            team1.append(global.getContestantState(0,i).getAcronym());
+            team1.append(global.getContestantState(i,0).getAcronym());
             team1.append(" ");
-            team1.append(global.getStrength(0,i));
+            if(global.getStrength(i,0)<10)
+                team1.append(" ");
+            team1.append(global.getStrength(i,0));
             team1.append(" ");
         }
 
         for (int i = 0; i <= 4 ; i++) {
-            team2.append(global.getContestantState(1,i).getAcronym());
+            team2.append(global.getContestantState(i,1).getAcronym());
             team2.append(" ");
-            team2.append(global.getStrength(1,i));
+            if(global.getStrength(i,1)<10)
+                team2.append(" ");
+            team2.append(global.getStrength(i,1));
             team2.append(" ");
         }
 
@@ -59,8 +62,6 @@ public class Logger {
         int rope_pos = global.getFlagPos();
         int trial_no = global.getTrialNum();
 
-        int team1_score = global.getGamescore_t1();
-        int team2_score = global.getGamescore_t2();
 
         int[] sel1 = global.getSelection(0);
         int[] sel2 = global.getSelection(1);
@@ -69,64 +70,52 @@ public class Logger {
         StringBuilder selection2 = new StringBuilder();
 
         for(int sel: sel1){
-            selection1.append(sel);
-        }
+            if(sel==-1){
+                selection1.append("- ");
+            }
+            else{
+                sel++;
+                selection1.append(sel + " ");
+            }
 
+        }
 
         for(int sel: sel2){
-            selection2.append(sel);
+            if(sel==-1){
+                selection2.append("- ");
+            }
+            else{
+                sel++;
+                selection2.append(sel+ " ");
+            }
+
         }
 
+        String line = ref_state +" " + coach_state_1+" " +  team1.toString() + coach_state_2 + " "+ team2.toString()
+                +selection1.toString() +". "+selection2.toString() + " " + trial_no+"  " + rope_pos;
 
-
-        StringBuilder t1_str_score = new StringBuilder();
-        StringBuilder t2_str_score = new StringBuilder();
-
-        for (int i = 0; i < team1_score ; i++) {
-            t1_str_score.append("*");
-        }
-
-        for (int i = 0; i < team2_score ; i++) {
-            t2_str_score.append("*");
-        }
-
-        String line = ref_state +" " + coach_state_1+" " +  team1.toString()+" " + coach_state_2 + team2.toString()+" " + t1_str_score.toString()
-                +" " + t2_str_score.toString()+" "+selection2.toString()+"  "+selection1.toString()+" " + trial_no+" " + rope_pos;
-
-       f.writelnString(line);
-
-
+        f.writelnString(line);
 
     }
 
-    public void matchWinnerLine(int score1, int score2, String winner){
-      //  f.openForWriting(null,"log.txt");
-        f.writelnString("Match was won by team "+winner+ "("+score1+"-"+score2+").");
-       // f.close();
+    public void matchWinnerLine(int score1, int score2, int winner){
+        f.writelnString("Match was won by team "+winner+ " ("+score1+"-"+score2+").\n");
     }
 
     public void matchTieLine(){
-      //  f.openForWriting(null,"log.txt");
-        f.writelnString("Match was a draw");
-      //  f.close();
+        f.writelnString("Match was a draw.\n");
     }
 
     public void gameWinnerLinePoints(int ngame, int nteam, int ntrials){
-      //  f.openForWriting(null,"log.txt");
-       f.writelnString("Game "+ngame+" was won by team "+nteam+" by points in "+ntrials+" trials");
-     //  f.close();
+       f.writelnString("Game "+ngame+" was won by team "+nteam+" by points in "+ntrials+" trials.\n");
     }
 
     public void gameWinnerLineKO(int ngame, int nteam, int ntrials){
-      //  f.openForWriting(null,"log.txt");
-        f.writelnString("Game "+ngame+" was won by team "+nteam+" by knock-out in "+ntrials+" trials");
-      //  f.close();
+        f.writelnString("Game "+ngame+" was won by team "+nteam+" by knock-out in "+ntrials+" trials.\n");
     }
 
     public void gameTieLine(){
-     //   f.openForWriting(null,"log.txt");
-        f.writelnString("Game was a draw");
-       // f.close();
+        f.writelnString("Game was a draw.\n");
     }
 
     public void closeFile(){
