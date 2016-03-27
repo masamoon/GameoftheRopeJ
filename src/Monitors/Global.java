@@ -110,7 +110,7 @@ public class Global {
 
     /**
      *gets benchCalled
-     * @return
+     * @return true if bench is called
      */
     public boolean benchCalled(int teamID) {
         if(teamID==0)
@@ -121,6 +121,7 @@ public class Global {
 
     /**
      *sets benchCalled
+     * @param teamID team's id
      * @param benchCalled
      */
     public void setBenchCalled(int teamID, boolean benchCalled) {
@@ -382,10 +383,16 @@ public class Global {
         return this.trialNum;
     }
 
+    /**
+     * increments trial num by 1
+     */
     public void incrementTrialNum(){
         this.trialNum +=1;
     }
 
+    /**
+     * resets trial num back to zero
+     */
     public void resetTrialNum(){
         this.trialNum =0;
     }
@@ -402,6 +409,9 @@ public class Global {
         return gamesNum;
     }
 
+    /**
+     * increments number of games by 1
+     */
     public void incrementGamesNum() {
         this.gamesNum+=1;
     }

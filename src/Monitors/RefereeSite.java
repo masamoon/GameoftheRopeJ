@@ -21,7 +21,7 @@ public class RefereeSite {
      */
 
     /**
-     * Announces new game
+     * Referee Announces new game
      */
     public synchronized void announceGame(){
         global.setRefereeState(RefereeState.START_OF_A_GAME,logger);
@@ -33,6 +33,9 @@ public class RefereeSite {
         global.resetTrialNum();
     }
 
+    /**
+     * Referee Announces a new Match
+     */
     public synchronized void announceMatch(){
         global.setRefereeState(RefereeState.START_OF_THE_MATCH,logger);
 
@@ -42,7 +45,7 @@ public class RefereeSite {
 
     /**
      * Checks what team is the game's winner
-     * @param logger
+     * @param logger reference to logger Object
      */
     public synchronized void declareGameWinner (Logger logger){
         if(global.getTrialNum() >= 6){

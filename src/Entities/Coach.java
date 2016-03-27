@@ -29,7 +29,6 @@ public class Coach extends Thread{
     /**
      *  Coach Thread life cycle.
      */
-
     @Override
     public void run()
     {

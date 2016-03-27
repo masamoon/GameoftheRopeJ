@@ -24,9 +24,8 @@ public class Referee extends Thread {
         this.logger = logger;
     }
 
-    /* Life Cycle of the Referee Thread
+    /** Life Cycle of the Referee Thread
     */
-
     @Override
     public void run(){
         refereeSite.announceMatch();
@@ -42,6 +41,17 @@ public class Referee extends Thread {
         refereeSite.declareMatchWinner(logger);
         logger.closeFile();
     }
+
+    /**
+     *sets Referee State to new state
+     * @param state new Referee State
+     */
+    public void setRefstate(RefereeState state){
+        refstate = state;
+    }
+
+
+
 
 
 }

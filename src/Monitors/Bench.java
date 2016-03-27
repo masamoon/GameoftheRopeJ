@@ -66,9 +66,9 @@ public class Bench {
 
     /**
      * Checks if contestant is selected for trial
-     * @param contestantID
-     * @param teamID
-     * @return
+     * @param contestantID contestant's id
+     * @param teamID team's id
+     * @return true if selected
      */
     private boolean imSelected (int contestantID, int teamID)
     {
@@ -107,10 +107,17 @@ public class Bench {
 
     }
 
+    /**
+     * wakes all contestants
+     */
     public synchronized void wakeContestants(){
         notifyAll();
     }
 
+    /**
+     * team building strategy that consists on randomly choosing 3 team elements
+     * @return array containing the selected team for trial
+     */
     public int[] selectRandom(){
         Random r = new Random();
         int first = r.nextInt(5);
@@ -128,7 +135,10 @@ public class Bench {
         return new int[]{first,second,third};
     }
 
-
+    /**
+     * team building strategy that consists on choosing the 3 elements with more strength left
+     * @return array containing the selected team for trial
+     */
     public int[] selectTopteam(int teamID){
         int[] str;
         if(teamID ==0)

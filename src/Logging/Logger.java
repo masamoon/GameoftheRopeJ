@@ -100,24 +100,55 @@ public class Logger {
 
     public void matchWinnerLine(int score1, int score2, int winner){
         f.writelnString("Match was won by team "+winner+ " ("+score1+"-"+score2+").\n");
+    /**
+     * writes line on log file indicating the winner team and score
+     * @param score1 score of team1
+     * @param score2 score of team2
+     * @param winner winner team
+     */
+    public void matchWinnerLine(int score1, int score2, String winner){
+      //  f.openForWriting(null,"log.txt");
+        f.writelnString("Match was won by team "+winner+ "("+score1+"-"+score2+").");
+       // f.close();
     }
 
+    /**
+     * writes line on log file indicating a draw
+     */
     public void matchTieLine(){
         f.writelnString("Match was a draw.\n");
     }
 
+    /**
+     * writes line on log file indicating the game's winner
+     * @param ngame game's number
+     * @param nteam winner team
+     * @param ntrials number of trials needed to decide the winner
+     */
     public void gameWinnerLinePoints(int ngame, int nteam, int ntrials){
        f.writelnString("Game "+ngame+" was won by team "+nteam+" by points in "+ntrials+" trials.\n");
     }
 
+    /**
+     *writes line on log file indicating a knock-out win by a team
+     * @param ngame game number
+     * @param nteam winner team
+     * @param ntrials number of trials needed to decide the winner
+     */
     public void gameWinnerLineKO(int ngame, int nteam, int ntrials){
         f.writelnString("Game "+ngame+" was won by team "+nteam+" by knock-out in "+ntrials+" trials.\n");
     }
 
+    /**
+     *writes line on log file indicating a draw game
+     */
     public void gameTieLine(){
         f.writelnString("Game was a draw.\n");
     }
 
+    /**
+     * closes log file
+     */
     public void closeFile(){
         f.endOfFile();
         f.close();

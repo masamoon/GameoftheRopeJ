@@ -41,7 +41,10 @@ public class Playground {
 
     }
 
-
+    /**
+     * A team's Coach entera a blocking state and waits for a Referee command
+     * @param teamID Coach's teamID
+     */
     public synchronized void waitForCalling(int teamID){
 
         global.setCoachState(teamID, CoachState.WAIT_FOR_REFEREE_COMMAND,logger);
@@ -88,8 +91,8 @@ public class Playground {
     }
 
     /**
-     *
-     * @param teamID
+     *Coach waits for the team to assemble
+     * @param teamID coach's teamID
      */
     public synchronized void waitForContestants(int teamID){
 
