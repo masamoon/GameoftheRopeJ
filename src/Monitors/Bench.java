@@ -45,35 +45,24 @@ public class Bench {
 
         global.setContestantState(contestantID, teamID, ContestantState.SIT_AT_THE_BENCH,logger);
         System.out.println("Contestant "+contestantID+" from team "+teamID+" sitting down");
-        //global.incrementSittingAtBench(teamID);
         this.numSitting++;
-        System.out.println("Sitting on bench: "+ numSitting);
 
-        //if(global.getSittingAtBench(teamID)==5){
         if(numSitting==10){
-            // this is in case a contestant is sitting after the coach began waiting for the next trial
-            System.out.println("*** Last man Sitting***");
             global.setBenchReady(true);
             playground.benchWakeRef();
         }
 
         System.out.println(imSelected(contestantID, teamID) + " " + global.benchCalled(teamID));
-        while (!global.benchCalled(teamID) || !imSelected(contestantID, teamID)){
+        while ((!global.benchCalled(teamID) || !imSelected(contestantID, teamID)) && global.matchInProgress()){
             try
-            { System.out.println("Contestant "+contestantID+" from team "+teamID+" waiting");
-                System.out.println(imSelected(contestantID, teamID) + " " + global.benchCalled(teamID));
-
+            {
                 wait ();
             }
             catch (InterruptedException e) {}
-            System.out.println("Contestant "+contestantID+" from team "+teamID+" was woken up!");
         }
-        System.out.println("Contestant " + contestantID + " from team "+teamID+": I'm Selected!! Standing up...");
 
-        //global.decrementSittingAtBench(teamID);
         this.numSitting--;
 
-        System.out.println("Sitting on bench: "+ numSitting);
         global.setBenchReady(false);
 
     }
@@ -106,22 +95,25 @@ public class Bench {
         int strategy = r.nextInt(2);
 
         int team[];
-        System.out.println("ROLLED:"+strategy);
+        System.out.println("Coach from team " + teamID + " rolled the strategy: "+strategy);
         if(strategy == 0)
-            team = selectRandom(teamID);
+            team = selectRandom();
         else
             team = selectTopteam(teamID);
 
         global.selectTeam(teamID, team[0],team[1],team[2]);
 
         global.setBenchCalled(teamID, true);
-        System.out.println("coach " + teamID + " selected: "+team[0]+team[1]+team[2]);
 
         notifyAll();
 
     }
 
-    public int[] selectRandom(int teamID){
+    public synchronized void wakeContestants(){
+        notifyAll();
+    }
+
+    public int[] selectRandom(){
         Random r = new Random();
         int first = r.nextInt(5);
         int second;
@@ -145,10 +137,8 @@ public class Bench {
             str=global.getStrength_t1();
         else
             str = global.getStrength_t2();
-        int[] tmp = new int[5];
-        tmp = Arrays.copyOf(str,5);
 
-        HashMap<Integer,Integer> map = new HashMap<Integer,Integer>();
+        HashMap<Integer,Integer> map = new HashMap<>();
 
         for (int i = 0; i <5 ; i++) {
 

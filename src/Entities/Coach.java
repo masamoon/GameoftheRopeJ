@@ -43,7 +43,7 @@ public class Coach extends Thread{
 
             playgroundMon.informReferee(teamID); // enter WATCH_TRIAL blocking state
 
-            playgroundMon.reviewNotes(teamID);
+            playgroundMon.reviewNotes(teamID, benchMon);
 
             System.out.println("COACH MATCH IN PROGRESS?: "+ global.matchInProgress());
         }

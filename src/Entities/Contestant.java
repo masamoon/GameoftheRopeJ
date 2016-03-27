@@ -41,14 +41,16 @@ public class Contestant extends Thread {
 
             benchMon.sitDown(contestantID, teamID, global, playgroundMon); // entra no estado de espera SIT_AT_THE_BENCH
 
-            System.out.println("contestant " + contestantID + " from team " + teamID +" about to followCoachAdvice...");
-            playgroundMon.followCoachAdvice(contestantID, teamID);
+            if(global.matchInProgress()){
+                System.out.println("contestant " + contestantID + " from team " + teamID +" about to followCoachAdvice...");
+                playgroundMon.followCoachAdvice(contestantID, teamID);
 
-            playgroundMon.getReady(contestantID, teamID); // passa o seu estado interno para DO_YOUR_BEST
-            pullRope();
-            playgroundMon.done(contestantID, teamID); // acorda o Referee e fica em espera (sem alterar o seu estado)
+                playgroundMon.getReady(contestantID, teamID); // passa o seu estado interno para DO_YOUR_BEST
+                pullRope();
+                playgroundMon.done(contestantID, teamID); // acorda o Referee e fica em espera (sem alterar o seu estado)
 
-            System.out.println("MATCH IN PROGRESS?: "+ global.matchInProgress());
+                System.out.println("MATCH IN PROGRESS?: "+ global.matchInProgress());
+            }
         }
         System.out.println("CONTESTANT FINISHED");
     }

@@ -5,8 +5,6 @@ import States.CoachState;
 import States.ContestantState;
 import States.RefereeState;
 
-import java.util.*;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 
@@ -14,8 +12,6 @@ import java.util.stream.IntStream;
  * Created by jonnybel on 3/8/16.
  */
 public class Playground {
-
-
 
 
     private Global global;
@@ -282,29 +278,32 @@ public class Playground {
     * Coach operation
     * @param teamID team's ID
     */
-    public synchronized void reviewNotes(int teamID) {
+    public synchronized void reviewNotes(int teamID, Bench bench) {
 
 
         System.out.println(teamID +" team reviewing notes ");
 
+        if(global.matchInProgress()){
+            for(int i=0; i<5; i++){
+                final int finalI = i;
+                boolean contains = IntStream.of(global.getSelection(teamID)).anyMatch(x -> x == finalI);
 
-        for(int i=0; i<5; i++){
-            final int finalI = i;
-            boolean contains = IntStream.of(global.getSelection(teamID)).anyMatch(x -> x == finalI);
-
-            if(contains){
-                int str = global.getStrength(teamID,i);
-                if(str > 0)
-                    global.setStrength(teamID,i,--str);
+                if(contains){
+                    int str = global.getStrength(teamID,i);
+                    if(str > 0)
+                        global.setStrength(teamID,i,--str);
+                }
+                else{
+                    int str = global.getStrength(teamID,i);
+                    if(str < 10)
+                        global.setStrength(teamID,i,++str);
+                }
             }
-            else{
-                int str = global.getStrength(teamID,i);
-                if(str < 10)
-                    global.setStrength(teamID,i,++str);
-            }
-
-
+        }else{
+            bench.wakeContestants();
         }
+
+
 
     }
 

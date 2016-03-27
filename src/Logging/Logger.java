@@ -15,7 +15,7 @@ public class Logger {
     public Logger(String path, Global global){
         f = new TextFile();
         f.openForWriting(null,"log.txt");
-        String str =  "Ref Coa1 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5 Coa2 Cont 1 Cont 2  Cont 3 Cont 4 Cont 5 Trial";
+        String str =  "Ref Coa1 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5 Coa2 Cont 1 Cont 2  Cont 3 Cont 4 Cont 5      Trial";
         String str2 = "Sta Stat Sta SG Sta SG Sta SG Sta SG Sta SG Stat Sta SG Sta SG Sta SG Sta SG Sta SG 3 2 1 . 1 2 3 NB PS";
         f.writelnString(str);
         f.writelnString(str2);
@@ -107,7 +107,7 @@ public class Logger {
 
     public void matchTieLine(){
       //  f.openForWriting(null,"log.txt");
-        f.writelnString("match was a draw");
+        f.writelnString("Match was a draw");
       //  f.close();
     }
 
@@ -125,7 +125,7 @@ public class Logger {
 
     public void gameTieLine(){
      //   f.openForWriting(null,"log.txt");
-        f.writelnString("game was a draw");
+        f.writelnString("Game was a draw");
        // f.close();
     }
 

@@ -53,8 +53,6 @@ public class Referee extends Thread {
             refereeSite.declareGameWinner (logger);
 
 
-            System.out.println("REFEREE: MATCH FINISHED?" + !global.matchInProgress());
-
         }while(global.matchInProgress());
 
         System.out.println("REFEREE: MATCH FINISHED \uD83D\uDC4C\uD83D\uDE02");
