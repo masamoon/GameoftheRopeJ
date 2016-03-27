@@ -55,7 +55,7 @@ public class Gameoftherope {
         }
 
 
-       // logger.closeFile();
+
         // todo: cenas para as threads ficarem "arrumadas" no fim
 
     }

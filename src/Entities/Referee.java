@@ -59,6 +59,7 @@ public class Referee extends Thread {
 
         System.out.println("REFEREE: MATCH FINISHED \uD83D\uDC4C\uD83D\uDE02");
         refereeSite.declareMatchWinner(logger);
+        logger.closeFile();
     }
 
     /**
