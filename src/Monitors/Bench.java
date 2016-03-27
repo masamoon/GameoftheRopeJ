@@ -103,9 +103,10 @@ public class Bench {
     public synchronized void callContestants (int teamID){
 
         Random r = new Random();
-        int strategy = r.nextInt(1);
+        int strategy = r.nextInt(2);
 
         int team[];
+        System.out.println("ROLLED:"+strategy);
         if(strategy == 0)
             team = selectRandom(teamID);
         else
@@ -122,16 +123,16 @@ public class Bench {
 
     public int[] selectRandom(int teamID){
         Random r = new Random();
-        int first = r.nextInt(4);
+        int first = r.nextInt(5);
         int second;
         do {
-            second = r.nextInt(4);
+            second = r.nextInt(5);
         }while(second == first);
 
         int third;
 
         do{
-            third = r.nextInt(4);
+            third = r.nextInt(5);
         }while( third == first || third == second);
 
         return new int[]{first,second,third};
