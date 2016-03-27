@@ -40,6 +40,7 @@ public class Bench {
      @param teamID team ID of both the contestant and his coach
      @param contestantID contestant's ID
      @param global reference to global repository
+     @param playground reference to playground
      */
     public synchronized void sitDown(int contestantID, int teamID, Global global, Playground playground) {
 
@@ -137,6 +138,7 @@ public class Bench {
 
     /**
      * team building strategy that consists on choosing the 3 elements with more strength left
+     * @param teamID team's id
      * @return array containing the selected team for trial
      */
     public int[] selectTopteam(int teamID){
