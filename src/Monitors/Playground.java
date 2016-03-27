@@ -152,16 +152,17 @@ public class Playground {
      */
     public synchronized  void informReferee(int teamID){
 
+        global.setBenchCalled(teamID, false);
+
         System.out.println(teamID+" informing referee");
         global.setCoachState(teamID, CoachState.WATCH_TRIAL,logger);
 
         System.out.println("Coach " + teamID + " is now watching Trial...");
         teamsReady++;
 
-        global.setBenchCalled(teamID, false);
-
-        notifyAll();
-
+        if(teamsReady==2){
+            notifyAll();
+        }
 
         while(trialCalled || trialStarted) {
             System.out.println("Coach " + teamID + " is waiting.");
