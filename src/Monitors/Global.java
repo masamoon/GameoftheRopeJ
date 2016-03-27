@@ -281,17 +281,6 @@ public class Global {
      */
     public void incGamescore_t2(){this.gamescore_t2+=1; }
 
-    /**
-     * gets number of contestants sitting on the bench
-     * @param teamID contestants team's id
-     * @return number of contestants sitting on the bench
-     */
-    public int getSittingAtBench(int teamID) {
-        if(teamID==1)
-            return benchTeam1;
-        else
-            return benchTeam2;
-    }
 
     /**
      * gets benchReady

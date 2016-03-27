@@ -98,20 +98,16 @@ public class Logger {
 
     }
 
-    public void matchWinnerLine(int score1, int score2, int winner) {
-        f.writelnString("Match was won by team " + winner + " (" + score1 + "-" + score2 + ").\n");
-    }
     /**
      * writes line on log file indicating the winner team and score
      * @param score1 score of team1
      * @param score2 score of team2
      * @param winner winner team
      */
-    public void matchWinnerLine(int score1, int score2, String winner){
-      //  f.openForWriting(null,"log.txt");
-        f.writelnString("Match was won by team "+winner+ "("+score1+"-"+score2+").");
-       // f.close();
+    public void matchWinnerLine(int score1, int score2, int winner) {
+        f.writelnString("Match was won by team " + winner + " (" + score1 + "-" + score2 + ").\n");
     }
+
 
     /**
      * writes line on log file indicating a draw

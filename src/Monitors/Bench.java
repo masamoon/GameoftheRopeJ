@@ -108,7 +108,7 @@ public class Bench {
     }
 
     /**
-     * wakes all contestants
+     *  wakes all the contestants: this is only used at the match to free the contestants that staying in the bench.
      */
     public synchronized void wakeContestants(){
         notifyAll();
