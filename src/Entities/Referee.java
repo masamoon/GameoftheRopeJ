@@ -42,13 +42,7 @@ public class Referee extends Thread {
         logger.closeFile();
     }
 
-    /**
-     *sets Referee State to new state
-     * @param state new Referee State
-     */
-    public void setRefstate(RefereeState state){
-        refstate = state;
-    }
+
 
 
 
