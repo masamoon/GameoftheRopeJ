@@ -10,23 +10,47 @@ import java.util.stream.IntStream;
 
 /**
  * Created by jonnybel on 3/8/16.
+ *
+ * This Class implements the shared region for the Playground, with synchronization based on monitors
  */
 public class Playground {
 
 
-    private Global global;
+    /**
+     *  General Information Repository object
+     */
+    private final Global global;
 
+    /**
+     * Logger object
+     */
+    private final Logger logger;
+
+    /**
+     * Number of complete teams that are standing in position (from 0 to 2)
+     */
     private int teamsReady;
 
+    /**
+     * Number of contestants that have finished pulling the rope during a trial.
+     */
     private int contestantsDone;
 
-
+    /**
+     * True if a trial has just been called by the Referee
+     */
     private boolean trialCalled;
 
+    /**
+     * True if a trial has just been started by the Referee
+     */
     private boolean trialStarted;
 
-    private Logger logger;
-
+    /**
+     * Constructor for the Playground
+     * @param global
+     * @param logger
+     */
     public Playground( Global global, Logger logger){
         this.global = global;
 
@@ -42,7 +66,7 @@ public class Playground {
     }
 
     /**
-     * A team's Coach entera a blocking state and waits for a Referee command
+     * Coach enters a blocking state and waits for the Referee to call a trial
      * @param teamID Coach's teamID
      */
     public synchronized void waitForCalling(int teamID){
@@ -68,8 +92,7 @@ public class Playground {
 
 
     /**
-     *  Referee calls the trial:
-     *
+     *  Referee waits for the contestants to be seated at the bench and calls a trial
      */
 
     public synchronized void callTrial(){
@@ -91,7 +114,7 @@ public class Playground {
     }
 
     /**
-     *Coach waits for the team to assemble
+     * Coach waits for his selected team to be standing in position
      * @param teamID coach's teamID
      */
     public synchronized void waitForContestants(int teamID){
@@ -108,7 +131,8 @@ public class Playground {
 
 
     /**
-     * Contestant operation
+     * Contestant stands in position and waits for the trial to start
+     * If he is the 3rd contestant of his team to get ready, he wakes the Coaches.
      * @param contestantID contestant's ID
      * @param teamID contestant's team ID
      */
@@ -132,8 +156,8 @@ public class Playground {
     }
 
 
-    /** Coach informs Referee of the readiness of his team
-     *@param teamID team's ID
+    /** Coach informs Referee of the readiness of his team and waits for the trial to end.
+     * @param teamID team's ID
      */
     public synchronized  void informReferee(int teamID){
 
@@ -156,8 +180,7 @@ public class Playground {
     }
 
     /**
-     *   Referee begins the trial
-     *   waits for the all the contestants to be done
+     *   Waits for both the teams to be ready and begins the trial
      */
     public synchronized  void startTrial(){
 
@@ -180,7 +203,7 @@ public class Playground {
 
 
     /**
-     * Contestant operation
+     * Contestant changes his state to Do_Your_Best before pulling the rope
      * @param contestantID contestant's ID
      * @param teamID team's id
      */
@@ -191,7 +214,7 @@ public class Playground {
 
 
     /**
-     * Contestant operation
+     * The last contestant to finish pulling the rope wakes the referee
      * @param contestantID contestant's id
      * @param teamID team's id
      */
@@ -213,7 +236,9 @@ public class Playground {
     }
 
    /**
-    *   Referee decides who's the winner
+    *   Referee decides who's the winner based on the total strength of both teams.
+    *   He also checks if the game has been finished and if so he checks if the Match is finished.
+    *
     */
     public synchronized void assertTrialDecision(){
 
@@ -254,7 +279,8 @@ public class Playground {
     }
 
    /**
-    * Coach operation
+    * Coach checks if the match is finished and if so, he wakes the contestants that are still waiting on the bench.
+    * If the match isn't finished, he selects his team for the next trial.
     * @param teamID team's ID
     * @param bench reference to the Bench
     */
@@ -280,14 +306,6 @@ public class Playground {
                    global.setStrength(i, teamID,++str);
            }
        }
-
-
-
-
-
    }
-
-
-
 
 }
