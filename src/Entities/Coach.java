@@ -10,15 +10,33 @@ import Monitors.Bench;
  */
 public class Coach extends Thread{
 
-
+    /**
+     * Team ID of this Coach: either 0 (team1) or 1 (team2);
+     */
     private int teamID;
 
+    /**
+     * Bench Monitor Object
+     */
     private Bench benchMon;
 
+    /**
+     *  Playground Monitor Object
+     */
     private Playground playgroundMon;
 
+    /**
+     * General Information Repository Object
+     */
     private Global global;
 
+    /**
+     * Coach object Constructor
+     * @param teamID
+     * @param benchMon
+     * @param playgroundMon
+     * @param global
+     */
     public Coach(int teamID, Bench benchMon, Playground playgroundMon, Global global) {
         this.teamID = teamID;
         this.benchMon = benchMon;

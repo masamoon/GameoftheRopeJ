@@ -5,6 +5,8 @@ import genclass.TextFile;
 
 /**
  * Created by Andre on 18/03/2016.
+ *
+ * The logger for the program, using the genclass library.
  */
 public class Logger {
 

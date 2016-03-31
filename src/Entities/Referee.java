@@ -12,11 +12,33 @@ import States.RefereeState;
 
 public class Referee extends Thread {
 
+    /**
+     * Playground Monitor object
+     */
     private Playground playground;
+
+    /**
+     * RefereeSite Monitor object
+     */
     private RefereeSite refereeSite;
+
+    /**
+     * Logger object
+     */
     private Logger logger;
+
+    /**
+     * General Informational Repository object
+     */
     private Global global;
 
+    /**
+     * Referee Object Constructor
+     * @param playground
+     * @param refereeSite
+     * @param global
+     * @param logger
+     */
     public Referee(Playground playground, RefereeSite refereeSite, Global global, Logger logger){
         this.playground = playground;
         this.refereeSite = refereeSite;
@@ -41,11 +63,6 @@ public class Referee extends Thread {
         refereeSite.declareMatchWinner(logger);
         logger.closeFile();
     }
-
-
-
-
-
 
 
 }
