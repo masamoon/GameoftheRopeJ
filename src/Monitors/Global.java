@@ -103,7 +103,7 @@ public class Global {
     }
 
     /**
-     *gets benchCalled
+     * Checks if the contestants have been called for a trial
      * @param teamID team's id
      * @return true if bench is called
      */
@@ -115,7 +115,7 @@ public class Global {
     }
 
     /**
-     *sets benchCalled
+     * Sets if the contestants have been called for a trial
      * @param teamID team's id
      * @param benchCalled boolean indicating if bench was called
      */
@@ -127,7 +127,7 @@ public class Global {
     }
 
     /**
-     * sets the selected team for a trial on a team
+     * Sets the selected team for a trial on a team
      * @param teamID team's id
      * @param first first contestant
      * @param second second contestant
@@ -141,7 +141,7 @@ public class Global {
     }
 
     /**
-     *gets the selected team for a trial
+     * Gets the selected team for a trial
      * @param teamID team's id
      * @return selected team for trial
      */
@@ -153,7 +153,7 @@ public class Global {
     }
 
     /**
-     * erases the selected teams
+     * Erases the selected teams
      */
     public void eraseTeamSelections(){
         this.selectedTeam1 = new int [] {-1,-1,-1};
@@ -161,7 +161,7 @@ public class Global {
     }
 
     /**
-     *
+     * Set the state of the current match.
      * @param matchInProgress boolean that indicates if match is in progress
      */
     public void setMatchInProgress(boolean matchInProgress) {
@@ -169,7 +169,7 @@ public class Global {
     }
 
     /**
-     *  Check is match is in progresss
+     *  Check if match is currently in progress.
      * @return true if match is underway
      */
     public boolean matchInProgress() {
@@ -177,7 +177,7 @@ public class Global {
     }
 
     /**
-     *Check if game is finished
+     * Check if the current game is finished
      * @return true if game is finished
      */
     public boolean gameFinished(){
@@ -187,12 +187,10 @@ public class Global {
             return false;
     }
 
-    /* State controls */
-
-    /** contestants
+    /** Set a new state for a given contestant
     * @param contestantID contestant's ID
     * @param state contestant's state to be updated to
-     *@param teamID team's ID
+     *@param teamID team's ID of this contestant
      *@param logger reference to logger Object
     * */
     public synchronized void setContestantState (int contestantID, int teamID, ContestantState state, Logger logger){
@@ -217,7 +215,7 @@ public class Global {
             return this.contestantStates_t2[contestantID];
     }
 
-    /** referee
+    /** set a new state for the Referee
      @param state referee's state to be updated to
      @param logger reference to logger Object
     * */
@@ -282,7 +280,7 @@ public class Global {
 
 
     /**
-     * gets benchReady
+     * Checks if the contestants are all seated at the bench
      * @return returns benchReady
      */
     public boolean getBenchReady() {
@@ -290,7 +288,7 @@ public class Global {
     }
 
     /**
-     * sets benchReady
+     * Sets if the contestants are all seated at the bench
      * @param benchReady boolean that indicates if bench is ready
      */
     public void setBenchReady(boolean benchReady){
@@ -298,7 +296,7 @@ public class Global {
     }
 
     /**
-     *increments number of contestants in position for trial beginning
+     * increments number of contestants in position for trial beginning for a certain team
      * @param teamID contestants team's id
      */
     public void incrementStandingInPosition(int teamID){
@@ -308,12 +306,10 @@ public class Global {
         else{
             standingTeam2++;
         }
-
-
     }
 
     /**
-     * decrements number of contestants in position for trial beginning
+     * decrements number of contestants in position for trial beginning for a certain team
      * @param teamID contestants team's id
      */
     public void decrementStandingInPosition(int teamID){
@@ -324,9 +320,8 @@ public class Global {
             standingTeam2--;
         }
     }
-
     /**
-     * gets number of contestants standing in position for trial beginning
+     * gets number of contestants standing in position for trial beginning for a certain team
      * @param teamID team's id
      * @return number of contestants standing in position
      */
@@ -338,7 +333,7 @@ public class Global {
     }
 
     /**
-     *
+     * Get a contestant's current strength level
      * @param id Contestant's id
      * @param teamID team's id
      * @return the strength of this contestant
@@ -352,7 +347,7 @@ public class Global {
     }
 
     /**
-     *
+     * Set a contestant's strength level
      * @param id Contestant's id
      * @param teamID team's id
      * @param str the strength of this contestant to bet set
@@ -365,34 +360,48 @@ public class Global {
 
     }
 
-
+    /**
+     *  Gets the number of trials of the current game
+     * @return number of trials
+     */
 
     public int getTrialNum(){
         return this.trialNum;
     }
 
     /**
-     * increments trial num by 1
+     * increments trial number by 1
      */
     public void incrementTrialNum(){
         this.trialNum +=1;
     }
 
     /**
-     * resets trial num back to zero
+     * resets trial number back to zero
      */
     public void resetTrialNum(){
         this.trialNum =0;
     }
 
+    /**
+     * Get's the current flag position
+     */
     public int getFlagPos() {
         return flagPos;
     }
 
+    /**
+     * Alters the position of the flag
+     * @param flagPos
+     */
     public void setFlagPos(int flagPos) {
         this.flagPos = flagPos;
     }
 
+    /**
+     * Gets the number of games played
+     * @return number of games
+     */
     public int getGamesNum() {
         return gamesNum;
     }
@@ -404,7 +413,15 @@ public class Global {
         this.gamesNum+=1;
     }
 
+    /**
+     * gets the strenght levels of the contestants of the team 1
+     * @return array with the strength values
+     */
     public int[] getStrength_t1(){ return this.strength_t1;}
 
+    /**
+     * gets the strenght levels of the contestants of the team 2
+     * @return array with the strength values
+     */
     public int[] getStrength_t2(){ return this.strength_t2;}
 }
