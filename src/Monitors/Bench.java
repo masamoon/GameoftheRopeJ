@@ -43,15 +43,13 @@ public class Bench {
     }
 
     /**
-     The contestant's state is changed to SIT_AT_THE_BENCH and he waits until he is called by the coach.
-     When the last contestant (the 10th) sits, he enables a flag to signal this and notifies the Referee
-     at the Playground so that a trial can be called.
-     The conditions for the contestant to leave his waiting cycle are: a trial being called AND being selected by the
-     coach of his team. He is also freed from the waiting cycle if the match has been finished.
-
-     @param teamID Team ID the contestant
-     @param contestantID contestant's ID
-     @param playground reference to playground
+     * The Contestant sits on the bench. He changes its state to to SIT_AT_THE_BENCH and waits until he is called by the coach.
+     * When the last contestant (the 10th) sits, he enables a flag to signal this event and notifies the Referee at the Playground so that a trial can be called.
+     * The conditions for the contestant to leave his waiting cycle are: a trial being called AND being selected by the coach of his team. He is also freed from the waiting cycle if the match has been finished.
+     *
+     * @param teamID Team ID the contestant
+     * @param contestantID contestant's ID
+     * @param playground reference to playground
      */
     public synchronized void sitDown(int contestantID, int teamID, Playground playground) {
 
