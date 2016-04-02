@@ -1,9 +1,9 @@
-package Monitors;
+package Nondistributedsolution.Monitors;
 
-import Logging.Logger;
-import States.CoachState;
-import States.ContestantState;
-import States.RefereeState;
+import Nondistributedsolution.Logging.Logger;
+import Nondistributedsolution.States.CoachState;
+import Nondistributedsolution.States.ContestantState;
+import Nondistributedsolution.States.RefereeState;
 
 import java.util.stream.IntStream;
 
@@ -71,7 +71,6 @@ public class Playground {
      *  Referee calls the trial:
      *
      */
-
     public synchronized void callTrial(){
 
         global.incrementTrialNum();
@@ -192,10 +191,9 @@ public class Playground {
 
     /**
      * Contestant operation
-     * @param contestantID contestant's id
      * @param teamID team's id
      */
-    public synchronized void done(int contestantID, int teamID){
+    public synchronized void done(int teamID){
 
         contestantsDone++;
         if(contestantsDone==6) {
@@ -233,7 +231,7 @@ public class Playground {
         System.out.println("team 1 power " + team1Power);
         System.out.println("team 2 power " + team2Power);
         */
-        global.setFlagPos((global.getFlagPos()+(team1Power-team2Power)));
+        global.setFlagPos((global.getFlagPos()+(team1Power-team2Power))); //TODO: change flag position to increments by 1 to the victor team
 
         //System.out.println("new flag pos: " + global.getFlagPos());
 

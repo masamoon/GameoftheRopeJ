@@ -1,4 +1,4 @@
-package States;
+package Nondistributedsolution.States;
 
 /**
  * Created by jonnybel on 3/8/16.

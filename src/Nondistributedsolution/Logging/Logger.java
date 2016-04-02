@@ -1,6 +1,6 @@
-package Logging;
+package Nondistributedsolution.Logging;
 
-import Monitors.Global;
+import Nondistributedsolution.Monitors.Global;
 import genclass.TextFile;
 
 /**
@@ -15,8 +15,10 @@ public class Logger {
     public Logger(String path, Global global){
         f = new TextFile();
         f.openForWriting(null,"log.txt");
+        String opline = "Game of the Rope - Description of the internal state";
         String str =  "Ref Coa1 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5 Coa2 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5      Trial";
         String str2 = "Sta Stat Sta SG Sta SG Sta SG Sta SG Sta SG Stat Sta SG Sta SG Sta SG Sta SG Sta SG 3 2 1 . 1 2 3 NB PS";
+        f.writelnString(opline);
         f.writelnString(str);
         f.writelnString(str2);
 

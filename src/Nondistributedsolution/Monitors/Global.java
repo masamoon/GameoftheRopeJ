@@ -1,9 +1,9 @@
-package Monitors;
+package Nondistributedsolution.Monitors;
 
-import Logging.Logger;
-import States.CoachState;
-import States.ContestantState;
-import States.RefereeState;
+import Nondistributedsolution.Logging.Logger;
+import Nondistributedsolution.States.CoachState;
+import Nondistributedsolution.States.ContestantState;
+import Nondistributedsolution.States.RefereeState;
 
 import java.util.Random;
 
@@ -18,7 +18,7 @@ public class Global {
     private int gamescore_t1;
     private int gamescore_t2;
 
-    private int [] strength_t1;
+    private int [] strength_t1; // TODO: this should be on the Contestant's object
     private int [] strength_t2;
 
     private ContestantState contestantStates_t1 [];

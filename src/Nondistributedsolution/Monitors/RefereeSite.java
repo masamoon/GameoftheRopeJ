@@ -1,7 +1,7 @@
-package Monitors;
+package Nondistributedsolution.Monitors;
 
-import Logging.Logger;
-import States.RefereeState;
+import Nondistributedsolution.Logging.Logger;
+import Nondistributedsolution.States.RefereeState;
 
 /**
  * Created by jonnybel on 3/8/16.

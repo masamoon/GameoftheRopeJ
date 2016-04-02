@@ -1,16 +1,14 @@
-package Main;
+package Nondistributedsolution.Main;
 
-import Entities.Coach;
-import Entities.Contestant;
-import Entities.Referee;
-import Logging.Logger;
-import Monitors.Bench;
-import Monitors.Global;
-import Monitors.Playground;
-import Monitors.RefereeSite;
+import Nondistributedsolution.Entities.Coach;
+import Nondistributedsolution.Entities.Contestant;
+import Nondistributedsolution.Entities.Referee;
+import Nondistributedsolution.Logging.Logger;
+import Nondistributedsolution.Monitors.Bench;
+import Nondistributedsolution.Monitors.Global;
+import Nondistributedsolution.Monitors.Playground;
+import Nondistributedsolution.Monitors.RefereeSite;
 import genclass.GenericIO;
-
-import java.util.ArrayList;
 
 /**
  * Created by Andre on 19/03/2016.

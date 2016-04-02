@@ -1,10 +1,9 @@
-package Entities;
+package Nondistributedsolution.Entities;
 
-import Logging.Logger;
-import Monitors.Global;
-import Monitors.Playground;
-import Monitors.RefereeSite;
-import States.RefereeState;
+import Nondistributedsolution.Logging.Logger;
+import Nondistributedsolution.Monitors.Global;
+import Nondistributedsolution.Monitors.Playground;
+import Nondistributedsolution.Monitors.RefereeSite;
 
 /**
  * Created by jonnybel on 3/8/16.

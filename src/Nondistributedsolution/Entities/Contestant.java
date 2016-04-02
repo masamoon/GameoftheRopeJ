@@ -1,9 +1,8 @@
-package Entities;
+package Nondistributedsolution.Entities;
 
-import Monitors.Bench;
-import Monitors.Global;
-import Monitors.Playground;
-import States.ContestantState;
+import Nondistributedsolution.Monitors.Bench;
+import Nondistributedsolution.Monitors.Global;
+import Nondistributedsolution.Monitors.Playground;
 
 /**
  * Created by jonnybel on 3/8/16.
@@ -35,14 +34,14 @@ public class Contestant extends Thread {
 
         while(global.matchInProgress()){
 
-            benchMon.sitDown(contestantID, teamID, global, playgroundMon);
+            benchMon.sitDown(contestantID, teamID,playgroundMon);
 
             if(global.matchInProgress()){
-                playgroundMon.followCoachAdvice(contestantID, teamID);
+                playgroundMon.followCoachAdvice(contestantID, teamID); //// TODO: 02/04/2016 verify the location of operations  
 
                 playgroundMon.getReady(contestantID, teamID);
                 pullRope();
-                playgroundMon.done(contestantID, teamID);
+                playgroundMon.done(teamID);
 
             }
         }

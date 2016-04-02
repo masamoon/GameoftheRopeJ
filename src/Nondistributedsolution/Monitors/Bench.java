@@ -1,9 +1,8 @@
-package Monitors;
+package Nondistributedsolution.Monitors;
 
-import Logging.Logger;
-import States.ContestantState;
+import Nondistributedsolution.Logging.Logger;
+import Nondistributedsolution.States.ContestantState;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
@@ -39,10 +38,9 @@ public class Bench {
 
      @param teamID team ID of both the contestant and his coach
      @param contestantID contestant's ID
-     @param global reference to global repository
      @param playground reference to playground
      */
-    public synchronized void sitDown(int contestantID, int teamID, Global global, Playground playground) {
+    public synchronized void sitDown(int contestantID, int teamID,Playground playground) {
 
         global.setContestantState(contestantID, teamID, ContestantState.SIT_AT_THE_BENCH,logger);
         this.numSitting++;
@@ -119,7 +117,7 @@ public class Bench {
      * team building strategy that consists on randomly choosing 3 team elements
      * @return array containing the selected team for trial
      */
-    public int[] selectRandom(){
+    int[] selectRandom(){
         Random r = new Random();
         int first = r.nextInt(5);
         int second;
@@ -141,7 +139,7 @@ public class Bench {
      * @param teamID team's id
      * @return array containing the selected team for trial
      */
-    public int[] selectTopteam(int teamID){
+    int[] selectTopteam(int teamID){
         int[] str;
         if(teamID ==0)
             str=global.getStrength_t1();
