@@ -12,6 +12,8 @@ import genclass.GenericIO;
 
 /**
  * Created by Andre on 19/03/2016.
+ *
+ *  Main program.
  */
 public class Gameoftherope {
 

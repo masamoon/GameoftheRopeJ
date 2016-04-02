@@ -9,17 +9,32 @@ import java.util.Random;
 
 /**
  * Created by jonnybel on 3/8/16.
+ *
+ * This Class implements the shared region for the Bench, with synchronization based on monitors
  */
 public class Bench {
 
-    private Global global;
+    /**
+     *  General Information Repository object
+     */
+    private final Global global;
 
+    /**
+     * Logger object
+     */
+    private final Logger logger;
+
+    /**
+     *  Number of contestants sitting on the bench.
+     */
     private int numSitting;
 
-    private Logger logger;
 
-
-
+    /**
+     *  Constructor for this Shared Region.
+     * @param global
+     * @param logger
+     */
     public Bench(Global global, Logger logger){
 
         this.global = global;
@@ -27,20 +42,16 @@ public class Bench {
         this.logger = logger;
     }
 
-
     /**
-     Contestant Operations
+     * The Contestant sits on the bench. He changes its state to to SIT_AT_THE_BENCH and waits until he is called by the coach.
+     * When the last contestant (the 10th) sits, he enables a flag to signal this event and notifies the Referee at the Playground so that a trial can be called.
+     * The conditions for the contestant to leave his waiting cycle are: a trial being called AND being selected by the coach of his team. He is also freed from the waiting cycle if the match has been finished.
+     *
+     * @param teamID Team ID the contestant
+     * @param contestantID contestant's ID
+     * @param playground reference to playground
      */
-
-    /**
-     sitDown:
-     the contestant's state is changed to SIT_AT_THE_BENCH and he waits until he is called by the coach
-
-     @param teamID team ID of both the contestant and his coach
-     @param contestantID contestant's ID
-     @param playground reference to playground
-     */
-    public synchronized void sitDown(int contestantID, int teamID,Playground playground) {
+    public synchronized void sitDown(int contestantID, int teamID, Playground playground) {
 
         global.setContestantState(contestantID, teamID, ContestantState.SIT_AT_THE_BENCH,logger);
         this.numSitting++;
@@ -60,13 +71,12 @@ public class Bench {
         this.numSitting--;
 
         global.setBenchReady(false);
-
     }
-
     /**
-     * Checks if contestant is selected for trial
+     * Checks if this contestant has been selected by his coach to stand up for the next trial.
+     * Internal Operation.
      * @param contestantID contestant's id
-     * @param teamID team's id
+     * @param teamID Team of the contestant
      * @return true if selected
      */
     private boolean imSelected (int contestantID, int teamID)
@@ -78,11 +88,10 @@ public class Bench {
         return false;
     }
 
-    /** COACH
-     *  select and call contestants to the rope
-     *  coach changes the state of the selected contestants to SELECTED
-     *  coach wakes the contestants
-     * @param teamID team's id
+    /**
+     *  Call contestants for the next trial based on a selection.
+     *  He makes a selection and notifies the Bench.
+     * @param teamID Team of the Coach
      *
      */
     public synchronized void callContestants (int teamID){
@@ -103,21 +112,22 @@ public class Bench {
         global.setBenchCalled(teamID, true);
 
         notifyAll();
-
     }
 
     /**
-     *  wakes all the contestants: this is only used at the match to free the contestants that staying in the bench.
+     *  This method is used by the Referee Entity exclusively at the end of the match to free the contestants that stayed on the bench for the last trial.
+     *  @see Playground#assertTrialDecision()
      */
     public synchronized void wakeContestants(){
         notifyAll();
     }
 
     /**
-     * team building strategy that consists on randomly choosing 3 team elements
+     * Team building strategy that consists on randomly choosing 3 team elements.
+     * Internal Operation
      * @return array containing the selected team for trial
      */
-    int[] selectRandom(){
+    private int[] selectRandom(){
         Random r = new Random();
         int first = r.nextInt(5);
         int second;
@@ -135,11 +145,12 @@ public class Bench {
     }
 
     /**
-     * team building strategy that consists on choosing the 3 elements with more strength left
-     * @param teamID team's id
-     * @return array containing the selected team for trial
+     * Team building strategy that consists on choosing the 3 elements with most strength.
+     * Internal Operation
+     * @param teamID Team of the coach
+     * @return Array containing the IDs of the contestants selected for the next trial
      */
-    int[] selectTopteam(int teamID){
+    private int[] selectTopteam(int teamID){
         int[] str;
         if(teamID ==0)
             str=global.getStrength_t1();
@@ -149,9 +160,7 @@ public class Bench {
         HashMap<Integer,Integer> map = new HashMap<>();
 
         for (int i = 0; i <5 ; i++) {
-
             map.put(i,str[i]);
-
         }
 
         int first = Collections.max(map.entrySet(), (entry1, entry2) -> entry1.getValue() > entry2.getValue() ? 1 : -1).getKey();
@@ -162,6 +171,4 @@ public class Bench {
 
         return new int[]{first,second,third};
     }
-
-
 }
