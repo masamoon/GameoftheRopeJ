@@ -1,23 +1,21 @@
-package Nondistributedsolution.States;
+package DistributedSolution.Coach;
 
 /**
  * Created by jonnybel on 3/8/16.
  */
-public enum ContestantState {
+public enum CoachState {
 
+    INIT("    "),
 
-    INIT("   "),
+    WAIT_FOR_REFEREE_COMMAND("WFRC"),
 
-    SIT_AT_THE_BENCH("SIT"),
+    ASSEMBLE_TEAM("ASMT"),
 
-    STAND_IN_POSITION("POS"),
-
-    DO_YOUR_BEST("DYB");
-
+    WATCH_TRIAL("WTRL");
 
     private final String acronym;
 
-    private ContestantState(String acronym)
+    private CoachState(String acronym)
     {
         this.acronym = acronym;
     }

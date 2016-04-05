@@ -1,4 +1,4 @@
-package Nondistributedsolution.Entities;
+package Nondistributedsolution.Referee;
 
 import Nondistributedsolution.Logging.Logger;
 import Nondistributedsolution.Monitors.Global;

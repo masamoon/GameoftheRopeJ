@@ -1,8 +1,8 @@
 package Nondistributedsolution.Main;
 
-import Nondistributedsolution.Entities.Coach;
-import Nondistributedsolution.Entities.Contestant;
-import Nondistributedsolution.Entities.Referee;
+import Nondistributedsolution.Coach.Coach;
+import Nondistributedsolution.Contestant.Contestant;
+import Nondistributedsolution.Referee.Referee;
 import Nondistributedsolution.Logging.Logger;
 import Nondistributedsolution.Monitors.Bench;
 import Nondistributedsolution.Monitors.Global;

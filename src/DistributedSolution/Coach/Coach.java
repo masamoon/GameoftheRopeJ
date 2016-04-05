@@ -1,8 +1,8 @@
-package Nondistributedsolution.Entities;
+package DistributedSolution.Coach;
 
+import Nondistributedsolution.Monitors.Bench;
 import Nondistributedsolution.Monitors.Global;
 import Nondistributedsolution.Monitors.Playground;
-import Nondistributedsolution.Monitors.Bench;
 
 /**
  * Created by jonnybel on 3/8/16.

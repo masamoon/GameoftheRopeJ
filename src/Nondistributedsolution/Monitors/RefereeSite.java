@@ -1,7 +1,7 @@
 package Nondistributedsolution.Monitors;
 
 import Nondistributedsolution.Logging.Logger;
-import Nondistributedsolution.States.RefereeState;
+import Nondistributedsolution.Referee.RefereeState;
 
 /**
  * Created by jonnybel on 3/8/16.

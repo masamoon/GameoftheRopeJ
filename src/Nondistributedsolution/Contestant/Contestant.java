@@ -1,4 +1,4 @@
-package Nondistributedsolution.Entities;
+package Nondistributedsolution.Contestant;
 
 import Nondistributedsolution.Monitors.Bench;
 import Nondistributedsolution.Monitors.Global;

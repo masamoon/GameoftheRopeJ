@@ -1,4 +1,4 @@
-package Nondistributedsolution.States;
+package DistributedSolution.Referee;
 
 /**
  * Created by jonnybel on 3/8/16.

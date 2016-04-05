@@ -1,9 +1,9 @@
 package Nondistributedsolution.Monitors;
 
 import Nondistributedsolution.Logging.Logger;
-import Nondistributedsolution.States.CoachState;
-import Nondistributedsolution.States.ContestantState;
-import Nondistributedsolution.States.RefereeState;
+import Nondistributedsolution.Coach.CoachState;
+import Nondistributedsolution.Contestant.ContestantState;
+import Nondistributedsolution.Referee.RefereeState;
 
 import java.util.Random;
 

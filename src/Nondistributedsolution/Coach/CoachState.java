@@ -1,4 +1,4 @@
-package Nondistributedsolution.States;
+package Nondistributedsolution.Coach;
 
 /**
  * Created by jonnybel on 3/8/16.

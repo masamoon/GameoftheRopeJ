@@ -1,7 +1,7 @@
 package Nondistributedsolution.Monitors;
 
 import Nondistributedsolution.Logging.Logger;
-import Nondistributedsolution.States.ContestantState;
+import Nondistributedsolution.Contestant.ContestantState;
 
 import java.util.Collections;
 import java.util.HashMap;
