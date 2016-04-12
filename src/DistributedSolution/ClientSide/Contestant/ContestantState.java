@@ -1,21 +1,23 @@
-package DistributedSolution.Coach;
+package DistributedSolution.ClientSide.Contestant;
 
 /**
  * Created by jonnybel on 3/8/16.
  */
-public enum CoachState {
+public enum ContestantState {
 
-    INIT("    "),
 
-    WAIT_FOR_REFEREE_COMMAND("WFRC"),
+    INIT("   "),
 
-    ASSEMBLE_TEAM("ASMT"),
+    SIT_AT_THE_BENCH("SIT"),
 
-    WATCH_TRIAL("WTRL");
+    STAND_IN_POSITION("POS"),
+
+    DO_YOUR_BEST("DYB");
+
 
     private final String acronym;
 
-    private CoachState(String acronym)
+    private ContestantState(String acronym)
     {
         this.acronym = acronym;
     }

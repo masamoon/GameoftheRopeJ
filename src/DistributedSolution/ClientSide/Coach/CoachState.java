@@ -1,27 +1,21 @@
-package DistributedSolution.Referee;
+package DistributedSolution.ClientSide.Coach;
 
 /**
  * Created by jonnybel on 3/8/16.
  */
-public enum RefereeState {
+public enum CoachState {
 
-    /* todo: add comments */
+    INIT("    "),
 
-    START_OF_THE_MATCH("SOM"),
+    WAIT_FOR_REFEREE_COMMAND("WFRC"),
 
-    START_OF_A_GAME("SOG"),
+    ASSEMBLE_TEAM("ASMT"),
 
-    TEAMS_READY("TMR"),
-
-    WAIT_FOR_TRIAL_CONCLUSION("WTC"),
-
-    END_OF_A_GAME("EOG"),
-
-    END_OF_THE_MATCH("EOM");
+    WATCH_TRIAL("WTRL");
 
     private final String acronym;
 
-    private RefereeState(String acronym)
+    private CoachState(String acronym)
     {
         this.acronym = acronym;
     }

@@ -1,4 +1,4 @@
-package DistributedSolution.Coach;
+package DistributedSolution.ClientSide.Coach;
 
 import Nondistributedsolution.Monitors.Bench;
 import Nondistributedsolution.Monitors.Global;

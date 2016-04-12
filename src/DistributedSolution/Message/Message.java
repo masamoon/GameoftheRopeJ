@@ -1,8 +1,8 @@
 package DistributedSolution.Message;
 
-import DistributedSolution.Coach.CoachState;
-import DistributedSolution.Contestant.ContestantState;
-import DistributedSolution.Referee.RefereeState;
+import DistributedSolution.ClientSide.Coach.CoachState;
+import DistributedSolution.ClientSide.Contestant.ContestantState;
+import DistributedSolution.ClientSide.Referee.RefereeState;
 
 
 import java.io.Serializable;
@@ -92,5 +92,7 @@ public class Message  implements Serializable{
     }
 
 
-
+    public MessageType getType(){
+        return type;
+    }
 }

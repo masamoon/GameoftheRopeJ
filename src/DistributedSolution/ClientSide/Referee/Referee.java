@@ -1,4 +1,4 @@
-package DistributedSolution.Referee;
+package DistributedSolution.ClientSide.Referee;
 
 import Nondistributedsolution.Logging.Logger;
 import Nondistributedsolution.Monitors.Global;

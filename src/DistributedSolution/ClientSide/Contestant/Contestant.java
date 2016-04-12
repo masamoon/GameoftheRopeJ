@@ -1,4 +1,4 @@
-package DistributedSolution.Contestant;
+package DistributedSolution.ClientSide.Contestant;
 
 import Nondistributedsolution.Monitors.Bench;
 import Nondistributedsolution.Monitors.Global;
