@@ -4,16 +4,15 @@ import DistributedSolution.Message.Message;
 import DistributedSolution.Message.MessageException;
 
 /**
- * Created by Andre on 11/04/2016.
+ * Created by Andre on 12/04/2016.
  */
-public class BenchInterface {
+public class RefereeSiteInterface {
+    private RefereeSite refereeSite;
 
-    private Bench bench;
 
+    public RefereeSiteInterface(RefereeSite refereeSite){
 
-    public BenchInterface(Bench bench) {
-
-        this.bench = bench;
+        this.refereeSite =refereeSite;
 
     }
 
@@ -21,6 +20,5 @@ public class BenchInterface {
         Message outMessage = null;                           // mensagem de resposta
 
         return outMessage;
-
     }
 }
