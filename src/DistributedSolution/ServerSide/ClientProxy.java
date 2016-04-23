@@ -36,18 +36,17 @@ public class ClientProxy extends Thread
     private ServerCom sconi;
 
     /**
-     *  Interface à barbearia
+     *  Interface bench
      *
-     *    @serialField bShopInter
+     *    @serialField benchInterface
      */
 
     private BenchInterface benchInterface;
 
     /**
-     *  Instanciação do interface à barbearia.
      *
-     *    @param sconi canal de comunicação
-     *
+     * @param sconi
+     * @param benchInterface
      */
 
     public ClientProxy (ServerCom sconi, BenchInterface benchInterface)
@@ -77,8 +76,8 @@ public class ClientProxy extends Thread
             GenericIO.writelnString (e.getMessageVal ().toString ());
             System.exit (1);
         }
-        sconi.writeObject (outMessage);                                // enviar resposta ao cliente
-        sconi.close ();                                                // fechar canal de comunicação
+        sconi.writeObject(outMessage);                                // enviar resposta ao cliente
+        sconi.close();                                                // fechar canal de comunicação
     }
 
     /**

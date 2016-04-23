@@ -214,7 +214,6 @@ public class Playground {
 
     /**
      * The last contestant to finish pulling the rope wakes the referee
-     * @param contestantID contestant's id
      * @param teamID team's id
      */
     public synchronized void done(int teamID){

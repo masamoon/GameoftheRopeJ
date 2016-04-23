@@ -18,7 +18,19 @@ public class BenchInterface {
     }
 
     public Message processAndReply(Message inMessage) throws MessageException {
-        Message outMessage = null;                           // mensagem de resposta
+        Message outMessage = null;
+
+        switch (inMessage.getType()) {
+            case Message.CCONTESTANTS:
+                break;
+            case Message.WCONTESTANTS:
+                break;
+            case Message.SDOWN:
+                break;
+            
+
+        }
+
 
         return outMessage;
 
