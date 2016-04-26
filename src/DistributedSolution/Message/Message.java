@@ -29,6 +29,8 @@ public class Message  implements Serializable{
 
     private int id;
 
+
+
     private int teamID;
 
     private int contestantID;
@@ -37,6 +39,85 @@ public class Message  implements Serializable{
 
     String fname = null;
 
+    private int portNumBench;
+
+    private String serverUrlBench;
+
+    private int portNumPlayground;
+
+    private String serverUrlPlayground;
+
+    private int portNumRSite;
+
+    private String serverUrlRSite;
+
+    private int portNumGlobal;
+
+    public int getPortNumBench() {
+        return portNumBench;
+    }
+
+    public void setPortNumBench(int portNumBench) {
+        this.portNumBench = portNumBench;
+    }
+
+    public String getServerUrlBench() {
+        return serverUrlBench;
+    }
+
+    public void setServerUrlBench(String serverUrlBench) {
+        this.serverUrlBench = serverUrlBench;
+    }
+
+    public int getPortNumPlayground() {
+        return portNumPlayground;
+    }
+
+    public void setPortNumPlayground(int portNumPlayground) {
+        this.portNumPlayground = portNumPlayground;
+    }
+
+    public String getServerUrlPlayground() {
+        return serverUrlPlayground;
+    }
+
+    public void setServerUrlPlayground(String serverUrlPlayground) {
+        this.serverUrlPlayground = serverUrlPlayground;
+    }
+
+    public int getPortNumRSite() {
+        return portNumRSite;
+    }
+
+    public void setPortNumRSite(int portNumRSite) {
+        this.portNumRSite = portNumRSite;
+    }
+
+    public String getServerUrlRSite() {
+        return serverUrlRSite;
+    }
+
+    public void setServerUrlRSite(String serverUrlRSite) {
+        this.serverUrlRSite = serverUrlRSite;
+    }
+
+    public int getPortNumGlobal() {
+        return portNumGlobal;
+    }
+
+    public void setPortNumGlobal(int portNumGlobal) {
+        this.portNumGlobal = portNumGlobal;
+    }
+
+    public String getServerUrlGlobal() {
+        return serverUrlGlobal;
+    }
+
+    public void setServerUrlGlobal(String serverUrlGlobal) {
+        this.serverUrlGlobal = serverUrlGlobal;
+    }
+
+    private String serverUrlGlobal;
     /**
      *  Inicialização do ficheiro de logging (operação pedida pelo cliente)
      *    @serialField SETNFIC
@@ -62,6 +143,18 @@ public class Message  implements Serializable{
     public static final int POSITIVE = 100;
 
     public static final int NEGATIVE = 200;
+
+    public static final int CONFIGCOACH = 101;
+
+    public static final int CONFIGCOACHR = 102;
+
+    public static final int CONFIGCONTESTANT = 201;
+
+    public static final int CONFIGCONTESTANTR = 202;
+
+    public static final int CONFIGREFEREE = 301;
+
+    public static final int CONFIGREFEREER = 302;
 
     /**
      *
@@ -280,6 +373,24 @@ public class Message  implements Serializable{
     {
         return (fname);
     }
+
+    public int getTeamID() {
+        return teamID;
+    }
+
+    public void setTeamID(int teamID) {
+        this.teamID = teamID;
+    }
+
+    public int getContestantID() {
+        return contestantID;
+    }
+
+    public void setContestantID(int contestantID) {
+        this.contestantID = contestantID;
+    }
+
+
 
     @Override
     public String toString ()
