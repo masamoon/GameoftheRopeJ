@@ -71,7 +71,7 @@ public class RefereeGlobalStub {
             }
         }
 
-        outMessage = new Message(Message.MINPROGRESS);
+        outMessage = new Message(Message.GFINISHED);
         con.writeObject(outMessage);
         inMessage = (Message) con.readObject();
         if ((inMessage.getType() != Message.POSITIVE) && (inMessage.getType() != Message.NEGATIVE)) {

@@ -1,4 +1,4 @@
-package DistributedSolution.ServerSide;
+package DistributedSolution.ServerSide.RefereeSite;
 
 import DistributedSolution.Message.Message;
 import DistributedSolution.Message.MessageException;
@@ -22,15 +22,19 @@ public class RefereeSiteInterface {
 
         switch (inMessage.getType()) {
             case Message.ANNGAME:
+                refereeSite.announceGame();
                 outMessage = new Message(Message.ACK);
                 break;
             case Message.ANNMATCH:
+                refereeSite.announceMatch();
                 outMessage = new Message(Message.ACK);
                 break;
             case Message.DGAMEWINNER:
+                refereeSite.declareGameWinner();
                 outMessage = new Message(Message.ACK);
                 break;
             case Message.DMATCHWINNER:
+                refereeSite.declareMatchWinner();
                 outMessage = new Message(Message.ACK);
                 break;
             default:

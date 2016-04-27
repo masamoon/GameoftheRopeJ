@@ -1,5 +1,7 @@
-package DistributedSolution.ServerSide;
+package DistributedSolution.ServerSide.Bench;
 
+import DistributedSolution.ServerSide.Global.Global;
+import DistributedSolution.ServerSide.Playground.Playground;
 import Nondistributedsolution.Contestant.ContestantState;
 import Nondistributedsolution.Logging.Logger;
 

@@ -1,4 +1,4 @@
-package DistributedSolution.ServerSide;
+package DistributedSolution.ServerSide.Global;
 
 import Nondistributedsolution.Coach.CoachState;
 import Nondistributedsolution.Contestant.ContestantState;

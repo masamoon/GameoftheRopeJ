@@ -285,6 +285,16 @@ public class Message  implements Serializable{
     /**
      * CONTESTANT - GLOBAL
      */
+
+    /**
+     * REFEREE - GLOBAL
+     *
+     */
+    /**
+     * game finished
+     */
+    public static final int GFINISHED = 28;
+
     /**
      *
      */
@@ -359,6 +369,10 @@ public class Message  implements Serializable{
      * @param coachState
      */
     public Message(int type, CoachState coachState){
+
+    }
+
+    public Message(int setnfic, String fName, int nGames) {
 
     }
 

@@ -5,8 +5,7 @@ package DistributedSolution.ServerSide;
  */
 import DistributedSolution.Message.Message;
 import DistributedSolution.Message.MessageException;
-import DistributedSolution.ServerSide.BenchInterface;
-import DistributedSolution.ServerSide.ServerCom;
+import DistributedSolution.ServerSide.Bench.BenchInterface;
 import genclass.GenericIO;
 
 

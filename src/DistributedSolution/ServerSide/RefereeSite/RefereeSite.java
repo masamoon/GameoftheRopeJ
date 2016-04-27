@@ -1,5 +1,6 @@
-package DistributedSolution.ServerSide;
+package DistributedSolution.ServerSide.RefereeSite;
 
+import DistributedSolution.ServerSide.Global.Global;
 import Nondistributedsolution.Logging.Logger;
 import Nondistributedsolution.Referee.RefereeState;
 
