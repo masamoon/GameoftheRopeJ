@@ -26,12 +26,12 @@ public class ContestantBenchStub {
 
     private int serverPortNumb;
 
-    ContestantBenchStub(String serverUrl, int portNumbStorage) {
+    public ContestantBenchStub(String serverUrl, int portNumbStorage) {
         this.serverPortNumb = portNumbStorage;
         this.serverHostName = serverUrl;
     }
 
-    public void sitDown(int contestantID, int teamID, Playground playground) {
+    public void sitDown(int contestantID, int teamID) {
 
         ClientCom con = new ClientCom(serverHostName, serverPortNumb);
         Message inMessage, outMessage;

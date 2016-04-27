@@ -25,7 +25,7 @@ public class RefereeRefereeSiteStub {
 
     private int serverPortNumb;
 
-    RefereeRefereeSiteStub(String serverUrl, int portNumbStorage) {
+    public RefereeRefereeSiteStub(String serverUrl, int portNumbStorage) {
         this.serverPortNumb = portNumbStorage;
         this.serverHostName = serverUrl;
     }
@@ -78,7 +78,7 @@ public class RefereeRefereeSiteStub {
         con.close ();
     }
 
-    public void declareGameWineer(){
+    public void declareGameWinner(){
         ClientCom con = new ClientCom(serverHostName, serverPortNumb);
         Message inMessage, outMessage;
 

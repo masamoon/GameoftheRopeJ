@@ -28,7 +28,7 @@ public class CoachBenchStub {
 
     private int serverPortNumb;
 
-    CoachBenchStub(String hostUrl, int portNum) {
+    public CoachBenchStub(String hostUrl, int portNum) {
         this.serverHostName = hostUrl;
         this.serverPortNumb = portNum;
     }

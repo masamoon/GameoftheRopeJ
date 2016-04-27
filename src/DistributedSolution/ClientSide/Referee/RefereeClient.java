@@ -1,12 +1,18 @@
 package DistributedSolution.ClientSide.Referee;
 
 import DistributedSolution.ClientSide.ClientCom;
+import DistributedSolution.ClientSide.Coach.Coach;
 import DistributedSolution.ClientSide.Contestant.Contestant;
 import DistributedSolution.ClientSide.Contestant.ContestantBenchStub;
 import DistributedSolution.ClientSide.Contestant.ContestantGlobalStub;
 import DistributedSolution.ClientSide.Contestant.ContestantPlaygroundStub;
+import DistributedSolution.Message.CommConst;
+import DistributedSolution.Message.GameParameters;
 import DistributedSolution.Message.Message;
 import genclass.GenericIO;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import static java.lang.Thread.sleep;
 
@@ -19,80 +25,39 @@ public class RefereeClient {
      */
     public static void main(String[] args) {
 
-        String mainServerUrl = "localhost";
-        int mainServerPort = 22279;
-        if (args.length == 1) {
-            mainServerUrl = args[0];
-            System.out.println("Main Hub configured: " + mainServerUrl + ":" + mainServerPort);
-        } else {
-            System.out.println("Main Hub default configuration used: " + mainServerUrl + ":" + mainServerPort);
-        }
+        RefereeRefereeSiteStub refereeRefereeSiteStub = new RefereeRefereeSiteStub(CommConst.refereeSiteServerName, CommConst.refereeSiteServerPort);
+        RefereePlaygroundStub refereePlaygroundStub = new RefereePlaygroundStub(CommConst.playgroundServerName, CommConst.playgroundServerPort);
+        RefereeGlobalStub refereeGlobalStub = new RefereeGlobalStub(CommConst.globalServerName, CommConst.globalServerPort);
 
-        int teamID;
-        int contestantID;
-
-
-        int portNumbBench;
-        String serverUrlBench;
-
-        int portNumbPlayground;
-        String serverUrlPlayground;
-
-        while (true) {
-            ClientCom con = new ClientCom(mainServerUrl, mainServerPort);
-            Message inMessage, outMessage;
-
-            while (!con.open()) // aguarda ligação
-            {
-                try {
-                    sleep((long) (10));
-                } catch (InterruptedException e) {
-                }
-            }
-
-            outMessage = new Message(Message.CONFIGREFEREE);
-            con.writeObject(outMessage);
-            inMessage = (Message) con.readObject();
-            if (inMessage.getType() != Message.CONFIGREFEREER /*&& inMessage.getType() != Message.CONFIG_NOTREADY*/) {
-                GenericIO.writelnString("Thread: Tipo inválido! teve: " + inMessage.getType() + " esperava " + Message.CONFIGREFEREER);
-                GenericIO.writelnString(inMessage.toString());
-                System.exit(1);
-            }
-            if (inMessage.getType() == Message.CONFIGREFEREER) {
-                teamID = inMessage.getTeamID();
-                contestantID = inMessage.getContestantID();
-
-                portNumbBench = inMessage.getPortNumBench();
-                serverUrlBench = inMessage.getServerUrlBench();
-
-                portNumbPlayground = inMessage.getPortNumPlayground();
-                serverUrlPlayground = inMessage.getServerUrlPlayground();
-
-                con.close();
-                break;
-            }
-            con.close();
-        }
-
-
-        RefereePlaygroundStub refereePlaygroundStub;
-        RefereeRefereeSiteStub refereeRefereeSiteStub;
-        RefereeGlobalStub refereeGlobalStub;
-
-
-        refereePlaygroundStub = new RefereePlaygroundStub(serverUrlBench, portNumbBench);
-        refereeRefereeSiteStub = new RefereeRefereeSiteStub(serverUrlPlayground, portNumbPlayground);
-        refereeGlobalStub = new RefereeGlobalStub(serverUrlPlayground, portNumbPlayground);
-
-        Referee referee = new Referee(contestantBenchStub, contestantPlaygroundStub,contestantPlaygroundStub);
-
-        System.out.println("Coach is running . . .");
+        Referee referee = new Referee(refereePlaygroundStub,refereeRefereeSiteStub,refereeGlobalStub);
 
         referee.start();
 
+        GenericIO.writelnString("Referee starting");
+
         try {
-            referee.join();
-        } catch (InterruptedException ex) {
+            referee.join ();
+        } catch (InterruptedException e) {}
+
+
+        System.out.println("Sending TERMINATE message to the logging");
+
+        Message inMessage, outMessage;
+        ClientCom con = new ClientCom(CommConst.loggServerName, CommConst.loggServerPort);
+        while (!con.open()) {
+            try {
+                sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
         }
+        outMessage = new Message(Message.TERMINATE);
+        con.writeObject(outMessage);
+        inMessage = (Message) con.readObject();
+        if (inMessage.getType() != Message.ACK) {
+            System.out.println("Tipo Inválido. Message:" + inMessage.toString());
+            System.out.println(Arrays.toString(Thread.currentThread().getStackTrace()));
+            System.exit(1);
+        }
+        con.close();
     }
 }

@@ -17,30 +17,31 @@ public class Coach extends Thread{
     /**
      * Bench Monitor Object
      */
-    private Bench benchMon;
+    private CoachBenchStub coachBenchStub;
 
     /**
      *  Playground Monitor Object
      */
-    private Playground playgroundMon;
+    private CoachPlaygroundStub coachPlaygroundStub;
 
     /**
      * General Information Repository Object
      */
-    private Global global;
+    private CoachGlobalStub coachGlobalStub;
+
 
     /**
      * Coach object Constructor
-     * @param teamID
-     * @param benchMon
-     * @param playgroundMon
-     * @param global
+     * @param teamID teamID
+     * @param coachBenchStub
+     * @param coachPlaygroundStub
+     * @param coachGlobalStub
      */
-    public Coach(int teamID, Bench benchMon, Playground playgroundMon, Global global) {
+    public Coach(int teamID, CoachBenchStub coachBenchStub, CoachPlaygroundStub coachPlaygroundStub, CoachGlobalStub coachGlobalStub) {
         this.teamID = teamID;
-        this.benchMon = benchMon;
-        this.playgroundMon = playgroundMon;
-        this.global = global;
+        this.coachBenchStub = coachBenchStub;
+        this.coachPlaygroundStub = coachPlaygroundStub;
+        this.coachGlobalStub = coachGlobalStub;
     }
 
     /**
@@ -50,16 +51,16 @@ public class Coach extends Thread{
     public void run()
     {
 
-        while(global.matchInProgress()){
+        while(coachGlobalStub.matchInProgress()){
 
-            playgroundMon.waitForCalling(teamID);
+            coachPlaygroundStub.waitForCalling(teamID);
 
-            benchMon.callContestants(teamID);
-            playgroundMon.waitForContestants(teamID);
+            coachBenchStub.callContestants(teamID);
+            coachPlaygroundStub.waitForContestants(teamID);
 
-            playgroundMon.informReferee(teamID);
+            coachPlaygroundStub.informReferee(teamID);
 
-            playgroundMon.reviewNotes(teamID, benchMon);
+            coachPlaygroundStub.reviewNotes(teamID);
 
         }
     }

@@ -14,12 +14,12 @@ public class Referee extends Thread {
     /**
      * Playground Monitor object
      */
-    private Playground playground;
+    private RefereePlaygroundStub refereePlaygroundStub;
 
     /**
      * RefereeSite Monitor object
      */
-    private RefereeSite refereeSite;
+    private RefereeRefereeSiteStub refereeRefereeSiteStub;
 
     /**
      * Logger object
@@ -29,37 +29,36 @@ public class Referee extends Thread {
     /**
      * General Informational Repository object
      */
-    private Global global;
+    private RefereeGlobalStub refereeGlobalStub;
+
 
     /**
      * Referee Object Constructor
-     * @param playground
-     * @param refereeSite
-     * @param global
-     * @param logger
+     * @param refereePlaygroundStub
+     * @param refereeRefereeSiteStub
+     * @param refereeGlobalStub
      */
-    public Referee(Playground playground, RefereeSite refereeSite, Global global, Logger logger){
-        this.playground = playground;
-        this.refereeSite = refereeSite;
-        this.global = global;
-        this.logger = logger;
+    public Referee(RefereePlaygroundStub refereePlaygroundStub, RefereeRefereeSiteStub refereeRefereeSiteStub, RefereeGlobalStub refereeGlobalStub){
+        this.refereePlaygroundStub = refereePlaygroundStub;
+        this.refereeGlobalStub = refereeGlobalStub;
+        this. refereeRefereeSiteStub = refereeRefereeSiteStub;
     }
 
     /** Life Cycle of the Referee Thread
     */
     @Override
     public void run(){
-        refereeSite.announceMatch();
+        refereeRefereeSiteStub.announceMatch();
         do{
-            refereeSite.announceGame();
-            while(!global.gameFinished()){
-                playground.callTrial();
-                playground.startTrial();
-                playground.assertTrialDecision();
+            refereeRefereeSiteStub.announceGame();
+            while(!refereeGlobalStub.gameFinished()){
+                refereePlaygroundStub.callTrial();
+                refereePlaygroundStub.startTrial();
+                refereePlaygroundStub.assertTrialDecision();
             }
-            refereeSite.declareGameWinner (logger);
-        }while(global.matchInProgress());
-        refereeSite.declareMatchWinner(logger);
+            refereeRefereeSiteStub.declareGameWinner ();
+        }while(refereeGlobalStub.matchInProgress());
+        refereeRefereeSiteStub.declareMatchWinner();
         logger.closeFile();
     }
 

@@ -1,8 +1,14 @@
 package DistributedSolution.ClientSide.Coach;
 
 import DistributedSolution.ClientSide.ClientCom;
+import DistributedSolution.ClientSide.Contestant.Contestant;
+import DistributedSolution.Message.CommConst;
+import DistributedSolution.Message.GameParameters;
 import DistributedSolution.Message.Message;
 import genclass.GenericIO;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import static java.lang.Thread.sleep;
 
@@ -15,79 +21,42 @@ public class CoachClient {
      */
     public static void main(String[] args) {
 
-        String mainServerUrl = "localhost";
-        int mainServerPort = 22279;
-        if(args.length == 1){
-            mainServerUrl = args[0];
-            System.out.println("Main Hub configured: " + mainServerUrl + ":" + mainServerPort);
+        CoachBenchStub coachBenchStub = new CoachBenchStub(CommConst.benchServerName, CommConst.benchServerPort);
+        CoachPlaygroundStub coachPlaygroundStub = new CoachPlaygroundStub(CommConst.playgroundServerName, CommConst.playgroundServerPort);
+        CoachGlobalStub coachGlobalStub = new CoachGlobalStub(CommConst.globalServerName,CommConst.globalServerPort);
+
+        ArrayList<Coach> coaches = new ArrayList<>(GameParameters.nTeams); //remove static
+        for (int i = 0; i < GameParameters.nTeams; i++) //remove static
+            coaches.add(new Coach(i,coachBenchStub,coachPlaygroundStub,coachGlobalStub));
+
+        GenericIO.writelnString("Number of coaches: " + coaches.size());
+        for (Coach c : coaches)
+            c.start();
+
+        for (Coach c : coaches) {
+            try {
+                c.join ();
+            } catch (InterruptedException e) {}
         }
-        else{
-            System.out.println("Main Hub default configuration used: " + mainServerUrl + ":" + mainServerPort);
-        }
 
-        int teamID;
+        System.out.println("Sending TERMINATE message to the logging");
 
-
-        int portNumbBench;
-        String serverUrlBench;
-
-        int portNumbPlayground;
-        String serverUrlPlayground;
-
-        while(true){
-            ClientCom con = new ClientCom(mainServerUrl, mainServerPort);
-            Message inMessage, outMessage;
-
-            while (!con.open()) // aguarda ligação
-            {
-                try {
-                    sleep((long) (10));
-                } catch (InterruptedException e) {
-                }
+        Message inMessage, outMessage;
+        ClientCom con = new ClientCom(CommConst.loggServerName, CommConst.loggServerPort);
+        while (!con.open()) {
+            try {
+                sleep((long) (10));
+            } catch (InterruptedException e) {
             }
-
-            outMessage = new Message(Message.CONFIGCOACH);
-            con.writeObject(outMessage);
-            inMessage = (Message) con.readObject();
-            if (inMessage.getType() != Message.CONFIGCOACHR /*&& inMessage.getType() != Message.CONFIG_NOTREADY*/) {
-                GenericIO.writelnString("Thread: Tipo inválido! teve: " + inMessage.getType() + " esperava " + Message.CONFIGCOACHR);
-                GenericIO.writelnString(inMessage.toString());
-                System.exit(1);
-            }
-            if (inMessage.getType() == Message.CONFIGCOACHR) {
-                teamID = inMessage.getTeamID();
-
-                portNumbBench = inMessage.getPortNumBench();
-                serverUrlBench = inMessage.getServerUrlBench();
-
-                portNumbPlayground = inMessage.getPortNumPlayground();
-                serverUrlPlayground = inMessage.getServerUrlPlayground();
-
-                con.close();
-                break;
-            }
-            con.close();
         }
-
-
-        CoachBenchStub coachBenchStub;
-        CoachPlaygroundStub coachPlaygroundStub;
-        CoachGlobalStub coachGlobalStub;
-
-
-        coachBenchStub = new CoachBenchStub(serverUrlBench, portNumbBench);
-        coachPlaygroundStub = new CoachPlaygroundStub(serverUrlPlayground, portNumbPlayground);
-        coachGlobalStub = new CoachGlobalStub(serverUrlPlayground, portNumbPlayground);
-
-        Coach coach = new Coach(teamID,coachBenchStub,coachPlaygroundStub);
-
-        System.out.println("Coach is running . . .");
-
-        coach.start();
-
-        try {
-            coach.join();
-        } catch (InterruptedException ex) {
+        outMessage = new Message(Message.TERMINATE);
+        con.writeObject(outMessage);
+        inMessage = (Message) con.readObject();
+        if (inMessage.getType() != Message.ACK) {
+            System.out.println("Tipo Inválido. Message:" + inMessage.toString());
+            System.out.println(Arrays.toString(Thread.currentThread().getStackTrace()));
+            System.exit(1);
         }
+        con.close();
     }
 }

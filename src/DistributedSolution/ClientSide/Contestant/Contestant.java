@@ -24,33 +24,33 @@ public class Contestant extends Thread {
     /**
      * Bench Monitor Object
      */
-    private Bench benchMon;
+    private ContestantBenchStub contestantBenchStub;
 
     /**
      *  Playground Monitor Object
      */
-    private Playground playgroundMon;
+    private ContestantPlaygroundStub contestantPlaygroundStub;
 
     /**
      * General Information Repository Object
      */
-    private Global global;
+    private ContestantGlobalStub contestantGlobalStub;
 
 
     /**
      * Contestant Object Constructor
      * @param contestantID
      * @param teamID
-     * @param benchMon
-     * @param playgroundMon
-     * @param global
+     * @param
+     * @param
+     * @param
      */
-    public Contestant(int contestantID, int teamID,  Bench benchMon, Playground playgroundMon, Global global) {
+    public Contestant(int contestantID, int teamID,  ContestantBenchStub contestantBenchStub, ContestantPlaygroundStub contestantPlaygroundStub, ContestantGlobalStub contestantGlobalStub) {
         this.contestantID = contestantID;
         this.teamID = teamID;
-        this.benchMon = benchMon;
-        this.playgroundMon = playgroundMon;
-        this.global = global;
+        this.contestantBenchStub = contestantBenchStub;
+        this.contestantPlaygroundStub = contestantPlaygroundStub;
+        this.contestantGlobalStub = contestantGlobalStub;
     }
 
     /** Life Cycle of the Contestant Thread
@@ -58,16 +58,16 @@ public class Contestant extends Thread {
     @Override
     public void run() {
 
-        while(global.matchInProgress()){
+        while(contestantGlobalStub.matchInProgress()){
 
-            benchMon.sitDown(contestantID, teamID, playgroundMon);
+            contestantBenchStub.sitDown(contestantID, teamID);
 
-            if(global.matchInProgress()){
-                playgroundMon.followCoachAdvice(contestantID, teamID); //// TODO: 02/04/2016 verify the location of operations
+            if(contestantGlobalStub.matchInProgress()){
+                contestantPlaygroundStub.followCoachAdvice(contestantID, teamID); //// TODO: 02/04/2016 verify the location of operations
 
-                playgroundMon.getReady(contestantID, teamID);
+                contestantPlaygroundStub.getReady(contestantID, teamID);
                 pullRope();
-                playgroundMon.done(teamID);
+                contestantPlaygroundStub.done(teamID);
 
             }
         }

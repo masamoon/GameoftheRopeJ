@@ -156,6 +156,8 @@ public class Message  implements Serializable{
 
     public static final int CONFIGREFEREER = 302;
 
+    public static final int TERMINATE = 400;
+
     /**
      *
      */

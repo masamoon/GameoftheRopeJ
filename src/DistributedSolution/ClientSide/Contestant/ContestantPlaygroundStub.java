@@ -25,7 +25,7 @@ public class ContestantPlaygroundStub {
 
     private int serverPortNumb;
 
-    ContestantPlaygroundStub(String serverUrl, int portNumbStorage) {
+    public ContestantPlaygroundStub(String serverUrl, int portNumbStorage) {
         this.serverPortNumb = portNumbStorage;
         this.serverHostName = serverUrl;
     }

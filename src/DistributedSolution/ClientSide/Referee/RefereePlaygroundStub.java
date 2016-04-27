@@ -25,7 +25,7 @@ public class RefereePlaygroundStub {
 
     private int serverPortNumb;
 
-    RefereePlaygroundStub(String serverUrl, int portNumbStorage) {
+    public RefereePlaygroundStub(String serverUrl, int portNumbStorage) {
         this.serverPortNumb = portNumbStorage;
         this.serverHostName = serverUrl;
     }
@@ -78,7 +78,7 @@ public class RefereePlaygroundStub {
         con.close ();
     }
 
-    public void asserTrialDecision(){
+    public void assertTrialDecision(){
         ClientCom con = new ClientCom(serverHostName, serverPortNumb);
         Message inMessage, outMessage;
 
