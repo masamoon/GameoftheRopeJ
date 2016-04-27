@@ -1,8 +1,7 @@
 package DistributedSolution.ClientSide.Contestant;
 
-import DistributedSolution.ClientSide.ClientCom;
-import DistributedSolution.Message.Message;
-import DistributedSolution.ServerSide.Playground.Playground;
+import DistributedSolution.Communication.ClientCom;
+import DistributedSolution.Communication.Message.Message;
 import genclass.GenericIO;
 
 import static java.lang.Thread.sleep;

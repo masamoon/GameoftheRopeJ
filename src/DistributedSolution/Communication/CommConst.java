@@ -1,4 +1,4 @@
-package DistributedSolution.Message;
+package DistributedSolution.Communication;
 
 /**
  * Created by Andre on 27/04/2016.

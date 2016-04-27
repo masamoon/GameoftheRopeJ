@@ -1,33 +1,33 @@
-package DistributedSolution.ClientSide;
+package DistributedSolution.Communication;
 
 /**
- * Created by Andre on 11/04/2016.
+ * Created by Andre on 12/04/2016.
  */
 import genclass.GenericIO;
 import java.io.*;
 import java.net.*;
 
 /**
- *   Este tipo de dados implementa o canal de comunicação, lado do cliente, para uma comunicação baseada em passagem de
+ *   Este tipo de dados implementa o canal de comunicação, lado do servidor, para uma comunicação baseada em passagem de
  *   mensagens sobre sockets usando o protocolo TCP.
  *   A transferência de dados é baseada em objectos, um objecto de cada vez.
  */
 
-public class ClientCom
+public class ServerCom
 {
+    /**
+     *  Socket de escuta
+     *    @serialField listeningSocket
+     */
+
+    private ServerSocket listeningSocket = null;
+
     /**
      *  Socket de comunicação
      *    @serialField commSocket
      */
 
     private Socket commSocket = null;
-
-    /**
-     *  Nome do sistema computacional onde está localizado o servidor
-     *    @serialField serverHostName
-     */
-
-    private String serverHostName = null;
 
     /**
      *  Número do port de escuta do servidor
@@ -51,88 +51,106 @@ public class ClientCom
     private ObjectOutputStream out = null;
 
     /**
-     *  Instanciação de um canal de comunicação.
+     *  Instanciação de um canal de comunicação (forma 1).
      *
-     *    @param hostName nome do sistema computacional onde está localizado o servidor
      *    @param portNumb número do port de escuta do servidor
      */
 
-    public ClientCom (String hostName, int portNumb)
+    public ServerCom (int portNumb)
     {
-        serverHostName = hostName;
         serverPortNumb = portNumb;
     }
 
     /**
-     *  Abertura do canal de comunicação.
-     *  Instanciação de um socket de comunicação e sua associação ao endereço do servidor.
-     *  Abertura dos streams de entrada e de saída do socket.
+     *  Instanciação de um canal de comunicação (forma 2).
      *
-     *    @return <li>true, se o canal de comunicação foi aberto
-     *            <li>false, em caso contrário
+     *    @param portNumb número do port de escuta do servidor
+     *    @param lSocket socket de escuta
      */
 
-    public boolean open ()
+    public ServerCom (int portNumb, ServerSocket lSocket)
     {
-        boolean success = true;
-        SocketAddress serverAddress = new InetSocketAddress (serverHostName, serverPortNumb);
+        serverPortNumb = portNumb;
+        listeningSocket = lSocket;
+    }
 
+    /**
+     *  Estabelecimento do serviço.
+     *  Instanciação de um socket de escuta e sua associação ao endereço da máquina local
+     *  e ao port de escuta públicos.
+     */
+
+    public void start ()
+    {
         try
-        { commSocket = new Socket();
-            commSocket.connect (serverAddress);
+        { listeningSocket = new ServerSocket (serverPortNumb);
         }
-        catch (UnknownHostException e)
+        catch (BindException e)                         // erro fatal --- port já em uso
         { GenericIO.writelnString (Thread.currentThread ().getName () +
-                " - o nome do sistema computacional onde reside o servidor é desconhecido: " +
-                serverHostName + "!");
+                " - não foi possível a associação do socket de escuta ao port: " +
+                serverPortNumb + "!");
             e.printStackTrace ();
             System.exit (1);
-        }
-        catch (NoRouteToHostException e)
-        { GenericIO.writelnString (Thread.currentThread ().getName () +
-                " - o nome do sistema computacional onde reside o servidor é inatingível: " +
-                serverHostName + "!");
-            e.printStackTrace ();
-            System.exit (1);
-        }
-        catch (ConnectException e)
-        { GenericIO.writelnString (Thread.currentThread ().getName () +
-                " - o servidor não responde em: " + serverHostName + "." + serverPortNumb + "!");
-            if (e.getMessage ().equals ("Connection refused"))
-                success = false;
-            else { GenericIO.writelnString (e.getMessage () + "!");
-                e.printStackTrace ();
-                System.exit (1);
-            }
-        }
-        catch (SocketTimeoutException e)
-        { GenericIO.writelnString (Thread.currentThread ().getName () +
-                " - ocorreu um time out no estabelecimento da ligação a: " +
-                serverHostName + "." + serverPortNumb + "!");
-            success = false;
         }
         catch (IOException e)                           // erro fatal --- outras causas
         { GenericIO.writelnString (Thread.currentThread ().getName () +
-                " - ocorreu um erro indeterminado no estabelecimento da ligação a: " +
-                serverHostName + "." + serverPortNumb + "!");
+                " - ocorreu um erro indeterminado na associação do socket de escuta ao port: " +
+                serverPortNumb + "!");
             e.printStackTrace ();
             System.exit (1);
         }
+    }
 
-        if (!success) return (success);
+    /**
+     *  Encerramento do serviço.
+     *  Fecho do socket de escuta.
+     */
 
+    public void end ()
+    {
         try
-        { out = new ObjectOutputStream (commSocket.getOutputStream ());
+        { listeningSocket.close ();
         }
         catch (IOException e)
         { GenericIO.writelnString (Thread.currentThread ().getName () +
-                " - não foi possível abrir o canal de saída do socket!");
+                " - não foi possível fechar o socket de escuta!");
+            e.printStackTrace ();
+            System.exit (1);
+        }
+    }
+
+    /**
+     *  Processo de escuta.
+     *  Criação de um canal de comunicação para um pedido pendente.
+     *  Instanciação de um socket de comunicação e sua associação ao endereço do cliente.
+     *  Abertura dos streams de entrada e de saída do socket.
+     *
+     *    @return canal de comunicação
+     */
+
+    public ServerCom accept ()
+    {
+        ServerCom scon;                                      // canal de comunicação
+
+        scon = new ServerCom(serverPortNumb, listeningSocket);
+        try
+        { scon.commSocket = listeningSocket.accept();
+        }
+        catch (SocketException e)
+        { GenericIO.writelnString (Thread.currentThread ().getName () +
+                " - foi fechado o socket de escuta durante o processo de escuta!");
+            e.printStackTrace ();
+            System.exit (1);
+        }
+        catch (IOException e)
+        { GenericIO.writelnString (Thread.currentThread ().getName () +
+                " - não foi possível abrir um canal de comunicação para um pedido pendente!");
             e.printStackTrace ();
             System.exit (1);
         }
 
         try
-        { in = new ObjectInputStream (commSocket.getInputStream ());
+        { scon.in = new ObjectInputStream (scon.commSocket.getInputStream ());
         }
         catch (IOException e)
         { GenericIO.writelnString (Thread.currentThread ().getName () +
@@ -141,7 +159,17 @@ public class ClientCom
             System.exit (1);
         }
 
-        return (success);
+        try
+        { scon.out = new ObjectOutputStream (scon.commSocket.getOutputStream ());
+        }
+        catch (IOException e)
+        { GenericIO.writelnString (Thread.currentThread ().getName () +
+                " - não foi possível abrir o canal de saída do socket!");
+            e.printStackTrace ();
+            System.exit (1);
+        }
+
+        return scon;
     }
 
     /**
@@ -191,10 +219,10 @@ public class ClientCom
 
     public Object readObject ()
     {
-        Object fromServer = null;                            // objecto
+        Object fromClient = null;                            // objecto
 
         try
-        { fromServer = in.readObject ();
+        { fromClient = in.readObject ();
         }
         catch (InvalidClassException e)
         { GenericIO.writelnString (Thread.currentThread ().getName () +
@@ -215,19 +243,19 @@ public class ClientCom
             System.exit (1);
         }
 
-        return fromServer;
+        return fromClient;
     }
 
     /**
      *  Escrita de um objecto no canal de comunicação.
      *
-     *    @param toServer objecto a ser escrito
+     *    @param toClient objecto a ser escrito
      */
 
-    public void writeObject (Object toServer)
+    public void writeObject (Object toClient)
     {
         try
-        { out.writeObject (toServer);
+        { out.writeObject (toClient);
         }
         catch (InvalidClassException e)
         { GenericIO.writelnString (Thread.currentThread ().getName () +
@@ -249,3 +277,4 @@ public class ClientCom
         }
     }
 }
+

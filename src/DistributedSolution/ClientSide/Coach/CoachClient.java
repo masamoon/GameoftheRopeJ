@@ -1,10 +1,9 @@
 package DistributedSolution.ClientSide.Coach;
 
-import DistributedSolution.ClientSide.ClientCom;
-import DistributedSolution.ClientSide.Contestant.Contestant;
-import DistributedSolution.Message.CommConst;
-import DistributedSolution.Message.GameParameters;
-import DistributedSolution.Message.Message;
+import DistributedSolution.Communication.ClientCom;
+import DistributedSolution.Communication.CommConst;
+import DistributedSolution.Communication.GameParameters;
+import DistributedSolution.Communication.Message.Message;
 import genclass.GenericIO;
 
 import java.util.ArrayList;

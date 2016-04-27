@@ -1,12 +1,16 @@
-package DistributedSolution.ServerSide;
+package DistributedSolution.Communication;
 
 /**
  * Created by Andre on 11/04/2016.
  */
-import DistributedSolution.Message.Message;
-import DistributedSolution.Message.MessageException;
+import DistributedSolution.Communication.Message.Message;
+import DistributedSolution.Communication.Message.MessageException;
 import DistributedSolution.ServerSide.Bench.BenchInterface;
 import genclass.GenericIO;
+
+import java.net.SocketException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -35,25 +39,33 @@ public class ClientProxy extends Thread
     private ServerCom sconi;
 
     /**
-     *  Interface bench
+     * Canal de comunicação
      *
-     *    @serialField benchInterface
+     * @serialField scon
+     */
+    private ServerCom scon;
+
+    /**
+     *  Interface serverInterface
+     *
+     *    @serialField serverInterface
      */
 
-    private BenchInterface benchInterface;
+    private ServerInterface serverInterface;
 
     /**
      *
      * @param sconi
-     * @param benchInterface
+     * @param serverInterface
      */
 
-    public ClientProxy (ServerCom sconi, BenchInterface benchInterface)
+    public ClientProxy (ServerCom scon ,ServerCom sconi, ServerInterface serverInterface)
     {
         super ("Proxy_" + getProxyId ());
 
         this.sconi = sconi;
-        this.benchInterface = benchInterface;
+        this.scon = scon;
+        this.serverInterface = serverInterface;
     }
 
     /**
@@ -63,20 +75,29 @@ public class ClientProxy extends Thread
     @Override
     public void run ()
     {
-        Message inMessage = null,                                      // mensagem de entrada
+        Message inMessage = null, // mensagem de entrada
                 outMessage = null;                      // mensagem de saída
 
-        inMessage = (Message) sconi.readObject ();                     // ler pedido do cliente
+        inMessage = (Message) sconi.readObject();                     // ler pedido do cliente
         try
-        { outMessage = benchInterface.processAndReply (inMessage);         // processá-lo
-        }
-        catch (MessageException e)
-        { GenericIO.writelnString ("Thread " + getName () + ": " + e.getMessage () + "!");
-            GenericIO.writelnString (e.getMessageVal ().toString ());
-            System.exit (1);
+        {
+            outMessage = serverInterface.processAndReply(inMessage, scon);         // processá-lo
+        } catch (MessageException e)
+        {
+            System.out.println("Thread " + getName() + ": " + e.getMessage() + "!");
+            System.out.println(e.getMessageVal().toString());
+            System.exit(1);
+        } catch (SocketException ex) {
+            Logger.getLogger(ClientProxy.class.getName()).log(Level.SEVERE, null, ex);
         }
         sconi.writeObject(outMessage);                                // enviar resposta ao cliente
         sconi.close();                                                // fechar canal de comunicação
+
+        if(serverInterface.serviceEnded())
+        {
+            System.out.println("Closing service ... Done!");
+            System.exit(0);
+        }
     }
 
     /**
@@ -87,12 +108,12 @@ public class ClientProxy extends Thread
 
     private static int getProxyId ()
     {
-        Class<DistributedSolution.ServerSide.ClientProxy> cl = null;             // representação do tipo de dados ClientProxy na máquina
+        Class<ClientProxy> cl = null;             // representação do tipo de dados ClientProxy na máquina
         //   virtual de Java
         int proxyId;                                         // identificador da instanciação
 
         try
-        { cl = (Class<DistributedSolution.ServerSide.ClientProxy>) Class.forName ("serverSide.ClientProxy");
+        { cl = (Class<ClientProxy>) Class.forName ("serverSide.ClientProxy");
         }
         catch (ClassNotFoundException e)
         { GenericIO.writelnString ("O tipo de dados ClientProxy não foi encontrado!");

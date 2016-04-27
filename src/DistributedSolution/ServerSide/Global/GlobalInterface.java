@@ -1,15 +1,18 @@
 package DistributedSolution.ServerSide.Global;
 
-import DistributedSolution.Message.Message;
-import DistributedSolution.Message.MessageException;
-import DistributedSolution.ServerSide.Playground.Playground;
+import DistributedSolution.Communication.Message.Message;
+import DistributedSolution.Communication.Message.MessageException;
+import DistributedSolution.Communication.ServerCom;
+import DistributedSolution.Communication.ServerInterface;
 import genclass.GenericIO;
 
 /**
  * Created by Andre on 12/04/2016.
  */
-public class GlobalInterface {
+public class GlobalInterface implements ServerInterface {
     private Global global;
+
+    private boolean serviceEnded;
 
 
     public GlobalInterface(Global global){
@@ -18,7 +21,8 @@ public class GlobalInterface {
 
     }
 
-    public Message processAndReply(Message inMessage) throws MessageException {
+    @Override
+    public Message processAndReply(Message inMessage, ServerCom scon) throws MessageException {
         Message outMessage = null;                           // mensagem de resposta
 
         switch (inMessage.getType()) {
@@ -48,5 +52,14 @@ public class GlobalInterface {
 
 
         return outMessage;
+    }
+
+    /**
+     * Tell the service if it is allowed to end or not.
+     * @return True if the system can terminate, false otherwise.
+     */
+    @Override
+    public boolean serviceEnded() {
+        return serviceEnded;
     }
 }

@@ -1,4 +1,4 @@
-package DistributedSolution.Message;
+package DistributedSolution.Communication.Message;
 
 import DistributedSolution.ClientSide.Coach.CoachState;
 import DistributedSolution.ClientSide.Contestant.ContestantState;

@@ -1,5 +1,7 @@
 package DistributedSolution.ServerSide;
 
+import DistributedSolution.Communication.ClientProxy;
+import DistributedSolution.Communication.ServerCom;
 import DistributedSolution.ServerSide.Bench.Bench;
 import DistributedSolution.ServerSide.Bench.BenchInterface;
 import DistributedSolution.ServerSide.Playground.Playground;

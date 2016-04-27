@@ -1,17 +1,10 @@
 package DistributedSolution.ClientSide.Referee;
 
-import DistributedSolution.ClientSide.ClientCom;
-import DistributedSolution.ClientSide.Coach.Coach;
-import DistributedSolution.ClientSide.Contestant.Contestant;
-import DistributedSolution.ClientSide.Contestant.ContestantBenchStub;
-import DistributedSolution.ClientSide.Contestant.ContestantGlobalStub;
-import DistributedSolution.ClientSide.Contestant.ContestantPlaygroundStub;
-import DistributedSolution.Message.CommConst;
-import DistributedSolution.Message.GameParameters;
-import DistributedSolution.Message.Message;
+import DistributedSolution.Communication.ClientCom;
+import DistributedSolution.Communication.CommConst;
+import DistributedSolution.Communication.Message.Message;
 import genclass.GenericIO;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import static java.lang.Thread.sleep;

@@ -1,15 +1,19 @@
 package DistributedSolution.ServerSide.Playground;
 
-import DistributedSolution.Message.Message;
-import DistributedSolution.Message.MessageException;
+import DistributedSolution.Communication.Message.Message;
+import DistributedSolution.Communication.Message.MessageException;
+import DistributedSolution.Communication.ServerCom;
+import DistributedSolution.Communication.ServerInterface;
 import genclass.GenericIO;
 
 /**
  * Created by Andre on 12/04/2016.
  */
-public class PlaygroundInterface {
+public class PlaygroundInterface implements ServerInterface {
 
     private Playground playground;
+
+    private boolean serviceEnded;
 
 
     public PlaygroundInterface(Playground playground){
@@ -18,7 +22,8 @@ public class PlaygroundInterface {
 
     }
 
-    public Message processAndReply(Message inMessage) throws MessageException {
+    @Override
+    public Message processAndReply(Message inMessage, ServerCom scon) throws MessageException {
         Message outMessage = null;                           // mensagem de resposta
 
         int teamID= inMessage.getTeamID();
@@ -75,6 +80,15 @@ public class PlaygroundInterface {
 
         }
         return outMessage;
+    }
+
+    /**
+     * Tell the service if it is allowed to end or not.
+     * @return True if the system can terminate, false otherwise.
+     */
+    @Override
+    public boolean serviceEnded() {
+        return serviceEnded;
     }
 }
 

@@ -1,10 +1,8 @@
 package DistributedSolution.ClientSide.Coach;
 
-import DistributedSolution.ClientSide.ClientCom;
-import DistributedSolution.Message.Message;
+import DistributedSolution.Communication.ClientCom;
+import DistributedSolution.Communication.Message.Message;
 import genclass.GenericIO;
-
-import java.util.Random;
 
 import static java.lang.Thread.sleep;
 
