@@ -2,11 +2,13 @@ package DistributedSolution.ServerSide;
 
 import DistributedSolution.Communication.ClientProxy;
 import DistributedSolution.Communication.ServerCom;
-import DistributedSolution.ServerSide.Bench.Bench;
+import DistributedSolution.Communication.ServerInterface;
+import DistributedSolution.ServerSide.Bench.BenchRemote;
 import DistributedSolution.ServerSide.Bench.BenchInterface;
-import DistributedSolution.ServerSide.Playground.Playground;
+import DistributedSolution.ServerSide.Global.GlobalRemote;
+import DistributedSolution.ServerSide.Playground.PlaygroundRemote;
 import DistributedSolution.ServerSide.Playground.PlaygroundInterface;
-import DistributedSolution.ServerSide.RefereeSite.RefereeSite;
+import DistributedSolution.ServerSide.RefereeSite.RefereeSiteRemote;
 import DistributedSolution.ServerSide.RefereeSite.RefereeSiteInterface;
 import genclass.GenericIO;
 
@@ -29,10 +31,11 @@ public class GameOfTheRopeServer {
 
     public static void main (String [] args)
     {
-        Bench bench;                                    // bench (representa o serviço a ser prestado)
-        Playground playground;
-        RefereeSite refereeSite;
-        BenchInterface benchInterface;                      // interface ao bench
+        GlobalRemote globalRemote;
+        BenchRemote benchRemote;                                    // benchRemote (representa o serviço a ser prestado)
+        PlaygroundRemote playgroundRemote;
+        RefereeSiteRemote refereeSiteRemote;
+        BenchInterface benchInterface;                      // interface ao benchRemote
         PlaygroundInterface playgroundInterface;
         RefereeSiteInterface refereeSiteInterface;
         ServerCom scon, sconi;                               // canais de comunicação
@@ -42,12 +45,24 @@ public class GameOfTheRopeServer {
 
         scon = new ServerCom (portNumb);                     // criação do canal de escuta e sua associação
         scon.start ();                                       // com o endereço público
-        bench = new Bench();                         // activação do serviço
-        playground = new Playground();
-        refereeSite = new RefereeSite();
-        benchInterface = new BenchInterface(bench);        // activação do interface com o serviço
-        playgroundInterface = new PlaygroundInterface(playground);
-        refereeSiteInterface = new RefereeSiteInterface(refereeSite);
+        globalRemote = new GlobalRemote("/");
+
+        refereeSiteRemote = new RefereeSiteRemote(globalRemote);
+
+        benchRemote = new BenchRemote(globalRemote, refereeSiteRemote);
+
+        playgroundRemote = new PlaygroundRemote(globalRemote, benchRemote);
+
+
+
+
+
+
+        benchInterface = new BenchInterface(benchRemote);        // activação do interface com o serviço
+        playgroundInterface = new PlaygroundInterface(playgroundRemote);
+        refereeSiteInterface = new RefereeSiteInterface(refereeSiteRemote);
+
+
         GenericIO.writelnString ("O serviço foi estabelecido!");
         GenericIO.writelnString ("O servidor esta em escuta.");
 
@@ -55,7 +70,7 @@ public class GameOfTheRopeServer {
 
         while (true)
         { sconi = scon.accept ();                            // entrada em processo de escuta
-            cliProxy = new ClientProxy (sconi, benchInterface);    // lançamento do agente prestador do serviço
+            cliProxy = new ClientProxy (scon,sconi, serverInterface);    // lançamento do agente prestador do serviço
             cliProxy.start ();
         }
     }

@@ -11,14 +11,14 @@ import genclass.GenericIO;
  */
 public class PlaygroundInterface implements ServerInterface {
 
-    private Playground playground;
+    private PlaygroundRemote playgroundRemote;
 
     private boolean serviceEnded;
 
 
-    public PlaygroundInterface(Playground playground){
+    public PlaygroundInterface(PlaygroundRemote playgroundRemote){
 
-        this.playground = playground;
+        this.playgroundRemote = playgroundRemote;
 
     }
 
@@ -30,50 +30,47 @@ public class PlaygroundInterface implements ServerInterface {
         int contestantID= inMessage.getContestantID();
 
         switch (inMessage.getType()) {
-            case Message.WFCALLING:
+          /*  case Message.WFCALLING:
 
-                playground.waitForCalling(teamID);
+                playgroundRemote.waitForCalling(teamID);
                 outMessage = new Message(Message.ACK);
-                break;
+                break;*/
             case Message.CTRIAL:
-                playground.callTrial();
+                playgroundRemote.callTrial();
                 outMessage = new Message(Message.ACK);
                 break;
             case Message.WCONTESTANTS:
 
-                playground.waitForContestants(teamID);
+                playgroundRemote.waitForContestants(teamID);
                 outMessage = new Message(Message.ACK);
                 break;
             case Message.FCOACHADV:
 
-                playground.followCoachAdvice(contestantID,teamID);
+                playgroundRemote.followCoachAdvice(contestantID,teamID);
                 outMessage = new Message(Message.ACK);
                 break;
             case Message.INFREF:
 
-                playground.informReferee(teamID);
+                playgroundRemote.informReferee(teamID);
                 outMessage = new Message(Message.ACK);
                 break;
             case Message.STRIAL:
-                playground.startTrial();
+                playgroundRemote.startTrial();
                 outMessage = new Message(Message.ACK);
                 break;
             case Message.GREADY:
-                playground.getReady(contestantID,teamID);
+                playgroundRemote.getReady(teamID);
                 outMessage = new Message(Message.ACK);
                 break;
             case Message.DONE:
-                playground.done(teamID);
+                playgroundRemote.done(teamID);
                 outMessage = new Message(Message.ACK);
                 break;
             case Message.ASSTRIALDEC:
-                playground.assertTrialDecision();
+                playgroundRemote.assertTrialDecision();
                 outMessage = new Message(Message.ACK);
                 break;
-            case Message.REVNOTES:
-                playground.reviewNotes(teamID);
-                outMessage = new Message(Message.ACK);
-                break;
+
             default:
                 GenericIO.writelnString("Invalid message type");
                 break;

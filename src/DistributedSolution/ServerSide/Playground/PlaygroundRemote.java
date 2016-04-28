@@ -1,6 +1,10 @@
-package Nondistributedsolution.Monitors;
+package DistributedSolution.ServerSide.Playground;
 
+import DistributedSolution.ServerSide.Bench.BenchRemote;
+import DistributedSolution.ServerSide.Global.GlobalRemote;
 import Nondistributedsolution.Contestant.Contestant;
+import Nondistributedsolution.Monitors.Bench;
+import Nondistributedsolution.Monitors.Global;
 
 import java.util.stream.IntStream;
 
@@ -8,18 +12,18 @@ import java.util.stream.IntStream;
 /**
  * This Class implements the shared region for the PlaygroundRemote, with synchronization based on monitors
  */
-public class Playground {
+public class PlaygroundRemote {
 
 
     /**
      *  General Information Repository object
      */
-    private final Global global;
+    private final GlobalRemote global;
 
     /**
      *  General Information Repository object
      */
-    private final Bench bench;
+    private final BenchRemote bench;
 
     /**
      * Number of complete teams that are standing in position (from 0 to 2)
@@ -53,7 +57,7 @@ public class Playground {
      * Constructor for the PlaygroundRemote
      * @param global
      */
-    public Playground( Global global, Bench bench){
+    public PlaygroundRemote(GlobalRemote global, BenchRemote bench){
         this.global = global;
         this.bench = bench;
 

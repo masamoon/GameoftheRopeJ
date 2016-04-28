@@ -10,14 +10,14 @@ import genclass.GenericIO;
  * Created by Andre on 12/04/2016.
  */
 public class GlobalInterface implements ServerInterface {
-    private Global global;
+    private GlobalRemote globalRemote;
 
     private boolean serviceEnded;
 
 
-    public GlobalInterface(Global global){
+    public GlobalInterface(GlobalRemote globalRemote){
 
-        this.global = global;
+        this.globalRemote = globalRemote;
 
     }
 
@@ -30,7 +30,7 @@ public class GlobalInterface implements ServerInterface {
                 throw new MessageException ("File does not exist", inMessage);
                 break;
             case Message.MINPROGRESS:
-                boolean matchInProgress = global.matchInProgress();
+                boolean matchInProgress = globalRemote.matchInProgress();
                 if(matchInProgress)
                     outMessage = new Message(Message.POSITIVE);
                 else
@@ -38,7 +38,7 @@ public class GlobalInterface implements ServerInterface {
                 break;
 
             case Message.GFINISHED:
-                boolean gameFinished = global.gameFinished();
+                boolean gameFinished = globalRemote.gameFinished();
                 if(gameFinished)
                     outMessage = new Message(Message.POSITIVE);
                 else

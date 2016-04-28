@@ -1,7 +1,12 @@
-package Nondistributedsolution.Monitors;
+package DistributedSolution.ServerSide.Bench;
 
 
+import DistributedSolution.ServerSide.Global.GlobalRemote;
+import DistributedSolution.ServerSide.RefereeSite.RefereeSiteRemote;
 import Nondistributedsolution.Contestant.Contestant;
+import Nondistributedsolution.Monitors.Global;
+import Nondistributedsolution.Monitors.Playground;
+import Nondistributedsolution.Monitors.RefereeSite;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -11,17 +16,17 @@ import java.util.stream.IntStream;
 /**
  * This Class implements the shared region for the BenchRemote, with synchronization based on monitors
  */
-public class Bench {
+public class BenchRemote {
 
     /**
      *  General Information Repository object
      */
-    private final Global global;
+    private final GlobalRemote global;
 
     /**
      *  RefereeSiteRemote object
      */
-    private final RefereeSite refereeSite;
+    private final RefereeSiteRemote refereeSite;
 
 
     /**
@@ -63,7 +68,7 @@ public class Bench {
      *  Constructor for this Shared Region.
      * @param global
      */
-    public Bench(Global global, RefereeSite refereeSite){
+    public BenchRemote(GlobalRemote global, RefereeSiteRemote refereeSite){
 
         this.global = global;
         this.refereeSite = refereeSite;

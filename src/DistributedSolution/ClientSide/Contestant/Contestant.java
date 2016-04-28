@@ -22,12 +22,12 @@ public class Contestant extends Thread {
     private int teamID;
 
     /**
-     * Bench Monitor Object
+     * BenchRemote Monitor Object
      */
     private ContestantBenchStub contestantBenchStub;
 
     /**
-     *  Playground Monitor Object
+     *  PlaygroundRemote Monitor Object
      */
     private ContestantPlaygroundStub contestantPlaygroundStub;
 

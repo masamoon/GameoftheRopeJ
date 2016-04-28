@@ -11,13 +11,13 @@ import genclass.GenericIO;
  */
 public class RefereeSiteInterface implements ServerInterface {
 
-    private RefereeSite refereeSite;
+    private RefereeSiteRemote refereeSiteRemote;
 
     private boolean serviceEnded;
 
-    public RefereeSiteInterface(RefereeSite refereeSite){
+    public RefereeSiteInterface(RefereeSiteRemote refereeSiteRemote){
 
-        this.refereeSite =refereeSite;
+        this.refereeSiteRemote = refereeSiteRemote;
 
     }
 
@@ -27,19 +27,19 @@ public class RefereeSiteInterface implements ServerInterface {
 
         switch (inMessage.getType()) {
             case Message.ANNGAME:
-                refereeSite.announceGame();
+                refereeSiteRemote.announceGame();
                 outMessage = new Message(Message.ACK);
                 break;
             case Message.ANNMATCH:
-                refereeSite.announceMatch();
+                refereeSiteRemote.announceMatch();
                 outMessage = new Message(Message.ACK);
                 break;
             case Message.DGAMEWINNER:
-                refereeSite.declareGameWinner();
+                refereeSiteRemote.declareGameWinner();
                 outMessage = new Message(Message.ACK);
                 break;
             case Message.DMATCHWINNER:
-                refereeSite.declareMatchWinner();
+                refereeSiteRemote.declareMatchWinner();
                 outMessage = new Message(Message.ACK);
                 break;
             default:

@@ -15,12 +15,12 @@ public class Coach extends Thread{
     private int teamID;
 
     /**
-     * Bench Monitor Object
+     * BenchRemote Monitor Object
      */
     private CoachBenchStub coachBenchStub;
 
     /**
-     *  Playground Monitor Object
+     *  PlaygroundRemote Monitor Object
      */
     private CoachPlaygroundStub coachPlaygroundStub;
 

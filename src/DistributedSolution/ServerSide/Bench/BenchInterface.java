@@ -13,14 +13,14 @@ import java.net.SocketException;
  */
 public class BenchInterface implements ServerInterface {
 
-    private Bench bench;
+    private BenchRemote benchRemote;
 
     private boolean serviceEnded;
 
 
-    public BenchInterface(Bench bench) {
+    public BenchInterface(BenchRemote benchRemote) {
 
-        this.bench = bench;
+        this.benchRemote = benchRemote;
 
     }
 
@@ -33,15 +33,19 @@ public class BenchInterface implements ServerInterface {
         switch (inMessage.getType()) {
             case Message.CCONTESTANTS:
 
-                bench.callContestants(teamID);
+                benchRemote.callContestants(teamID);
                 outMessage = new Message(Message.ACK);
                 break;
-            case Message.WCONTESTANTS:
-                bench.wakeContestants();
+           /* case Message.WCONTESTANTS:
+                benchRemote.wakeContestants();
                 outMessage = new Message(Message.ACK);
-                break;
+                break;*/
             case Message.SDOWN:
-                bench.sitDown(contestantID,teamID);
+                benchRemote.sitDown(contestantID,teamID);
+                outMessage = new Message(Message.ACK);
+                break;
+            case Message.REVNOTES:
+                benchRemote.reviewNotes(teamID);
                 outMessage = new Message(Message.ACK);
                 break;
             default:

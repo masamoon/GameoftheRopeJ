@@ -12,12 +12,12 @@ import Nondistributedsolution.Monitors.RefereeSite;
 public class Referee extends Thread {
 
     /**
-     * Playground Monitor object
+     * PlaygroundRemote Monitor object
      */
     private RefereePlaygroundStub refereePlaygroundStub;
 
     /**
-     * RefereeSite Monitor object
+     * RefereeSiteRemote Monitor object
      */
     private RefereeRefereeSiteStub refereeRefereeSiteStub;
 
