@@ -1,6 +1,6 @@
 package Nondistributedsolution.Monitors;
 
-import Nondistributedsolution.Logging.Logger;
+import Nondistributedsolution.Referee.Referee;
 import Nondistributedsolution.Referee.RefereeState;
 
 /**
@@ -9,27 +9,25 @@ import Nondistributedsolution.Referee.RefereeState;
 public class RefereeSite {
 
     private Global global;
-    private Logger logger;
 
-    public RefereeSite( Global global, Logger logger){
+    private Bench bench;
 
+    private int trialNum;
+
+
+
+    public RefereeSite(Global global, Bench bench) {
+
+        this.bench = bench;
         this.global = global;
-        this.logger = logger;
     }
-    /*
-    *   Referee Operations
-     */
-
     /**
      * Referee Announces new game
      */
     public synchronized void announceGame(){
-        global.setRefereeState(RefereeState.START_OF_A_GAME,logger);
-
-
         global.incrementGamesNum();
 
-        global.setFlagPos(0);
+        global.resetFlagPos();
         global.resetTrialNum();
     }
 
@@ -37,66 +35,89 @@ public class RefereeSite {
      * Referee Announces a new Match
      */
     public synchronized void announceMatch(){
-        global.setRefereeState(RefereeState.START_OF_THE_MATCH,logger);
+        global.setRefereeState(RefereeState.START_OF_THE_MATCH);
 
     }
 
+    /**
+     *   The last contestant to sit wakes the Ref
+     */
+    public synchronized void benchWakeRef(){
 
+        notifyAll();
+    }
+
+    public synchronized void waitForBench(){
+        global.incrementTrialNum();
+        System.out.println(global.getTrialNum());
+
+        while(!bench.getBenchReady()){
+            try {
+                wait();
+            } catch (InterruptedException e) {}
+        }
+    }
 
     /**
      * Checks what team is the game's winner
-     * @param logger reference to logger Object
      */
-    public synchronized void declareGameWinner (Logger logger){
+    public synchronized void declareGameWinner (){
+        int flagPos = global.getFlagPos();
         if(global.getTrialNum() >= 6){
-            if(global.getFlagPos() < 0){
+            if(flagPos < 0){
                 //team1 winner
-                global.incGamescore_t1();
-                logger.gameWinnerLinePoints(global.getGamescore_t1()+global.getGamescore_t2(),1,global.getTrialNum());
+                global.incTeamScore(0);
+                global.gameWinnerLinePoints(global.getTeamScore(0)+global.getTeamScore(1),1,global.getTrialNum());
             }
-            else if(global.getFlagPos() > 0){
+            else if(flagPos > 0){
                 //team 2 winner
-                global.incGamescore_t2();
-                logger.gameWinnerLinePoints(global.getGamescore_t1()+global.getGamescore_t2(),2,global.getTrialNum());
+                global.incTeamScore(1);
+                global.gameWinnerLinePoints(global.getTeamScore(0)+global.getTeamScore(1),2,global.getTrialNum());
             }
             else{
                 //tie
-                global.incGamescore_t1();
-                global.incGamescore_t2();
-                logger.gameTieLine();
+                global.incTeamScore(0);
+                global.incTeamScore(1);
+                global.gameTieLine();
             }
         }
         else{
-            if(global.getFlagPos() <= -4){
+            if(flagPos <= -4){
                 //team1 knockout
-                global.incGamescore_t1();
-                logger.gameWinnerLineKO(global.getGamescore_t1()+global.getGamescore_t2(),1,global.getTrialNum());
+                global.incTeamScore(0);
+                global.gameWinnerLineKO(global.getTeamScore(0)+global.getTeamScore(1),1,global.getTrialNum());
             }
-            else if(global.getFlagPos() >= 4){
+            else if(flagPos >= 4){
                 //team2 knockout
-                global.incGamescore_t2();
-                logger.gameWinnerLineKO(global.getGamescore_t1()+global.getGamescore_t2(),2,global.getTrialNum());
+                global.incTeamScore(1);
+                global.gameWinnerLineKO(global.getTeamScore(0)+global.getTeamScore(1),2,global.getTrialNum());
             }
         }
     }
 
     /**
      * Checks what team is the match's winner
-     * @param logger reference to Logger object
      */
-    public synchronized void declareMatchWinner (Logger logger){
-        if(global.getGamescore_t1()> global.getGamescore_t2()){
+    public synchronized void declareMatchWinner (){
+        if(global.getTeamScore(0)> global.getTeamScore(1)){
             //team1 takes match
-            logger.matchWinnerLine(global.getGamescore_t1(),global.getGamescore_t2(),1);
+            global.matchWinnerLine(global.getTeamScore(0),global.getTeamScore(1),1);
         }
-        else if(global.getGamescore_t1() < global.getGamescore_t2()){
+        else if(global.getTeamScore(0) < global.getTeamScore(1)){
             //team2 takes match
-            logger.matchWinnerLine(global.getGamescore_t1(),global.getGamescore_t2(),2);
+            global.matchWinnerLine(global.getTeamScore(0),global.getTeamScore(1),2);
         }
         else{
             //draw
-            logger.matchTieLine();
+            global.matchTieLine();
         }
     }
 
+    public int getTrialNum() {
+        return trialNum;
+    }
+
+    public void setTrialNum(int trialNum) {
+        this.trialNum = trialNum;
+    }
 }

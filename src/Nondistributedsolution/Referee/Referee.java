@@ -1,6 +1,6 @@
 package Nondistributedsolution.Referee;
 
-import Nondistributedsolution.Logging.Logger;
+import Nondistributedsolution.Monitors.Bench;
 import Nondistributedsolution.Monitors.Global;
 import Nondistributedsolution.Monitors.Playground;
 import Nondistributedsolution.Monitors.RefereeSite;
@@ -22,27 +22,27 @@ public class Referee extends Thread {
     private RefereeSite refereeSite;
 
     /**
-     * Logger object
-     */
-    private Logger logger;
-
-    /**
      * General Informational Repository object
      */
     private Global global;
+
+
+    /**
+     * Referee Current State
+     */
+    private RefereeState refereeState;
 
     /**
      * Referee Object Constructor
      * @param playground
      * @param refereeSite
      * @param global
-     * @param logger
      */
-    public Referee(Playground playground, RefereeSite refereeSite, Global global, Logger logger){
+    public Referee(Playground playground, RefereeSite refereeSite, Global global){
         this.playground = playground;
         this.refereeSite = refereeSite;
         this.global = global;
-        this.logger = logger;
+        this.refereeState = RefereeState.START_OF_THE_MATCH;
     }
 
     /** Life Cycle of the Referee Thread
@@ -51,17 +51,33 @@ public class Referee extends Thread {
     public void run(){
         refereeSite.announceMatch();
         do{
+            setRefereeState(RefereeState.START_OF_A_GAME);
             refereeSite.announceGame();
             while(!global.gameFinished()){
+                refereeSite.waitForBench();
+                System.out.println("CALLING NEW TRIAL");
+                setRefereeState(RefereeState.TEAMS_READY);
                 playground.callTrial();
+                System.out.println("waking people.....");
+                setRefereeState(RefereeState.WAIT_FOR_TRIAL_CONCLUSION);
                 playground.startTrial();
                 playground.assertTrialDecision();
             }
-            refereeSite.declareGameWinner (logger);
+            setRefereeState(RefereeState.END_OF_A_GAME);
+            refereeSite.declareGameWinner ();
         }while(global.matchInProgress());
-        refereeSite.declareMatchWinner(logger);
-        logger.closeFile();
+        setRefereeState(RefereeState.END_OF_THE_MATCH);
+        refereeSite.declareMatchWinner();
+        global.closeFile();
     }
 
+    public RefereeState getRefereeState() {
+        return refereeState;
+    }
+
+    public void setRefereeState(RefereeState refereeState) {
+        this.refereeState = refereeState;
+        global.setRefereeState(refereeState);
+    }
 
 }

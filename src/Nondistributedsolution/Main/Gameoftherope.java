@@ -3,7 +3,6 @@ package Nondistributedsolution.Main;
 import Nondistributedsolution.Coach.Coach;
 import Nondistributedsolution.Contestant.Contestant;
 import Nondistributedsolution.Referee.Referee;
-import Nondistributedsolution.Logging.Logger;
 import Nondistributedsolution.Monitors.Bench;
 import Nondistributedsolution.Monitors.Global;
 import Nondistributedsolution.Monitors.Playground;
@@ -19,17 +18,15 @@ public class Gameoftherope {
 
     public static void main(String[] args){
 
-        Global global = new Global();
-        Logger logger = new Logger("/",global);
+        Global global = new Global("/");
 
+        Bench bench = new Bench(global);
 
-        Bench bench = new Bench(global,logger);
+        Playground playground = new Playground(global, bench);
 
-        Playground playground = new Playground(global,logger);
+        RefereeSite refereeSite = new RefereeSite(global, bench);
 
-        RefereeSite refereeSite = new RefereeSite(global,logger);
-
-        Referee referee = new Referee(playground, refereeSite, global, logger);
+        Referee referee = new Referee(playground, refereeSite, global);
 
         Coach coach_t1 = new Coach(0,bench,playground,global);
         Coach coach_t2 = new Coach(1,bench,playground,global);
@@ -44,13 +41,13 @@ public class Gameoftherope {
         coach_t2.start();
 
         for (int i = 0; i < 5 ; i++) {
-            Contestant c = new Contestant(i,0,bench,playground,global);
+            Contestant c = new Contestant(i,0,bench,playground,refereeSite,global);
             contestants_t1[i] = c;
             c.start();
         }
 
         for (int i = 0; i < 5 ; i++) {
-            Contestant c = new Contestant(i,1,bench,playground,global);
+            Contestant c = new Contestant(i,1,bench,playground,refereeSite,global);
             contestants_t2[i] = c;
             c.start();
         }

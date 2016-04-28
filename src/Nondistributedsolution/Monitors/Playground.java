@@ -1,16 +1,11 @@
 package Nondistributedsolution.Monitors;
 
-import Nondistributedsolution.Logging.Logger;
-import Nondistributedsolution.Coach.CoachState;
-import Nondistributedsolution.Contestant.ContestantState;
-import Nondistributedsolution.Referee.RefereeState;
+import Nondistributedsolution.Contestant.Contestant;
 
 import java.util.stream.IntStream;
 
 
 /**
- * Created by jonnybel on 3/8/16.
- *
  * This Class implements the shared region for the Playground, with synchronization based on monitors
  */
 public class Playground {
@@ -22,9 +17,9 @@ public class Playground {
     private final Global global;
 
     /**
-     * Logger object
+     *  General Information Repository object
      */
-    private final Logger logger;
+    private final Bench bench;
 
     /**
      * Number of complete teams that are standing in position (from 0 to 2)
@@ -37,79 +32,72 @@ public class Playground {
     private int contestantsDone;
 
     /**
-     * True if a trial has just been called by the Referee
+     * Status of a trial:
+     * 0 - called;
+     * 1 - started;
+     * 2 - finished;
      */
-    private boolean trialCalled;
+    private int trialStatus;
 
     /**
-     * True if a trial has just been started by the Referee
+     * Number of contestants standing in position for each team
      */
-    private boolean trialStarted;
+    private int [] standingInPosition;
+
+    /**
+     * Total power made by the contestants of a team during a trial
+     */
+    private int [] teamPower;
 
     /**
      * Constructor for the Playground
      * @param global
-     * @param logger
      */
-    public Playground( Global global, Logger logger){
+    public Playground( Global global, Bench bench){
         this.global = global;
+        this.bench = bench;
 
         this.teamsReady = 0;
         this.contestantsDone = 0;
 
-        this.trialStarted = false;
-        this.trialCalled = false;
+        this.standingInPosition = new int [] {0,0};
 
-        this.logger = logger;
+        this.trialStatus = -1;
 
-
+        this.teamPower = new int [] {0,0};
     }
 
     /**
-     * Coach enters a blocking state and waits for the Referee to call a trial
-     * @param teamID Coach's teamID
-     */
-    public synchronized void waitForCalling(int teamID){
-
-        global.setCoachState(teamID, CoachState.WAIT_FOR_REFEREE_COMMAND,logger);
-
-        while(!trialCalled)
-        {
-            try {
-                wait();
-            } catch (InterruptedException e) {}
-        }
-    }
-
-
-    /**
-    *   The last contestant to sit wakes the Ref
-     */
-    public synchronized void benchWakeRef(){
-        notifyAll();
-    }
-
-
-
-    /**
-     *  Referee waits for the contestants to be seated at the bench and calls a trial
+     *  Referee calls a trial
      */
     public synchronized void callTrial(){
 
-        global.incrementTrialNum();
-        while(!global.getBenchReady()){
-            try {
-                wait();
-            } catch (InterruptedException e) {}
-        }
         teamsReady=0;
         contestantsDone=0;
 
-        global.setRefereeState(RefereeState.TEAMS_READY,logger);
+        // todo: this will work differently
         global.eraseTeamSelections();
-        trialCalled = true;
 
-        notifyAll();
+        // turns out to be unnecessary:
+        //bench.eraseTeamSelections();
+
+        for(int i =0; i<teamPower.length; i++)
+        {
+            teamPower [i] = 0;
+        }
+
+        trialStatus = 0;
+        bench.setTrialCalled(true);
+
+        bench.wakeBench();
+
+        while(teamsReady<2)
+        {
+            try{
+                wait ();
+            }
+            catch (InterruptedException e) {}
+        }
     }
 
     /**
@@ -118,8 +106,7 @@ public class Playground {
      */
     public synchronized void waitForContestants(int teamID){
 
-        global.setCoachState(teamID, CoachState.ASSEMBLE_TEAM,logger);
-        while(global.getStandingInPosition(teamID)<3){
+        while(standingInPosition[teamID]<3){
             try
             {
                 wait ();
@@ -127,7 +114,6 @@ public class Playground {
             catch (InterruptedException e) {}
         }
     }
-
 
     /**
      * Contestant stands in position and waits for the trial to start
@@ -137,32 +123,30 @@ public class Playground {
      */
     public synchronized void followCoachAdvice (int contestantID, int teamID) {
 
-        global.incrementStandingInPosition(teamID);
-        global.setContestantState(contestantID, teamID, ContestantState.STAND_IN_POSITION,logger);
+        standingInPosition[teamID] +=1;
 
-        if(global.getStandingInPosition(teamID)==3)
+        System.out.println("contestant " + contestantID + " from team " + teamID + " standing, total standing: " + standingInPosition[teamID]);
+        if(standingInPosition[teamID]==3)
         {
             notifyAll();
         }
 
-        while(!trialStarted)
+        while(trialStatus!=1)
         {
             try {
                 wait();
             } catch (InterruptedException e) {}
         }
-
     }
 
-
-    /** Coach informs Referee of the readiness of his team and waits for the trial to end.
+    /**
+     * Coach informs Referee of the readiness of his team and waits for the trial to end.
      * @param teamID team's ID
      */
-    public synchronized  void informReferee(int teamID){
 
-        global.setBenchCalled(teamID, false);
+    public synchronized void informReferee(int teamID){
 
-        global.setCoachState(teamID, CoachState.WATCH_TRIAL,logger);
+        bench.setBenchCalled(teamID, false);
 
         teamsReady++;
 
@@ -170,7 +154,7 @@ public class Playground {
             notifyAll();
         }
 
-        while(trialCalled || trialStarted) {
+        while(trialStatus!=2) {
             try {
                 wait();
             } catch (InterruptedException e) {}
@@ -183,38 +167,24 @@ public class Playground {
      */
     public synchronized  void startTrial(){
 
-        while(teamsReady<2)
-        {
-            try{
-                wait ();
-            }
-            catch (InterruptedException e) {}
-        }
-
-        global.setRefereeState(RefereeState.WAIT_FOR_TRIAL_CONCLUSION,logger);
-
-        trialStarted = true;
-        trialCalled = false;
+        bench.setTrialCalled(false);
+        trialStatus=1;
 
         notifyAll();
-
     }
 
 
     /**
      * Contestant changes his state to Do_Your_Best before pulling the rope
-     * @param contestantID contestant's ID
-     * @param teamID team's id
      */
-    public synchronized  void getReady( int contestantID, int teamID) {
-        global.setContestantState(contestantID,teamID,ContestantState.DO_YOUR_BEST,logger);
-
+    public synchronized  void getReady(int teamID) {
+        // todo: add my strength to the total power of my team (for the trial assertion)
+        teamPower[teamID] += ((Contestant)Thread.currentThread()).getStrength();
     }
 
 
     /**
      * The last contestant to finish pulling the rope wakes the referee
-     *
      * @param teamID team's id
      */
     public synchronized void done(int teamID){
@@ -224,14 +194,13 @@ public class Playground {
             notifyAll();
         }
 
-        while(trialStarted) {
+        while(trialStatus==1) {
             try {
                 wait();
             } catch (InterruptedException e) {}
         }
 
-        global.decrementStandingInPosition(teamID);
-
+        standingInPosition[teamID] -=1;
     }
 
    /**
@@ -257,54 +226,28 @@ public class Playground {
         System.out.println("team 1 power " + team1Power);
         System.out.println("team 2 power " + team2Power);
         */
-        global.setFlagPos((global.getFlagPos()+(team1Power-team2Power))); //TODO: change flag position to increments by 1 to the victor team
+        int decision;
+        if(team1Power>team2Power)
+            decision = -1;
+        else if (team1Power<team2Power)
+            decision = 1;
+        else
+            decision = 0;
 
-        //System.out.println("new flag pos: " + global.getFlagPos());
+        global.changeFlagPos(decision);
 
-        trialStarted = false;
+        trialStatus = 2;
 
+        System.out.println("Trial finished");
 
         if(global.gameFinished()){
-            global.setRefereeState(RefereeState.END_OF_A_GAME, logger);
             if(global.getGamesNum()==3)
             {
                 global.setMatchInProgress(false);
-                global.setRefereeState(RefereeState.END_OF_THE_MATCH, logger);
+                bench.wakeBench();
             }
         }
-
         notifyAll();
-
     }
-
-   /**
-    * Coach checks if the match is finished and if so, he wakes the contestants that are still waiting on the bench.
-    * If the match isn't finished, he selects his team for the next trial.
-    * @param teamID team's ID
-    * @param bench reference to the Bench
-    */
-   public synchronized void reviewNotes(int teamID, Bench bench) {
-
-
-       if(!global.matchInProgress()) {
-
-           bench.wakeContestants();
-       }
-       for(int i=0; i<5; i++){
-           final int finalI = i;
-           boolean contains = IntStream.of(global.getSelection(teamID)).anyMatch(x -> x == finalI);
-
-           if(contains){
-               int str = global.getStrength(i, teamID);
-               if(str > 0)
-                   global.setStrength(i, teamID,--str);
-           }
-           else{
-               int str = global.getStrength(i, teamID);
-               if(str < 10)
-                   global.setStrength(i, teamID,++str);
-           }
-       }
-   }
 
 }

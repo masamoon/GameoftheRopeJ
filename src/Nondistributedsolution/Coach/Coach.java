@@ -30,6 +30,11 @@ public class Coach extends Thread{
     private Global global;
 
     /**
+     * Current state of this Coach
+     */
+    private CoachState coachState;
+
+    /**
      * Coach object Constructor
      * @param teamID
      * @param benchMon
@@ -41,6 +46,7 @@ public class Coach extends Thread{
         this.benchMon = benchMon;
         this.playgroundMon = playgroundMon;
         this.global = global;
+        this.coachState = CoachState.INIT;
     }
 
     /**
@@ -49,19 +55,31 @@ public class Coach extends Thread{
     @Override
     public void run()
     {
-
         while(global.matchInProgress()){
 
-            playgroundMon.waitForCalling(teamID);
+            System.out.println("coach " + teamID + " status: reviewing");
+            benchMon.reviewNotes(teamID);
 
+            System.out.println("coach " + teamID + " status: calling");
+            setCoachState(CoachState.WAIT_FOR_REFEREE_COMMAND);
             benchMon.callContestants(teamID);
+
+            setCoachState(CoachState.ASSEMBLE_TEAM);
+            System.out.println("coach " + teamID + " status: waiting");
             playgroundMon.waitForContestants(teamID);
 
+            setCoachState(CoachState.WATCH_TRIAL);
+            System.out.println("coach " + teamID + " status: informing");
             playgroundMon.informReferee(teamID);
-
-            playgroundMon.reviewNotes(teamID, benchMon);
-
         }
+    }
+    public CoachState getCoachState() {
+        return coachState;
+    }
+
+    public void setCoachState(CoachState coachState) {
+        this.coachState = coachState;
+        global.setCoachState(teamID, coachState);
     }
 
 }

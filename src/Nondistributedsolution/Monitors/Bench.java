@@ -1,15 +1,14 @@
 package Nondistributedsolution.Monitors;
 
-import Nondistributedsolution.Logging.Logger;
-import Nondistributedsolution.Contestant.ContestantState;
+
+import Nondistributedsolution.Contestant.Contestant;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.stream.IntStream;
 
 /**
- * Created by jonnybel on 3/8/16.
- *
  * This Class implements the shared region for the Bench, with synchronization based on monitors
  */
 public class Bench {
@@ -20,27 +19,94 @@ public class Bench {
     private final Global global;
 
     /**
-     * Logger object
-     */
-    private final Logger logger;
-
-    /**
      *  Number of contestants sitting on the bench.
      */
     private int numSitting;
+
+    /**
+     * True if a new trial has been called by the Referee
+     */
+    private boolean trialCalled;
+
+    /**
+     * Whether a team on the bench has been called for a trial
+     */
+    private boolean [] benchCalled;
+
+    /**
+     * True if all the contestants are sitting on the bench
+     */
+    private boolean benchReady;
+
+    /**
+     * Selected contestants of each team to participate in the next trial
+     */
+    private int [] [] selectedTeam;
+
+    /**
+     * Contestants strengths
+     */
+    private int [] [] contestantStrengths;
+
+    /**
+     * true if the contestant strength needs to be updated (on it's object)
+     */
+    private boolean [] [] strUpdate;
+
+
+    private final int NUMBER_OF_TEAMS = 2;
+    private final int TEAM_SIZE = 5;
 
 
     /**
      *  Constructor for this Shared Region.
      * @param global
-     * @param logger
      */
-    public Bench(Global global, Logger logger){
+    public Bench(Global global){
 
         this.global = global;
         this.numSitting=0;
-        this.logger = logger;
+
+        this.trialCalled = false;
+        this.benchReady = false;
+        this.benchCalled = new boolean [] {false, false};
+        this.selectedTeam = new int [] [] {{-1,-1,-1} , {-1,-1,-1}};
+
+        this.contestantStrengths = new int [NUMBER_OF_TEAMS] [TEAM_SIZE];
+        this.strUpdate = new boolean[NUMBER_OF_TEAMS] [TEAM_SIZE];
     }
+
+    public synchronized void reviewNotes (int teamID){
+
+        for(int i = 0; i< TEAM_SIZE; i++){
+            final int finalI = i;
+            boolean contains = IntStream.of(selectedTeam[teamID]).anyMatch(x -> x == finalI);
+
+            strUpdate[teamID][i]=true;
+            if(contains){
+                int str = contestantStrengths[teamID][i];
+                if(str > 0) {
+                    contestantStrengths[teamID][i] = (str - 1);
+                    global.setStrength(i, teamID,--str);
+                }
+            }
+            else{
+                int str = contestantStrengths[teamID][i];
+                if(str < 10) {
+                    contestantStrengths[teamID][i] = (str + 1);
+                    global.setStrength(i, teamID, ++str);
+                }
+            }
+        }
+
+        while(!trialCalled)
+        {
+            try {
+                wait();
+            } catch (InterruptedException e) {}
+        }
+    }
+
 
     /**
      * The Contestant sits on the bench. He changes its state to to SIT_AT_THE_BENCH and waits until he is called by the coach.
@@ -49,20 +115,24 @@ public class Bench {
      *
      * @param teamID Team ID the contestant
      * @param contestantID contestant's ID
-     * @param playground reference to playground
      */
-    public synchronized void sitDown(int contestantID, int teamID, Playground playground) {
+    public synchronized void sitDown(int contestantID, int teamID, RefereeSite refereeSite) {
 
-        global.setContestantState(contestantID, teamID, ContestantState.SIT_AT_THE_BENCH,logger);
         this.numSitting++;
 
         if(numSitting==10){
-            global.setBenchReady(true);
-            playground.benchWakeRef();
+            benchReady = true;
+            refereeSite.benchWakeRef();
         }
-        while ((!global.benchCalled(teamID) || !imSelected(contestantID, teamID)) && global.matchInProgress()){
+        while ((!benchCalled[teamID] || !imSelected(contestantID, teamID)) && global.matchInProgress()){
             try
             {
+                if(strUpdate[teamID][contestantID]){
+                    // contestant updates his strength internally
+                    strUpdate[teamID][contestantID] = false;
+                    ((Contestant)Thread.currentThread()).setStrength(contestantStrengths[teamID][contestantID]);
+                    System.out.println("STRENGTH UPDATED t" + teamID + "c" + contestantID);
+                }
                 wait ();
             }
             catch (InterruptedException e) {}
@@ -70,7 +140,7 @@ public class Bench {
 
         this.numSitting--;
 
-        global.setBenchReady(false);
+        benchReady = false;
     }
     /**
      * Checks if this contestant has been selected by his coach to stand up for the next trial.
@@ -81,7 +151,7 @@ public class Bench {
      */
     private boolean imSelected (int contestantID, int teamID)
     {
-        for(int id : global.getSelection(teamID)){
+        for(int id : selectedTeam[teamID]){
             if(contestantID == id)
                 return true;
         }
@@ -96,6 +166,8 @@ public class Bench {
      */
     public synchronized void callContestants (int teamID){
 
+        //global.setCoachState(teamID, CoachState.WAIT_FOR_REFEREE_COMMAND);
+
         Random r = new Random();
         int strategy = r.nextInt(2);
 
@@ -107,18 +179,20 @@ public class Bench {
             team = selectTopteam(teamID);
 
         global.selectTeam(teamID, team[0],team[1],team[2]);
+        selectTeam(teamID, team[0],team[1],team[2]);
 
-        //System.out.println("Coach " + teamID + "picked:" + team[0]+team[1]+team[2]);
-        global.setBenchCalled(teamID, true);
+        System.out.println("Coach " + teamID + " picked: " + team[0]+team[1]+team[2]);
+
+        benchCalled[teamID] = true;
 
         notifyAll();
     }
 
     /**
-     *  This method is used by the Referee Entity exclusively at the end of the match to free the contestants that stayed on the bench for the last trial.
+     *  This method is used by the Referee in two occasions: when calling a trial to wake contestants and coach OR at the end of the match to free the contestants that stayed on the bench for the last trial.
      *  @see Playground#assertTrialDecision()
      */
-    public synchronized void wakeContestants(){
+    public synchronized void wakeBench(){
         notifyAll();
     }
 
@@ -152,10 +226,8 @@ public class Bench {
      */
     private int[] selectTopteam(int teamID){
         int[] str;
-        if(teamID ==0)
-            str=global.getStrength_t1();
-        else
-            str = global.getStrength_t2();
+
+        str= global.getTeamStrength(teamID);
 
         HashMap<Integer,Integer> map = new HashMap<>();
 
@@ -170,5 +242,35 @@ public class Bench {
         int third = Collections.max(map.entrySet(), (entry1, entry2) -> entry1.getValue() > entry2.getValue() ? 1 : -1).getKey();
 
         return new int[]{first,second,third};
+    }
+
+    /**
+     * Sets if the contestants have been called for a trial
+     * @param teamID team's id
+     * @return true if bench is called
+     */
+    public synchronized void setBenchCalled (int teamID, boolean called){
+        benchCalled [teamID] = called;
+    }
+
+    public synchronized boolean getBenchReady (){
+        return this.benchReady;
+    }
+
+    public void setTrialCalled(boolean trialCalled) {
+        this.trialCalled = trialCalled;
+    }
+
+    private synchronized void selectTeam(int teamID, int first, int second, int third) {
+        selectedTeam [teamID] = new int [] {first,second,third};
+    }
+
+    public void eraseTeamSelections (){
+        selectedTeam [0] = new int [] {-1,-1,-1};
+        selectedTeam [1] = new int [] {-1,-1,-1};
+    }
+
+    public synchronized void setStrength (int contestantID, int teamID, int strength){
+        contestantStrengths[teamID][contestantID] = strength;
     }
 }

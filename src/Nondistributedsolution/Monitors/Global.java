@@ -1,9 +1,9 @@
 package Nondistributedsolution.Monitors;
 
-import Nondistributedsolution.Logging.Logger;
 import Nondistributedsolution.Coach.CoachState;
 import Nondistributedsolution.Contestant.ContestantState;
 import Nondistributedsolution.Referee.RefereeState;
+import genclass.TextFile;
 
 import java.util.Random;
 
@@ -12,18 +12,16 @@ import java.util.Random;
  */
 public class Global {
 
+    private final int NUMBER_OF_TEAMS = 2;
+    private final int NUMBER_OF_PLAYERS_PER_TEAM = 5;
 
     private int gamesNum;
 
-    private int gamescore_t1;
-    private int gamescore_t2;
+    private int [] teamScore;
 
-    private int [] strength_t1; // TODO: this should be on the Contestant's object
-    private int [] strength_t2;
+    private int [] [] contestantStrengths;
 
-    private ContestantState contestantStates_t1 [];
-
-    private ContestantState contestantStates_t2 [];
+    private ContestantState [] [] contestantStates ;
 
     private RefereeState refereeState;
 
@@ -32,35 +30,37 @@ public class Global {
     private int [] selectedTeam1;
     private int [] selectedTeam2;
 
-    private int standingTeam1;
-    private int standingTeam2;
-
-    boolean benchCalled1;
-    boolean benchCalled2;
-
-    boolean benchReady;
-
     private int flagPos;
 
     private int trialNum;
 
     private boolean matchInProgress;
 
+    private TextFile f;
+    private String path;
 
-    public Global(){
+    public Global(String path){
+
+        f = new TextFile();
+        f.openForWriting(null,"log.txt");
+        String opline = "                       Game of the Rope - Description of the internal state";
+        String str =  "Ref Coa1 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5 Coa2 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5      Trial";
+        String str2 = "Sta Stat Sta SG Sta SG Sta SG Sta SG Sta SG Stat Sta SG Sta SG Sta SG Sta SG Sta SG 3 2 1 . 1 2 3 NB PS";
+        f.writelnString(opline);
+        f.writelnString("");
+        f.writelnString(str);
+        f.writelnString(str2);
+
+        this.path = path;
 
         refereeState = RefereeState.START_OF_THE_MATCH;
 
-        contestantStates_t1 = new ContestantState[5];
+        contestantStates = new ContestantState [NUMBER_OF_TEAMS] [NUMBER_OF_PLAYERS_PER_TEAM];
 
-        for (int i = 0; i < contestantStates_t1.length ; i++) {
-            contestantStates_t1[i] = ContestantState.INIT;
-        }
-
-        contestantStates_t2 = new ContestantState[5];
-
-        for (int i = 0; i < contestantStates_t2.length ; i++) {
-            contestantStates_t2[i] = ContestantState.INIT;
+        for (int i=0; i < NUMBER_OF_TEAMS; i++) {
+            for(int j=0; j < NUMBER_OF_PLAYERS_PER_TEAM; j++) {
+                contestantStates [i] [j] = ContestantState.INIT;
+            }
         }
 
         coachStates = new CoachState[2];
@@ -71,59 +71,143 @@ public class Global {
 
         this.gamesNum = 0;
 
-        this.benchReady = false;
-        this.benchCalled1 = false;
-        this.benchCalled2 = false;
 
-        this.gamescore_t1 =0;
-        this.gamescore_t2= 0;
+        teamScore = new int [NUMBER_OF_TEAMS];
+        for(int i : teamScore) {
+            teamScore [i] = 0;
+        }
 
         this.selectedTeam1 = new int [] {-1,-1,-1};
         this.selectedTeam2 = new int [] {-1,-1,-1};
 
-        this.benchReady = false;
-
-        this.strength_t1 = new int[5];
-        this.strength_t2 = new int[5];
+        contestantStrengths = new int [NUMBER_OF_TEAMS] [NUMBER_OF_PLAYERS_PER_TEAM];
 
         this.flagPos = 0;
-
-        this.standingTeam1 = 0;
-        this.standingTeam2 = 0;
-
         this.matchInProgress = true;
 
-        Random r = new Random();
+    }
 
-        for (int i = 0; i < this.strength_t1.length ; i++) {
-            strength_t1[i] = r.nextInt(10);
-            strength_t2[i] = r.nextInt(10);
+    /**
+     *
+     * Inserts new line into logger
+     *
+     */
+    public synchronized void insertLine(){
+
+        String ref_state = getRefereeState().getAcronym();
+        String coach_state_1 = getCoachState(0).getAcronym();
+        String coach_state_2 = getCoachState(1).getAcronym();
+
+        StringBuilder team1 = new StringBuilder();
+        StringBuilder team2 = new StringBuilder();
+
+        for (int i = 0; i <= 4 ; i++) {
+            team1.append(getContestantState(i,0).getAcronym());
+            team1.append(" ");
+            if(getStrength(i,0)<10)
+                team1.append(" ");
+            team1.append(getStrength(i,0));
+            team1.append(" ");
         }
 
+        for (int i = 0; i <= 4 ; i++) {
+            team2.append(getContestantState(i,1).getAcronym());
+            team2.append(" ");
+            if(getStrength(i,1)<10)
+                team2.append(" ");
+            team2.append(getStrength(i,1));
+            team2.append(" ");
+        }
+
+        int trial_no = getTrialNum();
+
+
+        int[] sel1 = getSelection(0);
+        int[] sel2 = getSelection(1);
+
+        StringBuilder selection1 = new StringBuilder();
+        StringBuilder selection2 = new StringBuilder();
+
+        for(int sel: sel1){
+            if(sel==-1){
+                selection1.append("- ");
+            }
+            else{
+                sel++;
+                selection1.append(sel + " ");
+            }
+
+        }
+
+        for(int sel: sel2){
+            if(sel==-1){
+                selection2.append("- ");
+            }
+            else{
+                sel++;
+                selection2.append(sel+ " ");
+            }
+
+        }
+
+        String line = ref_state +" " + coach_state_1+" " +  team1.toString() + coach_state_2 + " "+ team2.toString()
+                +selection1.toString() +". "+selection2.toString() + " " + trial_no+"  " + flagPos;
+
+        f.writelnString(line);
+
     }
 
     /**
-     * Checks if the contestants have been called for a trial
-     * @param teamID team's id
-     * @return true if bench is called
+     * writes line on log file indicating the winner team and score
+     * @param score1 score of team1
+     * @param score2 score of team2
+     * @param winner winner team
      */
-    public boolean benchCalled(int teamID) {
-        if(teamID==0)
-            return benchCalled1;
-        else
-            return benchCalled2;
+    public void matchWinnerLine(int score1, int score2, int winner) {
+        f.writelnString("Match was won by team " + winner + " (" + score1 + "-" + score2 + ").\n");
+    }
+
+
+    /**
+     * writes line on log file indicating a draw
+     */
+    public void matchTieLine(){
+        f.writelnString("Match was a draw.\n");
     }
 
     /**
-     * Sets if the contestants have been called for a trial
-     * @param teamID team's id
-     * @param benchCalled boolean indicating if bench was called
+     * writes line on log file indicating the game's winner
+     * @param ngame game's number
+     * @param nteam winner team
+     * @param ntrials number of trials needed to decide the winner
      */
-    public void setBenchCalled(int teamID, boolean benchCalled) {
-        if(teamID==0)
-            this.benchCalled1 = benchCalled;
-        else
-            this.benchCalled2 = benchCalled;
+    public void gameWinnerLinePoints(int ngame, int nteam, int ntrials){
+        f.writelnString("Game "+ngame+" was won by team "+nteam+" by points in "+ntrials+" trials.\n");
+    }
+
+    /**
+     *writes line on log file indicating a knock-out win by a team
+     * @param ngame game number
+     * @param nteam winner team
+     * @param ntrials number of trials needed to decide the winner
+     */
+    public void gameWinnerLineKO(int ngame, int nteam, int ntrials){
+        f.writelnString("Game "+ngame+" was won by team "+nteam+" by knock-out in "+ntrials+" trials.\n");
+    }
+
+    /**
+     *writes line on log file indicating a draw game
+     */
+    public void gameTieLine(){
+        f.writelnString("Game was a draw.\n");
+    }
+
+    /**
+     * closes log file
+     */
+    public void closeFile(){
+        f.endOfFile();
+        f.close();
     }
 
     /**
@@ -191,15 +275,11 @@ public class Global {
     * @param contestantID contestant's ID
     * @param state contestant's state to be updated to
      *@param teamID team's ID of this contestant
-     *@param logger reference to logger Object
     * */
-    public synchronized void setContestantState (int contestantID, int teamID, ContestantState state, Logger logger){
-       if(teamID == 0)
-           this.contestantStates_t1[contestantID] = state;
-        else if (teamID == 1)
-           this.contestantStates_t2[contestantID] = state;
+    public synchronized void setContestantState (int contestantID, int teamID, ContestantState state){
 
-        logger.insertLine();
+        this.contestantStates[teamID][contestantID] = state;
+        insertLine();
     }
 
     /**
@@ -209,20 +289,17 @@ public class Global {
     * @return current contestant's state
      */
     public synchronized ContestantState getContestantState (int contestantID, int teamID){
-        if(teamID == 0)
-            return this.contestantStates_t1[contestantID];
-        else
-            return this.contestantStates_t2[contestantID];
+
+        return this.contestantStates[teamID][contestantID];
     }
 
     /** set a new state for the Referee
      @param state referee's state to be updated to
-     @param logger reference to logger Object
     * */
-    public synchronized void setRefereeState (RefereeState state, Logger logger){
+    public synchronized void setRefereeState (RefereeState state){
         this.refereeState = state;
 
-        logger.insertLine();
+        insertLine();
     }
 
     /**
@@ -237,11 +314,10 @@ public class Global {
     * set Coach State to new state
     * @param teamID team's id
     * @param state coach's state to be updated to
-     *@param logger reference to logger object
      */
-    public synchronized void setCoachState (int teamID, CoachState state, Logger logger){
+    public synchronized void setCoachState (int teamID, CoachState state){
         this.coachStates[teamID] = state;
-        logger.insertLine();
+        insertLine();
     }
 
   /**
@@ -255,81 +331,20 @@ public class Global {
     }
 
     /**
-     *Gets the score for team 1
-     * @return score for team1
+     * Get the current game score of a given team
+     * @param teamID
+     * @return integer value of the score
      */
-    public int getGamescore_t1(){ return this.gamescore_t1; }
-
-    /**
-     *Gets the score for team 2
-     * @return score for team2
-     */
-    public int getGamescore_t2(){ return this.gamescore_t2; }
-
-
-
-    /**
-     * increment by 1 the score of team1
-     */
-    public void incGamescore_t1(){this.gamescore_t1+=1; }
-
-    /**
-     * increment by 1 the score of team2
-     */
-    public void incGamescore_t2(){this.gamescore_t2+=1; }
-
-
-    /**
-     * Checks if the contestants are all seated at the bench
-     * @return returns benchReady
-     */
-    public boolean getBenchReady() {
-        return benchReady;
+    public int getTeamScore(int teamID){
+        return teamScore[teamID];
     }
 
     /**
-     * Sets if the contestants are all seated at the bench
-     * @param benchReady boolean that indicates if bench is ready
+     * Increment the score of a given team
+     * @param teamID
      */
-    public void setBenchReady(boolean benchReady){
-        this.benchReady = benchReady;
-    }
-
-    /**
-     * increments number of contestants in position for trial beginning for a certain team
-     * @param teamID contestants team's id
-     */
-    public void incrementStandingInPosition(int teamID){
-        if(teamID==1){
-            standingTeam1++;
-        }
-        else{
-            standingTeam2++;
-        }
-    }
-
-    /**
-     * decrements number of contestants in position for trial beginning for a certain team
-     * @param teamID contestants team's id
-     */
-    public void decrementStandingInPosition(int teamID){
-        if(teamID==1){
-            standingTeam1--;
-        }
-        else {
-            standingTeam2--;
-        }
-    }
-    /**
-     * gets number of contestants standing in position for trial beginning for a certain team
-     * @param teamID team's id
-     * @return number of contestants standing in position
-     */
-    public int getStandingInPosition(int teamID) {
-        if(teamID==1)
-            return standingTeam1;
-        else
-            return standingTeam2;
+    public void incTeamScore(int teamID){
+        teamScore[teamID] +=1;
     }
 
     /**
@@ -339,10 +354,7 @@ public class Global {
      * @return the strength of this contestant
      */
     public int getStrength(int id, int teamID){
-        if(teamID==1)
-            return strength_t1[id];
-        else
-            return strength_t2[id];
+        return contestantStrengths [teamID] [id];
 
     }
 
@@ -353,11 +365,7 @@ public class Global {
      * @param str the strength of this contestant to bet set
      */
     public void setStrength(int id, int teamID, int str){
-        if(teamID==1)
-            strength_t1[id] = str;
-        else
-            strength_t2[id] = str;
-
+        contestantStrengths [teamID] [id] = str;
     }
 
     /**
@@ -384,18 +392,19 @@ public class Global {
     }
 
     /**
-     * Get's the current flag position
-     */
-    public int getFlagPos() {
-        return flagPos;
-    }
-
-    /**
      * Alters the position of the flag
      * @param flagPos
      */
-    public void setFlagPos(int flagPos) {
-        this.flagPos = flagPos;
+    public void changeFlagPos(int flagPos) {
+        this.flagPos += flagPos;
+    }
+
+    public void resetFlagPos() {
+        this.flagPos = 0;
+    }
+
+    public int getFlagPos() {
+        return this.flagPos;
     }
 
     /**
@@ -414,14 +423,11 @@ public class Global {
     }
 
     /**
-     * gets the strenght levels of the contestants of the team 1
+     * gets the strength levels of the contestants of a given team
      * @return array with the strength values
      */
-    public int[] getStrength_t1(){ return this.strength_t1;}
+    public int[] getTeamStrength(int teamID){
+        return contestantStrengths[teamID];
+    }
 
-    /**
-     * gets the strenght levels of the contestants of the team 2
-     * @return array with the strength values
-     */
-    public int[] getStrength_t2(){ return this.strength_t2;}
 }
