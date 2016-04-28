@@ -77,6 +77,7 @@ public class ClientCom
         boolean success = true;
         SocketAddress serverAddress = new InetSocketAddress (serverHostName, serverPortNumb);
 
+
         try
         { commSocket = new Socket();
             commSocket.connect (serverAddress);

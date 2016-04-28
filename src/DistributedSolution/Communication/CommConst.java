@@ -13,7 +13,7 @@ public class CommConst {
     /**
      * Variable that holds the port number for the logging server.
      */
-    public final static int loggServerPort = 80;
+    public final static int loggServerPort = 9091;
 
     /**
      * Variable that holds the address for the bench server.
@@ -24,7 +24,7 @@ public class CommConst {
     /**
      * Variable that holds the port number for the bench server.
      */
-    public final static int benchServerPort = 80;
+    public final static int benchServerPort = 9091;
 
     /**
      * Variable that holds the address for the playground server.
@@ -35,7 +35,7 @@ public class CommConst {
     /**
      * Variable that holds the port number for the playground server.
      */
-    public final static int playgroundServerPort = 80;
+    public final static int playgroundServerPort = 9091;
 
     /**
      * Variable that holds the address for the referee site server.
@@ -46,7 +46,7 @@ public class CommConst {
     /**
      * Variable that holds the port number for the referee site server.
      */
-    public final static int refereeSiteServerPort = 80;
+    public final static int refereeSiteServerPort = 9091;
 
     /**
      * Variable that holds the address for the global repository server.
@@ -56,7 +56,7 @@ public class CommConst {
     /**
      * Variable that holds the port number for the global respository server.
      */
-    public final static int globalServerPort = 80;
+    public final static int globalServerPort = 9091;
 
     /**
      * Variable that holds the timeout value for the server sockets.

@@ -42,7 +42,10 @@ public class CoachGlobalStub {
         }
 
         outMessage = new Message(Message.MINPROGRESS);
+        GenericIO.writelnString("outcoming message to server (coach): "+outMessage.getType());
         con.writeObject(outMessage);
+
+//        GenericIO.writelnString("incoming message from server (coach): "+con.readObject().toString());
         inMessage = (Message) con.readObject();
         if ((inMessage.getType() != Message.POSITIVE) && (inMessage.getType() != Message.NEGATIVE)) {
             GenericIO.writelnString ("Thread: Tipo inválido! teve: " + inMessage.getType () + " esperava " + Message.NEGATIVE +

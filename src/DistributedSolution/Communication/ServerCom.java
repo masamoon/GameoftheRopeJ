@@ -222,7 +222,9 @@ public class ServerCom
         Object fromClient = null;                            // objecto
 
         try
-        { fromClient = in.readObject ();
+        {
+            //GenericIO.writelnString("INCOMING: "+in.);
+            fromClient = in.readObject ();
         }
         catch (InvalidClassException e)
         { GenericIO.writelnString (Thread.currentThread ().getName () +

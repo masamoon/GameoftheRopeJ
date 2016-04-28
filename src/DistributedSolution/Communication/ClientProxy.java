@@ -78,6 +78,7 @@ public class ClientProxy extends Thread
         Message inMessage = null, // mensagem de entrada
                 outMessage = null;                      // mensagem de saída
 
+        GenericIO.writelnString("incoming message to Server: "+sconi.readObject().toString());
         inMessage = (Message) sconi.readObject();                     // ler pedido do cliente
         try
         {
@@ -113,7 +114,7 @@ public class ClientProxy extends Thread
         int proxyId;                                         // identificador da instanciação
 
         try
-        { cl = (Class<ClientProxy>) Class.forName ("serverSide.ClientProxy");
+        { cl = (Class<ClientProxy>) Class.forName ("DistributedSolution.Communication.ClientProxy");
         }
         catch (ClassNotFoundException e)
         { GenericIO.writelnString ("O tipo de dados ClientProxy não foi encontrado!");

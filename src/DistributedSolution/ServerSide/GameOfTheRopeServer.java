@@ -24,7 +24,7 @@ public class GameOfTheRopeServer {
      *    @serialField portNumb
      */
 
-    private static final int portNumb = 4000;
+    private static final int portNumb = 9091;
 
     /**
      *  Programa principal.
@@ -77,8 +77,9 @@ public class GameOfTheRopeServer {
         { sconi = scon.accept ();                            // entrada em processo de escuta
             cliProxybench = new ClientProxy (scon,sconi, benchInterface);    // lançamento do agente prestador do serviço
             clientProxyglobal = new ClientProxy(scon,sconi,globalInterface);
-            clientProxyplayground = new ClientProxy(scon,sconi,benchInterface);
+            clientProxyplayground = new ClientProxy(scon,sconi,playgroundInterface);
             clientProxyrefereesite = new ClientProxy(scon,sconi,refereeSiteInterface);
+
             cliProxybench.start ();
             clientProxyglobal.start();
             clientProxyplayground.start();

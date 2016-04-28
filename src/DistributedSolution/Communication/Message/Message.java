@@ -329,7 +329,7 @@ public class Message  implements Serializable{
      * @param type
      */
     public Message(int type){
-
+        this.type = type;
 
     }
 
@@ -340,6 +340,7 @@ public class Message  implements Serializable{
      * @param teamID
      */
     public Message(int type, int teamID){
+        this.type = type;
         this.teamID = teamID;
     }
 
@@ -351,7 +352,7 @@ public class Message  implements Serializable{
      *
      */
     public Message(int type,int teamID, int contestantID){
-
+        this.type = type;
         this.teamID = teamID;
         this.contestantID = contestantID;
     }
@@ -362,7 +363,7 @@ public class Message  implements Serializable{
      * @param contestantState
      */
     public Message(int type, ContestantState contestantState){
-
+        this.type = type;
     }
 
     /**
