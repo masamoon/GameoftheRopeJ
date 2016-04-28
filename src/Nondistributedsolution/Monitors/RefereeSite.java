@@ -1,6 +1,5 @@
 package Nondistributedsolution.Monitors;
 
-import Nondistributedsolution.Referee.Referee;
 import Nondistributedsolution.Referee.RefereeState;
 
 /**
@@ -10,16 +9,16 @@ public class RefereeSite {
 
     private Global global;
 
-    private Bench bench;
-
     private int trialNum;
 
+    private boolean readyForTrial;
 
 
-    public RefereeSite(Global global, Bench bench) {
 
-        this.bench = bench;
+    public RefereeSite(Global global) {
+
         this.global = global;
+        this.readyForTrial = false;
     }
     /**
      * Referee Announces new game
@@ -36,7 +35,6 @@ public class RefereeSite {
      */
     public synchronized void announceMatch(){
         global.setRefereeState(RefereeState.START_OF_THE_MATCH);
-
     }
 
     /**
@@ -51,7 +49,7 @@ public class RefereeSite {
         global.incrementTrialNum();
         System.out.println(global.getTrialNum());
 
-        while(!bench.getBenchReady()){
+        while(!readyForTrial){
             try {
                 wait();
             } catch (InterruptedException e) {}
@@ -111,6 +109,10 @@ public class RefereeSite {
             //draw
             global.matchTieLine();
         }
+    }
+
+    public synchronized void setReadyForTrial(boolean readyForTrial) {
+        this.readyForTrial = readyForTrial;
     }
 
     public int getTrialNum() {

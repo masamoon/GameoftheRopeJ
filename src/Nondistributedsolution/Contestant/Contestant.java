@@ -87,7 +87,7 @@ public class Contestant extends Thread {
         while(global.matchInProgress()){
 
             setContestantState(ContestantState.SIT_AT_THE_BENCH);
-            benchMon.sitDown(contestantID, teamID, refereeSite);
+            benchMon.sitDown(contestantID, teamID);
 
             if(global.matchInProgress()){
 

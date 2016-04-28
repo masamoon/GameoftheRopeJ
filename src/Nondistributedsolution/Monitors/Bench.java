@@ -19,6 +19,12 @@ public class Bench {
     private final Global global;
 
     /**
+     *  RefereeSite object
+     */
+    private final RefereeSite refereeSite;
+
+
+    /**
      *  Number of contestants sitting on the bench.
      */
     private int numSitting;
@@ -32,11 +38,6 @@ public class Bench {
      * Whether a team on the bench has been called for a trial
      */
     private boolean [] benchCalled;
-
-    /**
-     * True if all the contestants are sitting on the bench
-     */
-    private boolean benchReady;
 
     /**
      * Selected contestants of each team to participate in the next trial
@@ -62,13 +63,13 @@ public class Bench {
      *  Constructor for this Shared Region.
      * @param global
      */
-    public Bench(Global global){
+    public Bench(Global global, RefereeSite refereeSite){
 
         this.global = global;
+        this.refereeSite = refereeSite;
         this.numSitting=0;
 
         this.trialCalled = false;
-        this.benchReady = false;
         this.benchCalled = new boolean [] {false, false};
         this.selectedTeam = new int [] [] {{-1,-1,-1} , {-1,-1,-1}};
 
@@ -98,7 +99,6 @@ public class Bench {
                 }
             }
         }
-
         while(!trialCalled)
         {
             try {
@@ -116,12 +116,12 @@ public class Bench {
      * @param teamID Team ID the contestant
      * @param contestantID contestant's ID
      */
-    public synchronized void sitDown(int contestantID, int teamID, RefereeSite refereeSite) {
+    public synchronized void sitDown(int contestantID, int teamID) {
 
         this.numSitting++;
 
         if(numSitting==10){
-            benchReady = true;
+            refereeSite.setReadyForTrial(true);
             refereeSite.benchWakeRef();
         }
         while ((!benchCalled[teamID] || !imSelected(contestantID, teamID)) && global.matchInProgress()){
@@ -140,7 +140,7 @@ public class Bench {
 
         this.numSitting--;
 
-        benchReady = false;
+        refereeSite.setReadyForTrial(false);
     }
     /**
      * Checks if this contestant has been selected by his coach to stand up for the next trial.
@@ -251,10 +251,6 @@ public class Bench {
      */
     public synchronized void setBenchCalled (int teamID, boolean called){
         benchCalled [teamID] = called;
-    }
-
-    public synchronized boolean getBenchReady (){
-        return this.benchReady;
     }
 
     public void setTrialCalled(boolean trialCalled) {

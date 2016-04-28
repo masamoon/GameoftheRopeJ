@@ -42,7 +42,6 @@ public class Referee extends Thread {
         this.playground = playground;
         this.refereeSite = refereeSite;
         this.global = global;
-        this.refereeState = RefereeState.START_OF_THE_MATCH;
     }
 
     /** Life Cycle of the Referee Thread

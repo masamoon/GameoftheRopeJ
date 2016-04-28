@@ -20,11 +20,13 @@ public class Gameoftherope {
 
         Global global = new Global("/");
 
-        Bench bench = new Bench(global);
+        RefereeSite refereeSite = new RefereeSite(global);
+
+        Bench bench = new Bench(global, refereeSite);
 
         Playground playground = new Playground(global, bench);
 
-        RefereeSite refereeSite = new RefereeSite(global, bench);
+
 
         Referee referee = new Referee(playground, refereeSite, global);
 
