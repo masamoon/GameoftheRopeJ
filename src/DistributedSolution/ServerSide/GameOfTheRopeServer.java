@@ -5,6 +5,7 @@ import DistributedSolution.Communication.ServerCom;
 import DistributedSolution.Communication.ServerInterface;
 import DistributedSolution.ServerSide.Bench.BenchRemote;
 import DistributedSolution.ServerSide.Bench.BenchInterface;
+import DistributedSolution.ServerSide.Global.GlobalInterface;
 import DistributedSolution.ServerSide.Global.GlobalRemote;
 import DistributedSolution.ServerSide.Playground.PlaygroundRemote;
 import DistributedSolution.ServerSide.Playground.PlaygroundInterface;
@@ -38,8 +39,12 @@ public class GameOfTheRopeServer {
         BenchInterface benchInterface;                      // interface ao benchRemote
         PlaygroundInterface playgroundInterface;
         RefereeSiteInterface refereeSiteInterface;
+        GlobalInterface globalInterface;
         ServerCom scon, sconi;                               // canais de comunicação
-        ClientProxy cliProxy;                                // thread agente prestador do serviço
+        ClientProxy cliProxybench;                                // thread agente prestador do serviço
+        ClientProxy clientProxyglobal;
+        ClientProxy clientProxyplayground;
+        ClientProxy clientProxyrefereesite;
 
      /* estabelecimento do servico */
 
@@ -61,7 +66,7 @@ public class GameOfTheRopeServer {
         benchInterface = new BenchInterface(benchRemote);        // activação do interface com o serviço
         playgroundInterface = new PlaygroundInterface(playgroundRemote);
         refereeSiteInterface = new RefereeSiteInterface(refereeSiteRemote);
-
+        globalInterface = new GlobalInterface(globalRemote);
 
         GenericIO.writelnString ("O serviço foi estabelecido!");
         GenericIO.writelnString ("O servidor esta em escuta.");
@@ -70,8 +75,14 @@ public class GameOfTheRopeServer {
 
         while (true)
         { sconi = scon.accept ();                            // entrada em processo de escuta
-            cliProxy = new ClientProxy (scon,sconi, serverInterface);    // lançamento do agente prestador do serviço
-            cliProxy.start ();
+            cliProxybench = new ClientProxy (scon,sconi, benchInterface);    // lançamento do agente prestador do serviço
+            clientProxyglobal = new ClientProxy(scon,sconi,globalInterface);
+            clientProxyplayground = new ClientProxy(scon,sconi,benchInterface);
+            clientProxyrefereesite = new ClientProxy(scon,sconi,refereeSiteInterface);
+            cliProxybench.start ();
+            clientProxyglobal.start();
+            clientProxyplayground.start();
+            clientProxyrefereesite.start();
         }
     }
 }

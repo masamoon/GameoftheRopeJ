@@ -1,6 +1,6 @@
 package DistributedSolution.ClientSide.Referee;
 
-import Nondistributedsolution.Logging.Logger;
+
 import Nondistributedsolution.Monitors.Global;
 import Nondistributedsolution.Monitors.Playground;
 import Nondistributedsolution.Monitors.RefereeSite;
@@ -24,7 +24,7 @@ public class Referee extends Thread {
     /**
      * Logger object
      */
-    private Logger logger;
+    //private Logger logger;
 
     /**
      * General Informational Repository object
@@ -59,7 +59,7 @@ public class Referee extends Thread {
             refereeRefereeSiteStub.declareGameWinner ();
         }while(refereeGlobalStub.matchInProgress());
         refereeRefereeSiteStub.declareMatchWinner();
-        logger.closeFile();
+        //logger.closeFile();
     }
 
 
