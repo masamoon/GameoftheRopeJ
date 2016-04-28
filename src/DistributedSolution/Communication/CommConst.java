@@ -8,55 +8,55 @@ public class CommConst {
      * Variable that holds the address for the logging server.
      */
 
-    public final static String loggServerName = "127.0.0.1";
+    public final static String loggServerName = "localhost";
 
     /**
      * Variable that holds the port number for the logging server.
      */
-    public final static int loggServerPort = 22440;
+    public final static int loggServerPort = 80;
 
     /**
      * Variable that holds the address for the bench server.
      */
 
-    public final static String benchServerName = "127.0.0.1";
+    public final static String benchServerName = "localhost";
 
     /**
      * Variable that holds the port number for the bench server.
      */
-    public final static int benchServerPort = 22441;
+    public final static int benchServerPort = 80;
 
     /**
      * Variable that holds the address for the playground server.
      */
 
-    public final static String playgroundServerName = "127.0.0.1";
+    public final static String playgroundServerName = "localhost";
 
     /**
      * Variable that holds the port number for the playground server.
      */
-    public final static int playgroundServerPort = 22442;
+    public final static int playgroundServerPort = 80;
 
     /**
      * Variable that holds the address for the referee site server.
      */
 
-    public final static String refereeSiteServerName = "127.0.0.1";
+    public final static String refereeSiteServerName = "localhost";
 
     /**
      * Variable that holds the port number for the referee site server.
      */
-    public final static int refereeSiteServerPort = 22443;
+    public final static int refereeSiteServerPort = 80;
 
     /**
      * Variable that holds the address for the global repository server.
      */
-    public final static String globalServerName ="127.0.0.1";
+    public final static String globalServerName ="localhost";
 
     /**
      * Variable that holds the port number for the global respository server.
      */
-    public final static int globalServerPort = 22445;
+    public final static int globalServerPort = 80;
 
     /**
      * Variable that holds the timeout value for the server sockets.
