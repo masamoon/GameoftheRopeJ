@@ -3,6 +3,7 @@ package DistributedSolution.ClientSide.Coach;
 import DistributedSolution.Communication.ClientCom;
 import DistributedSolution.Communication.Message.Message;
 import genclass.GenericIO;
+import sun.net.www.content.text.Generic;
 
 import static java.lang.Thread.sleep;
 
@@ -30,17 +31,20 @@ public class CoachGlobalStub {
     }
 
     public boolean matchInProgress(){
+        GenericIO.writelnString("entering match in progress...");
         ClientCom con = new ClientCom(serverHostName, serverPortNumb);
+        GenericIO.writelnString("Client com instantiated");
         Message inMessage, outMessage;
-
+        GenericIO.writelnString("Checking connection");
         while (!con.open()) // aguarda ligação
         {
+            GenericIO.writelnString("connection not open");
             try {
                 sleep((long) (10));
             } catch (InterruptedException e) {
             }
         }
-
+        GenericIO.writelnString("sending message match in progress...");
         outMessage = new Message(Message.MINPROGRESS);
         GenericIO.writelnString("outcoming message to server (coach): "+outMessage.getType());
         con.writeObject(outMessage);

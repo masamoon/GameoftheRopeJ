@@ -78,7 +78,7 @@ public class ClientProxy extends Thread
         Message inMessage = null, // mensagem de entrada
                 outMessage = null;                      // mensagem de saída
 
-        GenericIO.writelnString("incoming message to Server: "+sconi.readObject().toString());
+//       GenericIO.writelnString("incoming message to Server: "+sconi.readObject().toString());
         inMessage = (Message) sconi.readObject();                     // ler pedido do cliente
         try
         {

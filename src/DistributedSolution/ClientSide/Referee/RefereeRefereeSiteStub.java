@@ -67,6 +67,7 @@ public class RefereeRefereeSiteStub {
         }
 
         outMessage = new Message(Message.ANNMATCH);
+        GenericIO.writelnString("OUTCOMING MESSAGE: "+outMessage.getType());
         con.writeObject(outMessage);
         inMessage = (Message) con.readObject();
         if (inMessage.getType () != Message.ACK) {

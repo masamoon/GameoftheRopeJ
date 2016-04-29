@@ -1,6 +1,7 @@
 package DistributedSolution.ServerSide;
 
 import DistributedSolution.Communication.ClientProxy;
+import DistributedSolution.Communication.CommConst;
 import DistributedSolution.Communication.ServerCom;
 import DistributedSolution.Communication.ServerInterface;
 import DistributedSolution.ServerSide.Bench.BenchRemote;
@@ -24,7 +25,7 @@ public class GameOfTheRopeServer {
      *    @serialField portNumb
      */
 
-    private static final int portNumb = 9091;
+  //  private static final int portNumb = 9091;
 
     /**
      *  Programa principal.
@@ -40,7 +41,8 @@ public class GameOfTheRopeServer {
         PlaygroundInterface playgroundInterface;
         RefereeSiteInterface refereeSiteInterface;
         GlobalInterface globalInterface;
-        ServerCom scon, sconi;                               // canais de comunicação
+        ServerCom sconb,sconrs,scong,sconp, sconib,sconirs,sconig,sconip;                               // canais de comunicação
+
         ClientProxy cliProxybench;                                // thread agente prestador do serviço
         ClientProxy clientProxyglobal;
         ClientProxy clientProxyplayground;
@@ -48,8 +50,15 @@ public class GameOfTheRopeServer {
 
      /* estabelecimento do servico */
 
-        scon = new ServerCom (portNumb);                     // criação do canal de escuta e sua associação
-        scon.start ();                                       // com o endereço público
+        sconb = new ServerCom (CommConst.benchServerPort);                     // criação do canal de escuta e sua associação
+        sconb.start ();                                       // com o endereço público
+        sconrs = new ServerCom (CommConst.refereeSiteServerPort);                     // criação do canal de escuta e sua associação
+        sconrs.start ();                                       // com o endereço público
+        sconp = new ServerCom (CommConst.playgroundServerPort);                     // criação do canal de escuta e sua associação
+        sconp.start ();                                       // com o endereço público
+        scong = new ServerCom (CommConst.globalServerPort);                     // criação do canal de escuta e sua associação
+        scong.start ();                                       // com o endereço público
+
         globalRemote = new GlobalRemote("/");
 
         refereeSiteRemote = new RefereeSiteRemote(globalRemote);
@@ -74,11 +83,15 @@ public class GameOfTheRopeServer {
      /* processamento de pedidos */
 
         while (true)
-        { sconi = scon.accept ();                            // entrada em processo de escuta
-            cliProxybench = new ClientProxy (scon,sconi, benchInterface);    // lançamento do agente prestador do serviço
-            clientProxyglobal = new ClientProxy(scon,sconi,globalInterface);
-            clientProxyplayground = new ClientProxy(scon,sconi,playgroundInterface);
-            clientProxyrefereesite = new ClientProxy(scon,sconi,refereeSiteInterface);
+        {
+            sconib = sconb.accept ();                            // entrada em processo de escuta
+            sconig = scong.accept();
+            sconirs = sconrs.accept();
+            sconip = sconp.accept();
+            cliProxybench = new ClientProxy (sconb,sconib, benchInterface);    // lançamento do agente prestador do serviço
+            clientProxyglobal = new ClientProxy(scong,sconig,globalInterface);
+            clientProxyplayground = new ClientProxy(sconp,sconip,playgroundInterface);
+            clientProxyrefereesite = new ClientProxy(sconrs,sconirs,refereeSiteInterface);
 
             cliProxybench.start ();
             clientProxyglobal.start();

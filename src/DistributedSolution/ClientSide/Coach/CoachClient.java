@@ -24,8 +24,8 @@ public class CoachClient {
         CoachPlaygroundStub coachPlaygroundStub = new CoachPlaygroundStub(CommConst.playgroundServerName, CommConst.playgroundServerPort);
         CoachGlobalStub coachGlobalStub = new CoachGlobalStub(CommConst.globalServerName,CommConst.globalServerPort);
 
-        ArrayList<Coach> coaches = new ArrayList<>(GameParameters.nTeams); //remove static
-        for (int i = 0; i < GameParameters.nTeams; i++) //remove static
+        ArrayList<Coach> coaches = new ArrayList<>(GameParameters.nTeams);
+        for (int i = 0; i < GameParameters.nTeams; i++)
             coaches.add(new Coach(i,coachBenchStub,coachPlaygroundStub,coachGlobalStub));
 
         GenericIO.writelnString("Number of coaches: " + coaches.size());

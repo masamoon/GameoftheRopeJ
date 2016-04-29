@@ -3,6 +3,7 @@ package DistributedSolution.ClientSide.Coach;
 import Nondistributedsolution.Monitors.Bench;
 import Nondistributedsolution.Monitors.Global;
 import Nondistributedsolution.Monitors.Playground;
+import genclass.GenericIO;
 
 /**
  * Created by jonnybel on 3/8/16.
@@ -50,14 +51,15 @@ public class Coach extends Thread{
     @Override
     public void run()
     {
-
+        GenericIO.writelnString("Coach "+teamID+" running!");
         while(coachGlobalStub.matchInProgress()){
-
+            GenericIO.writelnString("Coach "+teamID+" waitforcalling");
             coachPlaygroundStub.waitForCalling(teamID);
-
+            GenericIO.writelnString("Coach "+teamID+" callContestants");
             coachBenchStub.callContestants(teamID);
+            GenericIO.writelnString("Coach "+teamID+" waitforcontestants");
             coachPlaygroundStub.waitForContestants(teamID);
-
+            GenericIO.writelnString("Coach "+teamID+" informreferee");
             coachPlaygroundStub.informReferee(teamID);
 
             coachPlaygroundStub.reviewNotes(teamID);

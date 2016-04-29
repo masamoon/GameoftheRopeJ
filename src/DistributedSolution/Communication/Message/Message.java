@@ -13,10 +13,10 @@ import java.io.Serializable;
 public class Message  implements Serializable{
 
     /**
-     *
+     *  Chave de serialização
+     *    @serialField serialVersionUID
      */
-
-    private static final long serialVersionUID = 1002L;
+    private static final long serialVersionUID = 1L;
     /**
      *
      */
@@ -140,8 +140,14 @@ public class Message  implements Serializable{
      */
     public static final int ACK = 5;
 
+    /**
+     * @serialField POSITIVE
+     */
     public static final int POSITIVE = 100;
 
+    /**
+     * @serialField NEGATIVE
+     */
     public static final int NEGATIVE = 200;
 
     public static final int CONFIGCOACH = 101;
@@ -156,6 +162,9 @@ public class Message  implements Serializable{
 
     public static final int CONFIGREFEREER = 302;
 
+    /**
+     * @serialField TERMINATE
+     */
     public static final int TERMINATE = 400;
 
     /**
@@ -174,6 +183,7 @@ public class Message  implements Serializable{
 
     /**
      * wait for calling
+     * @serialField WFCALLING
      */
     public static final int WFCALLING = 19;
 
@@ -185,6 +195,7 @@ public class Message  implements Serializable{
 
     /**
      * inform referee
+     * @serialField INFREF
      */
     public static final int INFREF = 21;
 
@@ -258,11 +269,13 @@ public class Message  implements Serializable{
      */
     /**
      * announce match
+     * @serialField ANNMATCH
      */
     public static final int ANNMATCH = 23;
 
     /**
      * announce game
+     * @serialField ANNGAME
      */
     public static final int ANNGAME = 24;
 
@@ -281,6 +294,7 @@ public class Message  implements Serializable{
      */
     /**
      * match in progress
+     * @serialField MINPROGRESS
      */
     public static final int MINPROGRESS = 27;
 

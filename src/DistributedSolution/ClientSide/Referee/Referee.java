@@ -4,6 +4,7 @@ package DistributedSolution.ClientSide.Referee;
 import Nondistributedsolution.Monitors.Global;
 import Nondistributedsolution.Monitors.Playground;
 import Nondistributedsolution.Monitors.RefereeSite;
+import genclass.GenericIO;
 
 /**
  * Created by jonnybel on 3/8/16.
@@ -49,6 +50,7 @@ public class Referee extends Thread {
     @Override
     public void run(){
         refereeRefereeSiteStub.announceMatch();
+        GenericIO.writelnString("match announced ");
         do{
             refereeRefereeSiteStub.announceGame();
             while(!refereeGlobalStub.gameFinished()){
