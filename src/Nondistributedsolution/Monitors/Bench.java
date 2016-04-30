@@ -1,7 +1,10 @@
 package Nondistributedsolution.Monitors;
 
 
+import Nondistributedsolution.Coach.Coach;
+import Nondistributedsolution.Coach.CoachState;
 import Nondistributedsolution.Contestant.Contestant;
+import Nondistributedsolution.Contestant.ContestantState;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -79,26 +82,30 @@ public class Bench {
 
     public synchronized void reviewNotes (int teamID){
 
-        for(int i = 0; i< TEAM_SIZE; i++){
-            final int finalI = i;
-            boolean contains = IntStream.of(selectedTeam[teamID]).anyMatch(x -> x == finalI);
+        if(refereeSite.getTrialNum()>1){
 
-            strUpdate[teamID][i]=true;
-            if(contains){
-                int str = contestantStrengths[teamID][i];
-                if(str > 0) {
-                    contestantStrengths[teamID][i] = (str - 1);
-                    global.setStrength(i, teamID,--str);
+            for(int i = 0; i< TEAM_SIZE; i++){
+                final int finalI = i;
+                boolean contains = IntStream.of(selectedTeam[teamID]).anyMatch(x -> x == finalI);
+
+                strUpdate[teamID][i]=true;
+                if(contains){
+                    int str = contestantStrengths[teamID][i];
+                    if(str > 0) {
+                        contestantStrengths[teamID][i] = (str - 1);
+                        global.setStrength(i, teamID,--str);
+                    }
                 }
-            }
-            else{
-                int str = contestantStrengths[teamID][i];
-                if(str < 10) {
-                    contestantStrengths[teamID][i] = (str + 1);
-                    global.setStrength(i, teamID, ++str);
+                else{
+                    int str = contestantStrengths[teamID][i];
+                    if(str < 10) {
+                        contestantStrengths[teamID][i] = (str + 1);
+                        global.setStrength(i, teamID, ++str);
+                    }
                 }
             }
         }
+
         while(!trialCalled)
         {
             try {
@@ -117,6 +124,9 @@ public class Bench {
      * @param contestantID contestant's ID
      */
     public synchronized void sitDown(int contestantID, int teamID) {
+
+        ((Contestant)Thread.currentThread()).setContestantState(ContestantState.SIT_AT_THE_BENCH);
+        global.setContestantState(contestantID, teamID, ContestantState.SIT_AT_THE_BENCH);
 
         this.numSitting++;
 
@@ -166,7 +176,8 @@ public class Bench {
      */
     public synchronized void callContestants (int teamID){
 
-        //global.setCoachState(teamID, CoachState.WAIT_FOR_REFEREE_COMMAND);
+        ((Coach)Thread.currentThread()).setCoachState(CoachState.WAIT_FOR_REFEREE_COMMAND);
+        global.setCoachState(teamID, CoachState.WAIT_FOR_REFEREE_COMMAND);
 
         Random r = new Random();
         int strategy = r.nextInt(2);
@@ -178,7 +189,6 @@ public class Bench {
         else
             team = selectTopteam(teamID);
 
-        global.selectTeam(teamID, team[0],team[1],team[2]);
         selectTeam(teamID, team[0],team[1],team[2]);
 
         System.out.println("Coach " + teamID + " picked: " + team[0]+team[1]+team[2]);
@@ -227,7 +237,7 @@ public class Bench {
     private int[] selectTopteam(int teamID){
         int[] str;
 
-        str= global.getTeamStrength(teamID);
+        str= contestantStrengths[teamID];
 
         HashMap<Integer,Integer> map = new HashMap<>();
 
@@ -266,7 +276,18 @@ public class Bench {
         selectedTeam [1] = new int [] {-1,-1,-1};
     }
 
+    /**
+     * Gets the selected team for a trial
+     * @param teamID team's id
+     * @return selected team for trial
+     */
+    public int[] getSelection(int teamID) {
+        return selectedTeam[teamID];
+    }
+
     public synchronized void setStrength (int contestantID, int teamID, int strength){
         contestantStrengths[teamID][contestantID] = strength;
     }
+
+
 }

@@ -49,7 +49,6 @@ public class Contestant extends Thread {
      */
     private RefereeSite refereeSite;
 
-
     /**
      * Current State of this Contestant
      */
@@ -81,23 +80,20 @@ public class Contestant extends Thread {
      */
     @Override
     public void run() {
-        // initialize contestant at the bench
+        // initialize contestant strength at the shared zones
         benchMon.setStrength(contestantID, teamID, strength);
         global.setStrength(contestantID,teamID,strength);
         while(global.matchInProgress()){
 
-            setContestantState(ContestantState.SIT_AT_THE_BENCH);
             benchMon.sitDown(contestantID, teamID);
 
             if(global.matchInProgress()){
 
-                setContestantState(ContestantState.STAND_IN_POSITION);
                 playgroundMon.followCoachAdvice(contestantID, teamID);
 
-                setContestantState(ContestantState.DO_YOUR_BEST);
-                playgroundMon.getReady(teamID);
+                playgroundMon.getReady(contestantID, teamID);
                 pullRope();
-                playgroundMon.done(teamID);
+                playgroundMon.done(contestantID, teamID);
 
             }
         }
@@ -122,12 +118,7 @@ public class Contestant extends Thread {
         this.strength = strength;
     }
 
-    public ContestantState getContestantState() {
-        return contestantState;
-    }
-
     public void setContestantState(ContestantState contestantState) {
         this.contestantState = contestantState;
-        global.setContestantState(contestantID, teamID, contestantState);
     }
 }

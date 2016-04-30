@@ -1,6 +1,11 @@
 package Nondistributedsolution.Monitors;
 
+import Nondistributedsolution.Coach.Coach;
+import Nondistributedsolution.Coach.CoachState;
 import Nondistributedsolution.Contestant.Contestant;
+import Nondistributedsolution.Contestant.ContestantState;
+import Nondistributedsolution.Referee.Referee;
+import Nondistributedsolution.Referee.RefereeState;
 
 import java.util.stream.IntStream;
 
@@ -17,9 +22,10 @@ public class Playground {
     private final Global global;
 
     /**
-     *  General Information Repository object
      */
     private final Bench bench;
+
+    private final RefereeSite refereSite;
 
     /**
      * Number of complete teams that are standing in position (from 0 to 2)
@@ -49,13 +55,15 @@ public class Playground {
      */
     private int [] teamPower;
 
+
     /**
      * Constructor for the PlaygroundRemote
      * @param global
      */
-    public Playground( Global global, Bench bench){
+    public Playground( Global global, Bench bench, RefereeSite refereeSite){
         this.global = global;
         this.bench = bench;
+        this.refereSite = refereeSite;
 
         this.teamsReady = 0;
         this.contestantsDone = 0;
@@ -72,14 +80,11 @@ public class Playground {
      */
     public synchronized void callTrial(){
 
+        ((Referee)Thread.currentThread()).setRefereeState(RefereeState.TEAMS_READY);
+        global.setRefereeState(RefereeState.TEAMS_READY);
+
         teamsReady=0;
         contestantsDone=0;
-
-        // todo: this will work differently
-        global.eraseTeamSelections();
-
-        // turns out to be unnecessary:
-        //bench.eraseTeamSelections();
 
         for(int i =0; i<teamPower.length; i++)
         {
@@ -106,6 +111,9 @@ public class Playground {
      */
     public synchronized void waitForContestants(int teamID){
 
+        ((Coach)Thread.currentThread()).setCoachState(CoachState.ASSEMBLE_TEAM);
+        global.setCoachState(teamID, CoachState.ASSEMBLE_TEAM);
+
         while(standingInPosition[teamID]<3){
             try
             {
@@ -123,6 +131,8 @@ public class Playground {
      */
     public synchronized void followCoachAdvice (int contestantID, int teamID) {
 
+        ((Contestant)Thread.currentThread()).setContestantState(ContestantState.STAND_IN_POSITION);
+        global.setContestantState(contestantID, teamID, ContestantState.STAND_IN_POSITION);
         standingInPosition[teamID] +=1;
 
         System.out.println("contestant " + contestantID + " from team " + teamID + " standing, total standing: " + standingInPosition[teamID]);
@@ -146,6 +156,9 @@ public class Playground {
 
     public synchronized void informReferee(int teamID){
 
+        ((Coach)Thread.currentThread()).setCoachState(CoachState.WATCH_TRIAL);
+        global.setCoachState(teamID, CoachState.WATCH_TRIAL);
+
         bench.setBenchCalled(teamID, false);
 
         teamsReady++;
@@ -167,6 +180,9 @@ public class Playground {
      */
     public synchronized  void startTrial(){
 
+        ((Referee)Thread.currentThread()).setRefereeState(RefereeState.WAIT_FOR_TRIAL_CONCLUSION);
+        global.setRefereeState(RefereeState.WAIT_FOR_TRIAL_CONCLUSION);
+
         bench.setTrialCalled(false);
         trialStatus=1;
 
@@ -177,8 +193,11 @@ public class Playground {
     /**
      * Contestant changes his state to Do_Your_Best before pulling the rope
      */
-    public synchronized  void getReady(int teamID) {
-        // todo: add my strength to the total power of my team (for the trial assertion)
+    public synchronized  void getReady(int contestantID, int teamID) {
+
+        ((Contestant)Thread.currentThread()).setContestantState(ContestantState.DO_YOUR_BEST);
+        global.setContestantState(contestantID, teamID, ContestantState.DO_YOUR_BEST);
+
         teamPower[teamID] += ((Contestant)Thread.currentThread()).getStrength();
     }
 
@@ -187,7 +206,7 @@ public class Playground {
      * The last contestant to finish pulling the rope wakes the referee
      * @param teamID team's id
      */
-    public synchronized void done(int teamID){
+    public synchronized void done(int contestantID, int teamID){
 
         contestantsDone++;
         if(contestantsDone==6) {
@@ -201,6 +220,7 @@ public class Playground {
         }
 
         standingInPosition[teamID] -=1;
+        global.leaveRope(contestantID, teamID);
     }
 
    /**
@@ -216,8 +236,8 @@ public class Playground {
             } catch (InterruptedException e) {}
         }
 
-        int team1Power = IntStream.of(global.getSelection(0)).sum();
-        int team2Power = IntStream.of(global.getSelection(1)).sum();
+        int team1Power = IntStream.of(teamPower[0]).sum();
+        int team2Power = IntStream.of(teamPower[1]).sum();
 
         /*
         System.out.println("trial assertion:");
@@ -241,7 +261,7 @@ public class Playground {
         System.out.println("Trial finished");
 
         if(global.gameFinished()){
-            if(global.getGamesNum()==3)
+            if(refereSite.getGamesNum()==3)
             {
                 global.setMatchInProgress(false);
                 bench.wakeBench();

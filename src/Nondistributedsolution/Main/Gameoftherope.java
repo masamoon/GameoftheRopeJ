@@ -24,7 +24,7 @@ public class Gameoftherope {
 
         Bench bench = new Bench(global, refereeSite);
 
-        Playground playground = new Playground(global, bench);
+        Playground playground = new Playground(global, bench, refereeSite);
 
 
 

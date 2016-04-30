@@ -57,29 +57,20 @@ public class Coach extends Thread{
     {
         while(global.matchInProgress()){
 
-            System.out.println("coach " + teamID + " status: reviewing");
+            //System.out.println("coach " + teamID + " status: reviewing");
             benchMon.reviewNotes(teamID);
 
             System.out.println("coach " + teamID + " status: calling");
-            setCoachState(CoachState.WAIT_FOR_REFEREE_COMMAND);
             benchMon.callContestants(teamID);
 
-            setCoachState(CoachState.ASSEMBLE_TEAM);
             System.out.println("coach " + teamID + " status: waiting");
             playgroundMon.waitForContestants(teamID);
 
-            setCoachState(CoachState.WATCH_TRIAL);
             System.out.println("coach " + teamID + " status: informing");
             playgroundMon.informReferee(teamID);
         }
     }
-    public CoachState getCoachState() {
-        return coachState;
-    }
-
     public void setCoachState(CoachState coachState) {
         this.coachState = coachState;
-        global.setCoachState(teamID, coachState);
     }
-
 }

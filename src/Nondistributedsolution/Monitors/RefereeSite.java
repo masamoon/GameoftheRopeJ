@@ -1,5 +1,6 @@
 package Nondistributedsolution.Monitors;
 
+import Nondistributedsolution.Referee.Referee;
 import Nondistributedsolution.Referee.RefereeState;
 
 /**
@@ -7,11 +8,19 @@ import Nondistributedsolution.Referee.RefereeState;
  */
 public class RefereeSite {
 
+    private final int NUMBER_OF_TEAMS = 2;
+    private final int NUMBER_OF_PLAYERS_PER_TEAM = 5;
+
     private Global global;
 
     private int trialNum;
 
     private boolean readyForTrial;
+
+    private int gamesNum;
+
+    private int [] teamScore;
+
 
 
 
@@ -19,14 +28,29 @@ public class RefereeSite {
 
         this.global = global;
         this.readyForTrial = false;
+
+        this.trialNum = 0;
+        this.gamesNum = 0;
+
+        teamScore = new int [NUMBER_OF_TEAMS];
+        for(int i : teamScore) {
+            teamScore [i] = 0;
+        }
     }
     /**
      * Referee Announces new game
      */
     public synchronized void announceGame(){
+
+        ((Referee)Thread.currentThread()).setRefereeState(RefereeState.START_OF_A_GAME);
+        global.setRefereeState(RefereeState.START_OF_A_GAME);
+
+        gamesNum++;
         global.incrementGamesNum();
 
         global.resetFlagPos();
+
+        trialNum = 0;
         global.resetTrialNum();
     }
 
@@ -46,8 +70,9 @@ public class RefereeSite {
     }
 
     public synchronized void waitForBench(){
+        trialNum++;
         global.incrementTrialNum();
-        System.out.println(global.getTrialNum());
+        System.out.println(trialNum);
 
         while(!readyForTrial){
             try {
@@ -60,35 +85,38 @@ public class RefereeSite {
      * Checks what team is the game's winner
      */
     public synchronized void declareGameWinner (){
+
+        ((Referee)Thread.currentThread()).setRefereeState(RefereeState.END_OF_A_GAME);
+        global.setRefereeState(RefereeState.END_OF_A_GAME);
+
         int flagPos = global.getFlagPos();
-        if(global.getTrialNum() >= 6){
+
+        if(trialNum>= 6){
             if(flagPos < 0){
                 //team1 winner
-                global.incTeamScore(0);
-                global.gameWinnerLinePoints(global.getTeamScore(0)+global.getTeamScore(1),1,global.getTrialNum());
+                teamScore[0]++;
+                global.gameWinnerLinePoints(1);
             }
             else if(flagPos > 0){
                 //team 2 winner
-                global.incTeamScore(1);
-                global.gameWinnerLinePoints(global.getTeamScore(0)+global.getTeamScore(1),2,global.getTrialNum());
+                teamScore[1]++;
+                global.gameWinnerLinePoints(2);
             }
             else{
                 //tie
-                global.incTeamScore(0);
-                global.incTeamScore(1);
                 global.gameTieLine();
             }
         }
         else{
             if(flagPos <= -4){
                 //team1 knockout
-                global.incTeamScore(0);
-                global.gameWinnerLineKO(global.getTeamScore(0)+global.getTeamScore(1),1,global.getTrialNum());
+                teamScore[0]++;
+                global.gameWinnerLineKO(1);
             }
             else if(flagPos >= 4){
                 //team2 knockout
-                global.incTeamScore(1);
-                global.gameWinnerLineKO(global.getTeamScore(0)+global.getTeamScore(1),2,global.getTrialNum());
+                teamScore[1]++;
+                global.gameWinnerLineKO(2);
             }
         }
     }
@@ -97,13 +125,16 @@ public class RefereeSite {
      * Checks what team is the match's winner
      */
     public synchronized void declareMatchWinner (){
-        if(global.getTeamScore(0)> global.getTeamScore(1)){
+        ((Referee)Thread.currentThread()).setRefereeState(RefereeState.END_OF_THE_MATCH);
+        global.setRefereeState(RefereeState.END_OF_THE_MATCH);
+
+        if(teamScore[0]> teamScore[1]){
             //team1 takes match
-            global.matchWinnerLine(global.getTeamScore(0),global.getTeamScore(1),1);
+            global.matchWinnerLine(teamScore[0],teamScore[1],1);
         }
-        else if(global.getTeamScore(0) < global.getTeamScore(1)){
+        else if(teamScore[0] < teamScore[1]){
             //team2 takes match
-            global.matchWinnerLine(global.getTeamScore(0),global.getTeamScore(1),2);
+            global.matchWinnerLine(teamScore[1],teamScore[1],2);
         }
         else{
             //draw
@@ -119,7 +150,12 @@ public class RefereeSite {
         return trialNum;
     }
 
-    public void setTrialNum(int trialNum) {
-        this.trialNum = trialNum;
+
+    /**
+     * Gets the number of games played
+     * @return number of games
+     */
+    public int getGamesNum() {
+        return gamesNum;
     }
 }
