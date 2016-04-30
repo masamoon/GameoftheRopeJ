@@ -78,25 +78,30 @@ public class GameOfTheRopeServer {
         globalInterface = new GlobalInterface(globalRemote);
 
         GenericIO.writelnString ("O serviço foi estabelecido!");
-        GenericIO.writelnString ("O servidor esta em escuta.");
+
 
      /* processamento de pedidos */
 
         while (true)
         {
-            sconib = sconb.accept ();                            // entrada em processo de escuta
             sconig = scong.accept();
-            sconirs = sconrs.accept();
-            sconip = sconp.accept();
-            cliProxybench = new ClientProxy (sconb,sconib, benchInterface);    // lançamento do agente prestador do serviço
             clientProxyglobal = new ClientProxy(scong,sconig,globalInterface);
-            clientProxyplayground = new ClientProxy(sconp,sconip,playgroundInterface);
-            clientProxyrefereesite = new ClientProxy(sconrs,sconirs,refereeSiteInterface);
-
-            cliProxybench.start ();
             clientProxyglobal.start();
+
+            sconip = sconp.accept();
+            clientProxyplayground = new ClientProxy(sconp,sconip,playgroundInterface);
             clientProxyplayground.start();
+
+            GenericIO.writelnString ("O servidor esta em escuta.");
+            sconib = sconb.accept ();                            // entrada em processo de escuta
+            cliProxybench = new ClientProxy (sconb,sconib, benchInterface);    // lançamento do agente prestador do serviço
+            cliProxybench.start ();
+
+
+            sconirs = sconrs.accept();
+            clientProxyrefereesite = new ClientProxy(sconrs,sconirs,refereeSiteInterface);
             clientProxyrefereesite.start();
+
         }
     }
 }

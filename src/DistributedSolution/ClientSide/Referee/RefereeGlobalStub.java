@@ -24,7 +24,7 @@ public class RefereeGlobalStub {
 
     private int serverPortNumb;
 
-    RefereeGlobalStub(String serverUrl, int portNumbStorage) {
+    public RefereeGlobalStub(String serverUrl, int portNumbStorage) {
         this.serverPortNumb = portNumbStorage;
         this.serverHostName = serverUrl;
     }

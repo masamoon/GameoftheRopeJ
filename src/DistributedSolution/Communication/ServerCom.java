@@ -151,6 +151,7 @@ public class ServerCom
 
         try
         { scon.in = new ObjectInputStream (scon.commSocket.getInputStream ());
+
         }
         catch (IOException e)
         { GenericIO.writelnString (Thread.currentThread ().getName () +

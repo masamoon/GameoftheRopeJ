@@ -76,11 +76,13 @@ public class ClientCom
     {
         boolean success = true;
         SocketAddress serverAddress = new InetSocketAddress (serverHostName, serverPortNumb);
-
+        GenericIO.writelnString ("abrir ligação: "+serverHostName+" "+serverPortNumb);
 
         try
         { commSocket = new Socket();
+
             commSocket.connect (serverAddress);
+            GenericIO.writelnString ("novo socket: "+serverHostName+" "+serverPortNumb);
         }
         catch (UnknownHostException e)
         { GenericIO.writelnString (Thread.currentThread ().getName () +
@@ -120,10 +122,15 @@ public class ClientCom
             System.exit (1);
         }
 
-        if (!success) return (success);
+        if (!success)
+            return (success);
 
         try
-        { out = new ObjectOutputStream (commSocket.getOutputStream ());
+        {
+
+            out = new ObjectOutputStream (commSocket.getOutputStream ());
+            GenericIO.writelnString ("novo OOutuputStream: "+serverHostName+" "+serverPortNumb);
+
         }
         catch (IOException e)
         { GenericIO.writelnString (Thread.currentThread ().getName () +
@@ -132,8 +139,13 @@ public class ClientCom
             System.exit (1);
         }
 
+
         try
-        { in = new ObjectInputStream (commSocket.getInputStream ());
+        {
+            GenericIO.writelnString ("novo OInputStream: "+serverHostName+" "+serverPortNumb);
+            in = new ObjectInputStream (commSocket.getInputStream ());
+            GenericIO.writelnString ("done");
+
         }
         catch (IOException e)
         { GenericIO.writelnString (Thread.currentThread ().getName () +
@@ -142,6 +154,7 @@ public class ClientCom
             System.exit (1);
         }
 
+        GenericIO.writelnString ("aberta ligação!!: "+serverHostName+" "+serverPortNumb);
         return (success);
     }
 

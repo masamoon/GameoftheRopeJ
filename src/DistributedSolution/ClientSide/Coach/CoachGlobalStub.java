@@ -38,8 +38,8 @@ public class CoachGlobalStub {
         GenericIO.writelnString("Checking connection");
         while (!con.open()) // aguarda ligação
         {
-            GenericIO.writelnString("connection not open");
             try {
+                GenericIO.writelnString("connection not open");
                 sleep((long) (10));
             } catch (InterruptedException e) {
             }
@@ -48,9 +48,11 @@ public class CoachGlobalStub {
         outMessage = new Message(Message.MINPROGRESS);
         GenericIO.writelnString("outcoming message to server (coach): "+outMessage.getType());
         con.writeObject(outMessage);
+        GenericIO.writelnString("wrote message to server (coach): "+outMessage.getType());
 
 //        GenericIO.writelnString("incoming message from server (coach): "+con.readObject().toString());
         inMessage = (Message) con.readObject();
+        GenericIO.writelnString("received message from server (coach): "+inMessage.getType());
         if ((inMessage.getType() != Message.POSITIVE) && (inMessage.getType() != Message.NEGATIVE)) {
             GenericIO.writelnString ("Thread: Tipo inválido! teve: " + inMessage.getType () + " esperava " + Message.NEGATIVE +
                     " ou " + Message.POSITIVE);
@@ -60,10 +62,14 @@ public class CoachGlobalStub {
         con.close ();
 
         if (inMessage.getType() == Message.POSITIVE) {
+            GenericIO.writelnString("exiting match in progress");
             return true;
         } else {
+            GenericIO.writelnString("exiting match in progress");
             return false;
         }
+
+
     }
 
 
