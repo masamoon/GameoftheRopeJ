@@ -62,10 +62,10 @@ public class CoachGlobalStub {
         con.close ();
 
         if (inMessage.getType() == Message.POSITIVE) {
-            GenericIO.writelnString("exiting match in progress");
+            GenericIO.writelnString("exiting match in progress POSITIVE");
             return true;
         } else {
-            GenericIO.writelnString("exiting match in progress");
+            GenericIO.writelnString("exiting match in progress NEGATIVE");
             return false;
         }
 

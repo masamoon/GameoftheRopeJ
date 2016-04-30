@@ -69,9 +69,6 @@ public class GameOfTheRopeServer {
 
 
 
-
-
-
         benchInterface = new BenchInterface(benchRemote);        // activação do interface com o serviço
         playgroundInterface = new PlaygroundInterface(playgroundRemote);
         refereeSiteInterface = new RefereeSiteInterface(refereeSiteRemote);

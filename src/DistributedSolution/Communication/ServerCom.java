@@ -224,8 +224,9 @@ public class ServerCom
 
         try
         {
-            //GenericIO.writelnString("INCOMING: "+in.);
+
             fromClient = in.readObject ();
+
         }
         catch (InvalidClassException e)
         { GenericIO.writelnString (Thread.currentThread ().getName () +
@@ -245,7 +246,7 @@ public class ServerCom
             e.printStackTrace ();
             System.exit (1);
         }
-
+        GenericIO.writelnString("IN: "+fromClient.toString());
         return fromClient;
     }
 
