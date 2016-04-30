@@ -25,8 +25,8 @@ public class ContestantPlaygroundStub {
 
     private int serverPortNumb;
 
-    public ContestantPlaygroundStub(String serverUrl, int portNumbStorage) {
-        this.serverPortNumb = portNumbStorage;
+    public ContestantPlaygroundStub(String serverUrl, int portNumb) {
+        this.serverPortNumb = portNumb;
         this.serverHostName = serverUrl;
     }
 
@@ -78,7 +78,7 @@ public class ContestantPlaygroundStub {
         con.close ();
     }
 
-    public  void done(int teamID){
+    public  void done(int contestantID, int teamID){
         ClientCom con = new ClientCom(serverHostName, serverPortNumb);
         Message inMessage, outMessage;
 

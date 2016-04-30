@@ -21,12 +21,12 @@ public class BenchRemote {
     /**
      *  General Information Repository object
      */
-    private final GlobalRemote global;
+    private final BenchGlobalStub global;
 
     /**
      *  RefereeSiteRemote object
      */
-    private final RefereeSiteRemote refereeSite;
+    private final BenchRefereeSiteStub refereeSite;
 
 
     /**
@@ -68,7 +68,7 @@ public class BenchRemote {
      *  Constructor for this Shared Region.
      * @param global
      */
-    public BenchRemote(GlobalRemote global, RefereeSiteRemote refereeSite){
+    public BenchRemote(BenchGlobalStub global, BenchRefereeSiteStub refereeSite){
 
         this.global = global;
         this.refereeSite = refereeSite;

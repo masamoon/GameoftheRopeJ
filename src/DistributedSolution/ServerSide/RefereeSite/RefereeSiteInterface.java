@@ -42,6 +42,23 @@ public class RefereeSiteInterface implements ServerInterface {
                 refereeSiteRemote.declareMatchWinner();
                 outMessage = new Message(Message.ACK);
                 break;
+            case Message.GGAMESNUM:
+                int gamesNum = refereeSiteRemote.getGamesNum();
+                outMessage = new Message(Message.GGAMESNUMR,gamesNum);
+                break;
+            case Message.SREADYFTRIAL:
+                refereeSiteRemote.setReadyForTrial(inMessage.getB());
+                outMessage = new Message(Message.ACK);
+                break;
+            case Message.BWAKEREF:
+                refereeSiteRemote.benchWakeRef();
+                outMessage = new Message(Message.ACK);
+                break;
+            case Message.GTRIALNUM:
+                int trialNum = refereeSiteRemote.getTrialNum();
+                outMessage = new Message(Message.GTRIALNUMR,trialNum);
+                break;
+
             default:
                 GenericIO.writelnString("Invalid message type");
                 break;

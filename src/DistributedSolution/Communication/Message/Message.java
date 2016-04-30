@@ -17,6 +17,8 @@ public class Message  implements Serializable{
      *    @serialField serialVersionUID
      */
     private static final long serialVersionUID = 1L;
+
+
     /**
      *
      */
@@ -29,11 +31,22 @@ public class Message  implements Serializable{
 
     private int id;
 
+    private int team1, team2, team3;
+
+    private int int1,int2,int3,int4;
 
 
-    private int teamID;
 
     private int contestantID;
+
+
+    private int score;
+
+    private int gamesNum;
+
+    private boolean b;
+
+
 
     private int type = -1;
 
@@ -53,69 +66,11 @@ public class Message  implements Serializable{
 
     private int portNumGlobal;
 
-    public int getPortNumBench() {
-        return portNumBench;
-    }
+    private int strength;
 
-    public void setPortNumBench(int portNumBench) {
-        this.portNumBench = portNumBench;
-    }
+    private int trialNum;
 
-    public String getServerUrlBench() {
-        return serverUrlBench;
-    }
 
-    public void setServerUrlBench(String serverUrlBench) {
-        this.serverUrlBench = serverUrlBench;
-    }
-
-    public int getPortNumPlayground() {
-        return portNumPlayground;
-    }
-
-    public void setPortNumPlayground(int portNumPlayground) {
-        this.portNumPlayground = portNumPlayground;
-    }
-
-    public String getServerUrlPlayground() {
-        return serverUrlPlayground;
-    }
-
-    public void setServerUrlPlayground(String serverUrlPlayground) {
-        this.serverUrlPlayground = serverUrlPlayground;
-    }
-
-    public int getPortNumRSite() {
-        return portNumRSite;
-    }
-
-    public void setPortNumRSite(int portNumRSite) {
-        this.portNumRSite = portNumRSite;
-    }
-
-    public String getServerUrlRSite() {
-        return serverUrlRSite;
-    }
-
-    public void setServerUrlRSite(String serverUrlRSite) {
-        this.serverUrlRSite = serverUrlRSite;
-    }
-
-    public int getPortNumGlobal() {
-        return portNumGlobal;
-    }
-
-    public void setPortNumGlobal(int portNumGlobal) {
-        this.portNumGlobal = portNumGlobal;
-    }
-
-    public String getServerUrlGlobal() {
-        return serverUrlGlobal;
-    }
-
-    public void setServerUrlGlobal(String serverUrlGlobal) {
-        this.serverUrlGlobal = serverUrlGlobal;
-    }
 
     private String serverUrlGlobal;
     /**
@@ -149,6 +104,7 @@ public class Message  implements Serializable{
      * @serialField NEGATIVE
      */
     public static final int NEGATIVE = 200;
+
 
     public static final int CONFIGCOACH = 101;
 
@@ -314,6 +270,56 @@ public class Message  implements Serializable{
     /**
      *
      */
+    public static final int STEAM = 29;
+
+
+    public static final int SCOACHSTATE = 30;
+
+    public static final int SCONTESTANTSTATE = 31;
+
+    public static final int SREFEREESTATE = 32;
+
+    public static final int SSTRENGTH = 33;
+
+    public static final int SREADYFTRIAL = 34;
+
+    public static final int BWAKEREF = 35;
+
+    public static final int STRIALCALLED = 36;
+
+    public static final int WBENCH = 37;
+
+    public static final int SBENCHCALLED = 38;
+
+    public static final int GGAMESNUM = 39;
+
+    public static final int GGAMESNUMR = 40;
+
+    public static final int SMINPROGRESS = 41;
+
+    public static final int CFLAGPOS = 42;
+
+    public static final int ITRIALNUM = 43;
+
+    public static final int ITEAMSCORE = 44;
+
+    public static final int GWINNERLINEPOINTS = 45;
+
+    public static final int GTIELINE = 46;
+
+    public static final int MWINNERLINEPOINTS = 47;
+
+    public static final int GTRIALNUM = 48;
+
+    public static final int GTRIALNUMR = 49;
+
+    public static final int MTIELINE = 50;
+
+    public static final int GWINNERLINEKO = 51;
+
+    public static final int MWINNERLINE = 52;
+
+    public static final int LROPE = 53;
 
 
 
@@ -353,9 +359,9 @@ public class Message  implements Serializable{
      * @param type
      * @param teamID
      */
-    public Message(int type, int teamID){
+    public Message(int type, int int1){
         this.type = type;
-        this.teamID = teamID;
+        this.int1 = int1;
     }
 
     /**
@@ -365,10 +371,11 @@ public class Message  implements Serializable{
      * @param contestantID
      *
      */
-    public Message(int type,int teamID, int contestantID){
+    public Message(int type,int int1, int int2){
         this.type = type;
-        this.teamID = teamID;
-        this.contestantID = contestantID;
+        this.int1 = int1;
+        this.int2 = int2;
+
     }
 
     /**
@@ -376,8 +383,11 @@ public class Message  implements Serializable{
      * @param type
      * @param contestantState
      */
-    public Message(int type, ContestantState contestantState){
+    public Message(int type, int int1, int int2,ContestantState contestantState){
         this.type = type;
+        this.contestantState = contestantState;
+        this.int1 = int1;
+        this.int2 = int2;
     }
 
     /**
@@ -385,9 +395,41 @@ public class Message  implements Serializable{
      * @param type
      * @param coachState
      */
-    public Message(int type, CoachState coachState){
+    public Message(int type, int int1, CoachState coachState){
+        this.type = type;
+        this.coachState = coachState;
+        this.int1 = int1;
+    }
+
+    public Message(int type,RefereeState refereeState){
+        this.type = type;
+        this.refereeState = refereeState;
 
     }
+
+    public Message(int type, int int1, int int2, int int3, int int4){
+        this.type = type;
+        this.int1 = int1;
+        this.int2 = int2;
+        this.int3 = int3;
+        this.int4 = int4;
+    }
+
+    public Message(int type, boolean b){
+        this.type = type;
+        this.b = b;
+    }
+
+    public Message(int type, int int1, int int2, int int3) {
+        this.type = type;
+        this.int1 = int1;
+        this.int2 = int2;
+        this.int3 = int3;
+    }
+
+
+
+
 
     public Message(int setnfic, String fName, int nGames) {
 
@@ -395,6 +437,82 @@ public class Message  implements Serializable{
 
 
 
+
+    public int getPortNumBench() {
+        return portNumBench;
+    }
+
+    public void setPortNumBench(int portNumBench) {
+        this.portNumBench = portNumBench;
+    }
+
+    public String getServerUrlBench() {
+        return serverUrlBench;
+    }
+
+    public void setServerUrlBench(String serverUrlBench) {
+        this.serverUrlBench = serverUrlBench;
+    }
+
+    public int getPortNumPlayground() {
+        return portNumPlayground;
+    }
+
+    public void setPortNumPlayground(int portNumPlayground) {
+        this.portNumPlayground = portNumPlayground;
+    }
+
+    public String getServerUrlPlayground() {
+        return serverUrlPlayground;
+    }
+
+    public void setServerUrlPlayground(String serverUrlPlayground) {
+        this.serverUrlPlayground = serverUrlPlayground;
+    }
+
+    public int getTeam1() {
+        return team1;
+    }
+
+    public int getTeam2() {
+        return team2;
+    }
+
+    public int getTeam3() {
+        return team3;
+    }
+
+    public int getPortNumRSite() {
+        return portNumRSite;
+    }
+
+    public void setPortNumRSite(int portNumRSite) {
+        this.portNumRSite = portNumRSite;
+    }
+
+    public String getServerUrlRSite() {
+        return serverUrlRSite;
+    }
+
+    public void setServerUrlRSite(String serverUrlRSite) {
+        this.serverUrlRSite = serverUrlRSite;
+    }
+
+    public int getPortNumGlobal() {
+        return portNumGlobal;
+    }
+
+    public void setPortNumGlobal(int portNumGlobal) {
+        this.portNumGlobal = portNumGlobal;
+    }
+
+    public String getServerUrlGlobal() {
+        return serverUrlGlobal;
+    }
+
+    public void setServerUrlGlobal(String serverUrlGlobal) {
+        this.serverUrlGlobal = serverUrlGlobal;
+    }
 
     public int getType(){
         return type;
@@ -405,23 +523,55 @@ public class Message  implements Serializable{
         return (fname);
     }
 
-    public int getTeamID() {
-        return teamID;
+
+
+
+    public ContestantState getContestantState(){
+        return contestantState;
+    }
+    public RefereeState getRefereeState() {
+        return refereeState;
     }
 
-    public void setTeamID(int teamID) {
-        this.teamID = teamID;
+    public CoachState getCoachState() {
+        return coachState;
     }
 
-    public int getContestantID() {
-        return contestantID;
+    public int getGamesNum() {
+        return gamesNum;
+    }
+    public int getTrialNum() {
+        return trialNum;
     }
 
-    public void setContestantID(int contestantID) {
-        this.contestantID = contestantID;
+    public int getScore() {
+        return score;
+    }
+
+    public boolean getB() {
+        return b;
+    }
+
+    public int getInt1() {
+        return int1;
+    }
+
+    public int getInt2() {
+        return int2;
+    }
+
+    public int getInt3() {
+        return int3;
+    }
+
+    public int getInt4() {
+        return int4;
     }
 
 
+    public int getStrength() {
+        return strength;
+    }
 
     @Override
     public String toString ()

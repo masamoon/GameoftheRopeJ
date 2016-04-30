@@ -44,6 +44,68 @@ public class GlobalInterface implements ServerInterface {
                 else
                     outMessage = new Message(Message.NEGATIVE);
                 break;
+            case Message.STEAM:
+                globalRemote.selectTeam(inMessage.getInt1(),inMessage.getInt2(),inMessage.getInt3(),inMessage.getInt4());
+                outMessage = new Message(Message.ACK);
+                break;
+            case Message.SCOACHSTATE:
+                globalRemote.setCoachState(inMessage.getInt1(),inMessage.getCoachState());
+                outMessage = new Message(Message.ACK);
+                break;
+            case Message.SSTRENGTH:
+                globalRemote.setStrength(inMessage.getInt2(),inMessage.getInt1(),inMessage.getInt3());
+                outMessage = new Message(Message.ACK);
+                break;
+            case Message.CFLAGPOS:
+                globalRemote.changeFlagPos(inMessage.getInt1());
+                outMessage = new Message(Message.ACK);
+                break;
+
+            case Message.SMINPROGRESS:
+                globalRemote.setMatchInProgress(inMessage.getB());
+                outMessage = new Message(Message.ACK);
+                break;
+
+            case Message.ITRIALNUM:
+                globalRemote.incrementTrialNum();
+                outMessage = new Message(Message.ACK);
+                break;
+
+            case Message.ITEAMSCORE:
+                globalRemote.incTeamScore(inMessage.getInt1());
+                outMessage = new Message(Message.ACK);
+                break;
+
+            case Message.GWINNERLINEPOINTS:
+                globalRemote.gameWinnerLinePoints(inMessage.getInt1());
+                outMessage = new Message(Message.ACK);
+                break;
+
+            case Message.GTIELINE:
+                globalRemote.gameTieLine();
+                outMessage = new Message(Message.ACK);
+                break;
+
+            case Message.GWINNERLINEKO:
+                globalRemote.gameWinnerLineKO(inMessage.getInt1());
+                outMessage = new Message(Message.ACK);
+                break;
+
+            case Message.MWINNERLINE:
+                globalRemote.matchWinnerLine(inMessage.getInt2(),inMessage.getInt1(),inMessage.getInt3());
+                outMessage = new Message(Message.ACK);
+                break;
+
+            case Message.MTIELINE:
+                globalRemote.matchTieLine();
+                outMessage = new Message(Message.ACK);
+                break;
+
+            case Message.SREFEREESTATE:
+                globalRemote.setRefereeState(inMessage.getRefereeState());
+                break;
+
+
             default:
                 GenericIO.writelnString("Invalid message type");
                 break;

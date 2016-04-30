@@ -24,8 +24,8 @@ public class ContestantGlobalStub {
 
     private int serverPortNumb;
 
-    public ContestantGlobalStub(String serverUrl, int portNumbStorage) {
-        this.serverPortNumb = portNumbStorage;
+    public ContestantGlobalStub(String serverUrl, int portNumb) {
+        this.serverPortNumb = portNumb;
         this.serverHostName = serverUrl;
     }
 

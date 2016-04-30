@@ -25,8 +25,8 @@ public class ContestantBenchStub {
 
     private int serverPortNumb;
 
-    public ContestantBenchStub(String serverUrl, int portNumbStorage) {
-        this.serverPortNumb = portNumbStorage;
+    public ContestantBenchStub(String serverUrl, int portNumb) {
+        this.serverPortNumb = portNumb;
         this.serverHostName = serverUrl;
     }
 

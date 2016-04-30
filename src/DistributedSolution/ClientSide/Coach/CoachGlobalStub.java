@@ -25,8 +25,8 @@ public class CoachGlobalStub {
 
     private int serverPortNumb;
 
-    public CoachGlobalStub(String serverUrl, int portNumbStorage) {
-        this.serverPortNumb = portNumbStorage;
+    public CoachGlobalStub(String serverUrl, int portNumb) {
+        this.serverPortNumb = portNumb;
         this.serverHostName = serverUrl;
     }
 

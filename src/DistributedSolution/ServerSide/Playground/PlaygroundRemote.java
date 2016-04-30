@@ -18,12 +18,12 @@ public class PlaygroundRemote {
     /**
      *  General Information Repository object
      */
-    private final GlobalRemote global;
+    private final PlaygroundGlobalStub global;
 
     /**
      *  General Information Repository object
      */
-    private final BenchRemote bench;
+    private final PlaygroundBenchStub bench;
 
     /**
      * Number of complete teams that are standing in position (from 0 to 2)
@@ -57,7 +57,7 @@ public class PlaygroundRemote {
      * Constructor for the PlaygroundRemote
      * @param global
      */
-    public PlaygroundRemote(GlobalRemote global, BenchRemote bench){
+    public PlaygroundRemote(PlaygroundGlobalStub global, PlaygroundBenchStub bench){
         this.global = global;
         this.bench = bench;
 

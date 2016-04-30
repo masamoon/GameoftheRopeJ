@@ -27,12 +27,13 @@ public class BenchInterface implements ServerInterface {
     @Override
     public Message processAndReply(Message inMessage, ServerCom scon) throws MessageException,SocketException {
         Message outMessage = null;
-        int teamID = inMessage.getTeamID();
-        int contestantID = inMessage.getContestantID();
+        int teamID;
+        int contestantID;
+        boolean b;
 
         switch (inMessage.getType()) {
             case Message.CCONTESTANTS:
-
+                teamID = inMessage.getInt1();
                 benchRemote.callContestants(teamID);
                 outMessage = new Message(Message.ACK);
                 break;
@@ -41,12 +42,29 @@ public class BenchInterface implements ServerInterface {
                 outMessage = new Message(Message.ACK);
                 break;*/
             case Message.SDOWN:
+                teamID = inMessage.getInt1();
+                contestantID = inMessage.getInt2();
                 benchRemote.sitDown(contestantID,teamID);
                 outMessage = new Message(Message.ACK);
                 break;
             case Message.REVNOTES:
+                teamID = inMessage.getInt1();
                 benchRemote.reviewNotes(teamID);
                 outMessage = new Message(Message.ACK);
+                break;
+            case Message.STRIALCALLED:
+                b = inMessage.getB();
+                benchRemote.setTrialCalled(b);
+                outMessage = new Message(Message.ACK);
+                break;
+            case Message.WBENCH:
+                benchRemote.wakeBench();
+                outMessage = new Message(Message.ACK);
+                break;
+            case Message.SBENCHCALLED:
+                b = inMessage.getB();
+                teamID = inMessage.getInt1();
+                benchRemote.setBenchCalled(teamID,b);
                 break;
             default:
                 GenericIO.writelnString("Invalid message type");

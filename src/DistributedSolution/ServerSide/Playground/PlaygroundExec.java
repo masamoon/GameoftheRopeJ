@@ -13,7 +13,7 @@ import java.net.SocketException;
  */
 public class PlaygroundExec {
     public static void main(String[] args) throws SocketException {
-        /*
+       /*
         ServerCom scon, sconi;                             // canais de comunicação
         ClientProxy cliProxy;                               // thread agente prestador do serviço
 

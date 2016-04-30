@@ -1,8 +1,8 @@
 package DistributedSolution.ServerSide.Global;
 
-import Nondistributedsolution.Coach.CoachState;
-import Nondistributedsolution.Contestant.ContestantState;
-import Nondistributedsolution.Referee.RefereeState;
+import DistributedSolution.ClientSide.Coach.CoachState;
+import DistributedSolution.ClientSide.Contestant.ContestantState;
+import DistributedSolution.ClientSide.Referee.RefereeState;
 import genclass.TextFile;
 
 /**

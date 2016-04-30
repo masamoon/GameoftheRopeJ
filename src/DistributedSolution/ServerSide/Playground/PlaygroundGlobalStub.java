@@ -1,49 +1,33 @@
-package DistributedSolution.ClientSide.Coach;
+package DistributedSolution.ServerSide.Playground;
 
 import DistributedSolution.Communication.ClientCom;
+import DistributedSolution.Communication.CommConst;
 import DistributedSolution.Communication.Message.Message;
 import genclass.GenericIO;
 
 import static java.lang.Thread.sleep;
 
 /**
- * Created by Andre on 19/04/2016.
+ * Created by Andre on 30/04/2016.
  */
-public class CoachPlaygroundStub {
+public class PlaygroundGlobalStub {
 
-    /**
-     *  Nome do sistema computacional onde está localizado o servidor
-     *    @serialField serverHostName
-     */
+    public PlaygroundGlobalStub(){}
 
-    private String serverHostName = null;
-
-    /**
-     *  Número do port de escuta do servidor
-     *    @serialField serverPortNumb
-     */
-
-    private int serverPortNumb;
-
-    public CoachPlaygroundStub(String serverUrl, int portNumb) {
-        this.serverPortNumb = portNumb;
-        this.serverHostName = serverUrl;
-    }
-
-    public void waitForCalling(int teamID){
-        ClientCom con = new ClientCom(serverHostName, serverPortNumb);
+    public void changeFlagPos(int decision){
+        ClientCom con = new ClientCom(CommConst.refereeSiteServerName, CommConst.refereeSiteServerPort);
         Message inMessage, outMessage;
-
         while (!con.open()) // aguarda ligação
         {
             try {
+                GenericIO.writelnString("connection not open");
                 sleep((long) (10));
             } catch (InterruptedException e) {
             }
         }
-
-        outMessage = new Message(Message.WFCALLING, teamID);
+        outMessage = new Message(Message.CFLAGPOS,decision);
         con.writeObject(outMessage);
+
         inMessage = (Message) con.readObject();
         if (inMessage.getType () != Message.ACK) {
             GenericIO.writelnString ("Thread: Tipo inválido! teve: " + inMessage.getType () + " esperava " + Message.ACK);
@@ -54,20 +38,56 @@ public class CoachPlaygroundStub {
         con.close ();
     }
 
-    public void waitForContestants(int teamID){
-        ClientCom con = new ClientCom(serverHostName, serverPortNumb);
+    public boolean gameFinished(){
+        ClientCom con = new ClientCom(CommConst.globalServerName, CommConst.globalServerPort);
         Message inMessage, outMessage;
 
         while (!con.open()) // aguarda ligação
         {
             try {
+                GenericIO.writelnString("connection not open");
                 sleep((long) (10));
             } catch (InterruptedException e) {
             }
         }
-
-        outMessage = new Message(Message.WCONTESTANTS, teamID);
+        outMessage = new Message(Message.GFINISHED);
         con.writeObject(outMessage);
+        inMessage = (Message) con.readObject();
+        GenericIO.writelnString("received message from server (coach): "+inMessage.getType());
+        if ((inMessage.getType() != Message.POSITIVE) && (inMessage.getType() != Message.NEGATIVE)) {
+            GenericIO.writelnString ("Thread: Tipo inválido! teve: " + inMessage.getType () + " esperava " + Message.NEGATIVE +
+                    " ou " + Message.POSITIVE);
+            GenericIO.writelnString(inMessage.toString());
+            System.exit(1);
+        }
+        con.close ();
+
+        if (inMessage.getType() == Message.POSITIVE) {
+            GenericIO.writelnString("exiting match in progress POSITIVE");
+            return true;
+        } else {
+            GenericIO.writelnString("exiting match in progress NEGATIVE");
+            return false;
+        }
+
+    }
+
+
+
+    public void setMatchInProgress(boolean matchInProgress){
+        ClientCom con = new ClientCom(CommConst.refereeSiteServerName, CommConst.refereeSiteServerPort);
+        Message inMessage, outMessage;
+        while (!con.open()) // aguarda ligação
+        {
+            try {
+                GenericIO.writelnString("connection not open");
+                sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+        outMessage = new Message(Message.SMINPROGRESS,matchInProgress);
+        con.writeObject(outMessage);
+
         inMessage = (Message) con.readObject();
         if (inMessage.getType () != Message.ACK) {
             GenericIO.writelnString ("Thread: Tipo inválido! teve: " + inMessage.getType () + " esperava " + Message.ACK);
@@ -78,20 +98,20 @@ public class CoachPlaygroundStub {
         con.close ();
     }
 
-    public void informReferee(int teamID){
-        ClientCom con = new ClientCom(serverHostName, serverPortNumb);
+    public void leaveRope(int contestantID, int teamID){
+        ClientCom con = new ClientCom(CommConst.refereeSiteServerName, CommConst.refereeSiteServerPort);
         Message inMessage, outMessage;
-
         while (!con.open()) // aguarda ligação
         {
             try {
+                GenericIO.writelnString("connection not open");
                 sleep((long) (10));
             } catch (InterruptedException e) {
             }
         }
-
-        outMessage = new Message(Message.INFREF, teamID);
+        outMessage = new Message(Message.LROPE,teamID,contestantID);
         con.writeObject(outMessage);
+
         inMessage = (Message) con.readObject();
         if (inMessage.getType () != Message.ACK) {
             GenericIO.writelnString ("Thread: Tipo inválido! teve: " + inMessage.getType () + " esperava " + Message.ACK);
@@ -101,29 +121,4 @@ public class CoachPlaygroundStub {
 
         con.close ();
     }
-
-    public void reviewNotes(int teamID){
-        ClientCom con = new ClientCom(serverHostName, serverPortNumb);
-        Message inMessage, outMessage;
-
-        while (!con.open()) // aguarda ligação
-        {
-            try {
-                sleep((long) (10));
-            } catch (InterruptedException e) {
-            }
-        }
-
-        outMessage = new Message(Message.REVNOTES, teamID);
-        con.writeObject(outMessage);
-        inMessage = (Message) con.readObject();
-        if (inMessage.getType () != Message.ACK) {
-            GenericIO.writelnString ("Thread: Tipo inválido! teve: " + inMessage.getType () + " esperava " + Message.ACK);
-            GenericIO.writelnString(inMessage.toString());
-            System.exit(1);
-        }
-
-        con.close ();
-    }
-
 }

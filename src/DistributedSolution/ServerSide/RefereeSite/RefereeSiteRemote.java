@@ -1,17 +1,16 @@
 package DistributedSolution.ServerSide.RefereeSite;
 
+import DistributedSolution.ClientSide.Referee.RefereeState;
 import DistributedSolution.ServerSide.Bench.BenchRemote;
 import DistributedSolution.ServerSide.Global.GlobalRemote;
-import Nondistributedsolution.Monitors.Bench;
-import Nondistributedsolution.Monitors.Global;
-import Nondistributedsolution.Referee.RefereeState;
+
 
 /**
  * Created by jonnybel on 3/8/16.
  */
 public class RefereeSiteRemote {
 
-    private GlobalRemote global;
+    private RefereeSiteGlobalStub global;
 
     private int trialNum;
 
@@ -19,7 +18,7 @@ public class RefereeSiteRemote {
 
 
 
-    public RefereeSiteRemote(GlobalRemote global) {
+    public RefereeSiteRemote(RefereeSiteGlobalStub global) {
 
         this.global = global;
         this.readyForTrial = false;
