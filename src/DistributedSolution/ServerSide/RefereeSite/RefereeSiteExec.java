@@ -12,14 +12,16 @@ import java.net.SocketTimeoutException;
  */
 public class RefereeSiteExec {
     public static void main(String[] args) throws SocketException {
-        /*
+
         ServerCom scon, sconi;                             // canais de comunicação
         ClientProxy cliProxy;                               // thread agente prestador do serviço
+
+        RefereeSiteGlobalStub refereeSiteGlobalStub = new RefereeSiteGlobalStub();
 
         // estabelecimento do servico
         scon = new ServerCom(CommConst.refereeSiteServerPort);    // criação do canal de escuta e sua associação
         scon.start();                                       // com o endereço público
-        RefereeSiteRemote refereeSiteRemote= new RefereeSiteRemote();
+        RefereeSiteRemote refereeSiteRemote= new RefereeSiteRemote(refereeSiteGlobalStub);
         RefereeSiteInterface refereeSiteInterface = new RefereeSiteInterface(refereeSiteRemote);
         System.out.println("Shop service has started!");
         System.out.println("Server is listening.");
@@ -35,6 +37,6 @@ public class RefereeSiteExec {
                 System.exit(0);
             }
         }
-        */
+
     }
 }

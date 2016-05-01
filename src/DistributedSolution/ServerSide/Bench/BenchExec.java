@@ -13,13 +13,17 @@ import java.net.SocketException;
  */
 public class BenchExec {
     public static void main(String[] args) throws SocketException {
-       /* ServerCom scon, sconi;                             // canais de comunicação
+
+
+       ServerCom scon, sconi;                             // canais de comunicação
         ClientProxy cliProxy;                               // thread agente prestador do serviço
+        BenchGlobalStub benchGlobalStub = new BenchGlobalStub();
+        BenchRefereeSiteStub benchRefereeSiteStub = new BenchRefereeSiteStub();
 
         // estabelecimento do servico
         scon = new ServerCom(CommConst.benchServerPort);    // criação do canal de escuta e sua associação
         scon.start();                                       // com o endereço público
-        BenchRemote benchRemote = new BenchRemote();
+        BenchRemote benchRemote = new BenchRemote(benchGlobalStub,benchRefereeSiteStub);
         BenchInterface benchInterface = new BenchInterface(benchRemote);
         System.out.println("Shop service has started!");
         System.out.println("Server is listening.");
@@ -35,6 +39,8 @@ public class BenchExec {
                 System.exit(0);
             }
         }
-        */
+
+
+
     }
 }

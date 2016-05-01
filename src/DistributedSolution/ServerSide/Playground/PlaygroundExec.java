@@ -13,14 +13,17 @@ import java.net.SocketException;
  */
 public class PlaygroundExec {
     public static void main(String[] args) throws SocketException {
-       /*
+
         ServerCom scon, sconi;                             // canais de comunicação
         ClientProxy cliProxy;                               // thread agente prestador do serviço
+        PlaygroundGlobalStub playgroundGlobalStub = new PlaygroundGlobalStub();
+        PlaygroundRefereeSiteStub playgroundRefereeSiteStub = new PlaygroundRefereeSiteStub();
+        PlaygroundBenchStub playgroundBenchStub = new PlaygroundBenchStub();
 
         // estabelecimento do servico
         scon = new ServerCom(CommConst.playgroundServerPort);    // criação do canal de escuta e sua associação
         scon.start();                                       // com o endereço público
-        PlaygroundRemote playgroundRemote= new PlaygroundRemote();
+        PlaygroundRemote playgroundRemote= new PlaygroundRemote(playgroundGlobalStub,playgroundBenchStub);
         PlaygroundInterface playgroundInterface = new PlaygroundInterface(playgroundRemote);
         System.out.println("Shop service has started!");
         System.out.println("Server is listening.");
@@ -36,6 +39,6 @@ public class PlaygroundExec {
                 System.exit(0);
             }
         }
-        */
+
     }
 }
