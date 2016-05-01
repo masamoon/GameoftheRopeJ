@@ -73,7 +73,7 @@ public class RefereeSiteRemote {
     }
 
     // TODO: this method should be in use, check RefereeSiteInterface
-    x
+    //x
     public synchronized void waitForBench(){
         trialNum++;
         global.incrementTrialNum();

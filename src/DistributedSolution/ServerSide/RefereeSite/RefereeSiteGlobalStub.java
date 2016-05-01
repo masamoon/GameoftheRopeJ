@@ -207,4 +207,94 @@ public class RefereeSiteGlobalStub {
         con.close ();
 
     }
+
+    public int getFlagPos(){
+        ClientCom con = new ClientCom(CommConst.globalServerName, CommConst.globalServerPort);
+        Message inMessage, outMessage;
+        while (!con.open()) // aguarda ligação
+        {
+            try {
+                GenericIO.writelnString("connection not open");
+                sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+        outMessage = new Message(Message.GFLAGPOS);
+        con.writeObject(outMessage);
+        inMessage = (Message) con.readObject();
+        if (inMessage.getType () != Message.GFLAGPOSR) {
+            GenericIO.writelnString ("Thread: Tipo inválido! teve: " + inMessage.getType () + " esperava " + Message.ACK);
+            GenericIO.writelnString(inMessage.toString());
+            System.exit(1);
+        }
+
+        return inMessage.getInt1();
+    }
+
+    public void incrementGamesNum(){
+        ClientCom con = new ClientCom(CommConst.globalServerName, CommConst.globalServerPort);
+        Message inMessage, outMessage;
+        while (!con.open()) // aguarda ligação
+        {
+            try {
+                GenericIO.writelnString("connection not open");
+                sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+        outMessage = new Message(Message.IGAMESNUM);
+        con.writeObject(outMessage);
+        inMessage = (Message) con.readObject();
+        if (inMessage.getType () != Message.ACK) {
+            GenericIO.writelnString ("Thread: Tipo inválido! teve: " + inMessage.getType () + " esperava " + Message.ACK);
+            GenericIO.writelnString(inMessage.toString());
+            System.exit(1);
+        }
+
+
+    }
+
+    public void resetFlagPos(){
+        ClientCom con = new ClientCom(CommConst.globalServerName, CommConst.globalServerPort);
+        Message inMessage, outMessage;
+        while (!con.open()) // aguarda ligação
+        {
+            try {
+                GenericIO.writelnString("connection not open");
+                sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+        outMessage = new Message(Message.RESETFLAGPOS);
+        con.writeObject(outMessage);
+        inMessage = (Message) con.readObject();
+        if (inMessage.getType () != Message.ACK) {
+            GenericIO.writelnString ("Thread: Tipo inválido! teve: " + inMessage.getType () + " esperava " + Message.ACK);
+            GenericIO.writelnString(inMessage.toString());
+            System.exit(1);
+        }
+
+    }
+
+    public void resetTrialNum(){
+        ClientCom con = new ClientCom(CommConst.globalServerName, CommConst.globalServerPort);
+        Message inMessage, outMessage;
+        while (!con.open()) // aguarda ligação
+        {
+            try {
+                GenericIO.writelnString("connection not open");
+                sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+        outMessage = new Message(Message.RESETTRIALNUM);
+        con.writeObject(outMessage);
+        inMessage = (Message) con.readObject();
+        if (inMessage.getType () != Message.ACK) {
+            GenericIO.writelnString ("Thread: Tipo inválido! teve: " + inMessage.getType () + " esperava " + Message.ACK);
+            GenericIO.writelnString(inMessage.toString());
+            System.exit(1);
+        }
+
+    }
 }

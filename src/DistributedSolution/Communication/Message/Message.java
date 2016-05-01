@@ -321,6 +321,16 @@ public class Message  implements Serializable{
 
     public static final int LROPE = 53;
 
+    public static final int GFLAGPOS = 54;
+
+    public static final int GFLAGPOSR = 55;
+
+    public static final int IGAMESNUM = 56;
+
+    public static final int RESETFLAGPOS = 57;
+
+    public static final int RESETTRIALNUM = 58;
+
 
 
 

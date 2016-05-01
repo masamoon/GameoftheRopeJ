@@ -105,6 +105,26 @@ public class GlobalInterface implements ServerInterface {
                 globalRemote.setRefereeState(inMessage.getRefereeState());
                 break;
 
+            case Message.GFLAGPOS:
+                int flagpos = globalRemote.getFlagPos();
+                outMessage = new Message(Message.GFLAGPOSR, flagpos);
+                break;
+
+            case Message.IGAMESNUM:
+                globalRemote.incrementGamesNum();
+                outMessage = new Message(Message.IGAMESNUM);
+                break;
+
+            case Message.RESETFLAGPOS:
+                globalRemote.resetFlagPos();
+                outMessage = new Message(Message.RESETFLAGPOS);
+                break;
+
+            case Message.RESETTRIALNUM:
+                globalRemote.resetTrialNum();
+                outMessage = new Message(Message.RESETTRIALNUM);
+                break;
+
 
             default:
                 GenericIO.writelnString("Invalid message type");

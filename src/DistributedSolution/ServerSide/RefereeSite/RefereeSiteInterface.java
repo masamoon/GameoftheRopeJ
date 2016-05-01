@@ -58,6 +58,10 @@ public class RefereeSiteInterface implements ServerInterface {
                 int trialNum = refereeSiteRemote.getTrialNum();
                 outMessage = new Message(Message.GTRIALNUMR,trialNum);
                 break;
+            case Message.WBENCH:
+                refereeSiteRemote.waitForBench();
+                outMessage = new Message(Message.ACK);
+                break;
 
             default:
                 GenericIO.writelnString("Invalid message type");
