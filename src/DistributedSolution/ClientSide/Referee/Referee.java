@@ -48,7 +48,7 @@ public class Referee extends Thread {
     /** Life Cycle of the Referee Thread
     */
     @Override
-    public void run(){s
+    public void run(){
         refereeRefereeSiteStub.announceMatch();
         GenericIO.writelnString("match announced ");
         do{
