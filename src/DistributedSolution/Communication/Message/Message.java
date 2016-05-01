@@ -268,67 +268,153 @@ public class Message  implements Serializable{
     public static final int GFINISHED = 28;
 
     /**
-     *
+     *set team
      */
     public static final int STEAM = 29;
 
-
+    /**
+     * set coach state
+     */
     public static final int SCOACHSTATE = 30;
 
+    /**
+     * set contestant state
+     */
     public static final int SCONTESTANTSTATE = 31;
 
+    /**
+     * set referee state
+     */
     public static final int SREFEREESTATE = 32;
 
+    /**
+     * set strength
+     */
     public static final int SSTRENGTH = 33;
 
+    /**
+     * set ready for trial
+     */
     public static final int SREADYFTRIAL = 34;
 
+    /**
+     * bench wake referee
+     */
     public static final int BWAKEREF = 35;
 
+    /**
+     * set trial called
+     */
     public static final int STRIALCALLED = 36;
 
+    /**
+     * wait for bench
+     */
     public static final int WBENCH = 37;
 
+    /**
+     * set bench called
+     */
     public static final int SBENCHCALLED = 38;
 
+    /**
+     * get gamesNum
+     */
     public static final int GGAMESNUM = 39;
 
+    /**
+     * response to get gamesNum operation
+     */
     public static final int GGAMESNUMR = 40;
 
+    /**
+     * set match in progress
+     */
     public static final int SMINPROGRESS = 41;
 
+    /**
+     * change flag position
+     */
     public static final int CFLAGPOS = 42;
 
+    /**
+     * increment trial num
+     */
     public static final int ITRIALNUM = 43;
 
+    /**
+     * increment team score
+     */
     public static final int ITEAMSCORE = 44;
 
+    /**
+     * Game Winner Line Points
+     */
     public static final int GWINNERLINEPOINTS = 45;
 
+    /**
+     * Game Tie Line
+     */
     public static final int GTIELINE = 46;
 
+    /**
+     * Match Winner Line Points
+     */
     public static final int MWINNERLINEPOINTS = 47;
 
+    /**
+     * get trial num
+     */
     public static final int GTRIALNUM = 48;
 
+    /**
+     * response to get trial number operation
+     */
     public static final int GTRIALNUMR = 49;
 
+    /**
+     * match tie line
+     */
     public static final int MTIELINE = 50;
 
+    /**
+     * game winner line Knock-Out
+     */
     public static final int GWINNERLINEKO = 51;
 
+    /**
+     * match winner line
+     */
     public static final int MWINNERLINE = 52;
 
+    /**
+     * leave rope
+     */
     public static final int LROPE = 53;
 
+    /**
+     * get flag pos
+     */
     public static final int GFLAGPOS = 54;
 
+    /**
+     * response to get flag pos operation
+     */
     public static final int GFLAGPOSR = 55;
 
+    /**
+     * increment games num
+     */
     public static final int IGAMESNUM = 56;
 
+    /**
+     * reset flag pos
+     */
     public static final int RESETFLAGPOS = 57;
 
+    /**
+     * reset trial num
+     */
     public static final int RESETTRIALNUM = 58;
 
 
@@ -339,24 +425,27 @@ public class Message  implements Serializable{
 
 
     /**
-     *
+     * contestant's state
+     *@serialField contestantState
      */
     private ContestantState contestantState;
 
     /**
-     *
+     *referee's state
+     * @serialField refereeState
      */
     private RefereeState refereeState;
 
     /**
-     *
+     *coach's state
+     * @serialField coachState
      */
     private CoachState coachState;
 
 
     /**
      * Message form 1
-     * @param type
+     * @param type Message's type specifying which operation it's invoking
      */
     public Message(int type){
         this.type = type;
@@ -366,8 +455,8 @@ public class Message  implements Serializable{
 
     /**
      *Message form 2
-     * @param type
-     * @param teamID
+     * @param type Message's type specifying which operation it's invoking
+     * @param int1 first integer parameter
      */
     public Message(int type, int int1){
         this.type = type;
@@ -376,9 +465,9 @@ public class Message  implements Serializable{
 
     /**
      *Message form 3
-     * @param type
-     * @param teamID
-     * @param contestantID
+     * @param type Message's type specifying which operation it's invoking
+     * @param int1 first integer parameter
+     * @param int2 second integer parameter
      *
      */
     public Message(int type,int int1, int int2){
@@ -390,8 +479,10 @@ public class Message  implements Serializable{
 
     /**
      *Message form 4
-     * @param type
-     * @param contestantState
+     * @param type Message's type specifying which operation it's invoking
+     * @param int1 first integer parameter
+     * @param int2 second integer parameter
+     * @param contestantState contestant's state
      */
     public Message(int type, int int1, int int2,ContestantState contestantState){
         this.type = type;
@@ -402,8 +493,9 @@ public class Message  implements Serializable{
 
     /**
      *Message form 5
-     * @param type
-     * @param coachState
+     * @param type Message's type specifying which operation it's invoking
+     * @param int1 first integer parameter
+     * @param coachState coache's state
      */
     public Message(int type, int int1, CoachState coachState){
         this.type = type;
@@ -411,13 +503,25 @@ public class Message  implements Serializable{
         this.int1 = int1;
     }
 
-
+    /**
+     *Message form 6
+     * @param type Message's type specifying which operation it's invoking
+     * @param refereeState
+     */
     public Message(int type, RefereeState refereeState){
         this.type = type;
         this.refereeState = refereeState;
 
     }
 
+    /**
+     *Message form 7
+     * @param type Message's type specifying which operation it's invoking
+     * @param int1 first integer parameter
+     * @param int2 second integer parameter
+     * @param int3 third integer parameter
+     * @param int4 fourth integer parameter
+     */
     public Message(int type, int int1, int int2, int int3, int int4){
         this.type = type;
         this.int1 = int1;
@@ -426,11 +530,23 @@ public class Message  implements Serializable{
         this.int4 = int4;
     }
 
+    /**
+     *Message form 8
+     * @param type Message's type specifying which operation it's invoking
+     * @param b first boolean parameter
+     */
     public Message(int type, boolean b){
         this.type = type;
         this.b = b;
     }
 
+    /**
+     *
+     * @param type Message's type specifying which operation it's invoking
+     * @param int1 first integer parameter
+     * @param int2 second integer parameter
+     * @param int3 third integer parameter
+     */
     public Message(int type, int int1, int int2, int int3) {
         this.type = type;
         this.int1 = int1;
@@ -447,143 +563,248 @@ public class Message  implements Serializable{
     }
 
 
-
-
+    /**
+     *
+     * @return portNumBench Bench's server port number
+     */
     public int getPortNumBench() {
         return portNumBench;
     }
 
+    /**
+     *
+     * @param portNumBench Bench's server port number
+     */
     public void setPortNumBench(int portNumBench) {
         this.portNumBench = portNumBench;
     }
 
+    /**
+     *
+     * @return Bench's server server URL
+     */
     public String getServerUrlBench() {
         return serverUrlBench;
     }
 
+    /**
+     *
+     * @param serverUrlBench Bench's server server URL
+     */
     public void setServerUrlBench(String serverUrlBench) {
         this.serverUrlBench = serverUrlBench;
     }
 
+    /**
+     *
+     * @return Playground's server port number
+     */
     public int getPortNumPlayground() {
         return portNumPlayground;
     }
 
+    /**
+     *
+     * @param portNumPlayground Playground's server port number
+     */
     public void setPortNumPlayground(int portNumPlayground) {
         this.portNumPlayground = portNumPlayground;
     }
 
+    /**
+     *
+     * @return Playground's server server URL
+     */
     public String getServerUrlPlayground() {
         return serverUrlPlayground;
     }
 
+    /**
+     *
+     * @param serverUrlPlayground Playground's server server URL
+     */
     public void setServerUrlPlayground(String serverUrlPlayground) {
         this.serverUrlPlayground = serverUrlPlayground;
     }
 
-    public int getTeam1() {
-        return team1;
-    }
 
-    public int getTeam2() {
-        return team2;
-    }
 
-    public int getTeam3() {
-        return team3;
-    }
-
+    /**
+     *
+     * @return RefereeSite's server port number
+     */
     public int getPortNumRSite() {
         return portNumRSite;
     }
 
+    /**
+     *
+     * @param portNumRSite RefereeSite's server port number
+     */
     public void setPortNumRSite(int portNumRSite) {
         this.portNumRSite = portNumRSite;
     }
 
+    /**
+     *
+     * @return RefereeSite's server URL
+     */
     public String getServerUrlRSite() {
         return serverUrlRSite;
     }
 
+    /**
+     *
+     * @param serverUrlRSite RefereeSite's server URL
+     */
     public void setServerUrlRSite(String serverUrlRSite) {
         this.serverUrlRSite = serverUrlRSite;
     }
 
+    /**
+     *
+     * @return global respository's server port number
+     */
     public int getPortNumGlobal() {
         return portNumGlobal;
     }
 
+    /**
+     *
+     * @param portNumGlobal global respository's server port number
+     */
     public void setPortNumGlobal(int portNumGlobal) {
         this.portNumGlobal = portNumGlobal;
     }
 
+    /**
+     *
+     * @return global respository's server URL
+     */
     public String getServerUrlGlobal() {
         return serverUrlGlobal;
     }
 
+    /**
+     *
+     * @param serverUrlGlobal global respository's server URL
+     */
     public void setServerUrlGlobal(String serverUrlGlobal) {
         this.serverUrlGlobal = serverUrlGlobal;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getType(){
         return type;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getFName ()
     {
         return (fname);
     }
 
 
-
-
+    /**
+     *
+     * @return
+     */
     public ContestantState getContestantState(){
         return contestantState;
     }
+
+    /**
+     *
+     * @return
+     */
     public RefereeState getRefereeState() {
         return refereeState;
     }
 
+    /**
+     *
+     * @return
+     */
     public CoachState getCoachState() {
         return coachState;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getGamesNum() {
         return gamesNum;
     }
+
+    /**
+     *
+     * @return
+     */
     public int getTrialNum() {
         return trialNum;
     }
 
-    public int getScore() {
-        return score;
-    }
 
+
+    /**
+     *
+     * @return boolean parameter
+     */
     public boolean getB() {
         return b;
     }
 
+    /**
+     *
+     * @return first parameter integer
+     */
     public int getInt1() {
         return int1;
     }
 
+    /**
+     *
+     * @return second parameter integer
+     */
     public int getInt2() {
         return int2;
     }
 
+    /**
+     *
+     * @return third parameter integer
+     */
     public int getInt3() {
         return int3;
     }
 
+    /**
+     *
+     * @return fourth parameter integer
+     */
     public int getInt4() {
         return int4;
     }
 
-
+    /**
+     *
+     * @return contestant's strength
+     */
     public int getStrength() {
         return strength;
     }
 
+    /**
+     *
+     * @return String representation of Message
+     */
     @Override
     public String toString ()
     {
