@@ -8,9 +8,6 @@ import genclass.GenericIO;
 
 import java.net.SocketException;
 
-/**
- * Created by Andre on 11/04/2016.
- */
 public class BenchInterface implements ServerInterface {
 
     private BenchRemote benchRemote;

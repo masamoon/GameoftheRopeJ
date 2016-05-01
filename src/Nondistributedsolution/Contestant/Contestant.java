@@ -81,6 +81,7 @@ public class Contestant extends Thread {
 
             benchMon.sitDown(contestantID, teamID);
 
+
             if(global.matchInProgress()){
 
                 playgroundMon.followCoachAdvice(contestantID, teamID);

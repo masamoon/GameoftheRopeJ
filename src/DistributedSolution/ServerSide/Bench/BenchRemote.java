@@ -101,6 +101,8 @@ public class BenchRemote {
                 }
             }
         }
+
+        global.setCoachState(teamID, CoachState.WAIT_FOR_REFEREE_COMMAND);
         while(!trialCalled)
         {
             try {
@@ -133,9 +135,6 @@ public class BenchRemote {
                     // contestant updates his strength internally
                     strUpdate[teamID][contestantID] = false;
 
-                    //TODO: send message back to Contestant Thread with it's new strength
-                    //((Contestant)Thread.currentThread()).setStrength(contestantStrengths[teamID][contestantID]);
-                    x
                 }
                 wait ();
             }
@@ -169,11 +168,6 @@ public class BenchRemote {
      *
      */
     public synchronized void callContestants (int teamID){
-
-        // TODO: send message to Coach Thread with it's new state
-        // ((Coach)Thread.currentThread()).setCoachState(CoachState.WAIT_FOR_REFEREE_COMMAND);
-        x
-        global.setCoachState(teamID, CoachState.WAIT_FOR_REFEREE_COMMAND);
 
         Random r = new Random();
         int strategy = r.nextInt(2);
@@ -259,7 +253,7 @@ public class BenchRemote {
         benchCalled [teamID] = called;
     }
 
-    public void setTrialCalled(boolean trialCalled) {
+    public synchronized void setTrialCalled(boolean trialCalled) {
         this.trialCalled = trialCalled;
     }
 
@@ -267,21 +261,10 @@ public class BenchRemote {
         selectedTeam [teamID] = new int [] {first,second,third};
     }
 
-    public void eraseTeamSelections (){
-        selectedTeam [0] = new int [] {-1,-1,-1};
-        selectedTeam [1] = new int [] {-1,-1,-1};
-    }
-
-    /**
-     * Gets the selected team for a trial
-     * @param teamID team's id
-     * @return selected team for trial
-     */
-    public int[] getSelection(int teamID) {
-        return selectedTeam[teamID];
-    }
-
     public synchronized void setStrength (int contestantID, int teamID, int strength){
         contestantStrengths[teamID][contestantID] = strength;
+    }
+    public synchronized int getStrength (int contestantID, int teamID){
+        return contestantStrengths[teamID][contestantID];
     }
 }

@@ -7,9 +7,6 @@ import genclass.GenericIO;
 
 import static java.lang.Thread.sleep;
 
-/**
- * Created by Andre on 30/04/2016.
- */
 public class PlaygroundBenchStub {
 
     public PlaygroundBenchStub(){}

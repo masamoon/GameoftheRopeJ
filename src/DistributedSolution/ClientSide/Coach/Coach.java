@@ -30,6 +30,7 @@ public class Coach extends Thread{
      */
     private CoachGlobalStub coachGlobalStub;
 
+
     private CoachState coachState;
 
     /**
@@ -55,15 +56,18 @@ public class Coach extends Thread{
         GenericIO.writelnString("Coach "+teamID+" running!");
         while(coachGlobalStub.matchInProgress()){
 
+            setCoachState(CoachState.WAIT_FOR_REFEREE_COMMAND);
             GenericIO.writelnString("Coach "+teamID+" reviewNotes");
-            coachPlaygroundStub.reviewNotes(teamID);
+            coachBenchStub.reviewNotes(teamID);
 
             GenericIO.writelnString("Coach "+teamID+" callContestants");
             coachBenchStub.callContestants(teamID);
 
+            setCoachState(CoachState.ASSEMBLE_TEAM);
             GenericIO.writelnString("Coach "+teamID+" waitforcontestants");
             coachPlaygroundStub.waitForContestants(teamID);
 
+            setCoachState(CoachState.WATCH_TRIAL);
             GenericIO.writelnString("Coach "+teamID+" informreferee");
             coachPlaygroundStub.informReferee(teamID);
 

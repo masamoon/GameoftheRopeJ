@@ -61,6 +61,8 @@ public class RefereeSiteRemote {
      */
     public synchronized void announceMatch(){
 
+        // TODO: send message back to Ref thread to update its state
+        //((Referee)Thread.currentThread()).setRefereeState(RefereeState.START_OF_THE_MATCH);
         global.setRefereeState(RefereeState.START_OF_THE_MATCH);
     }
 
@@ -72,8 +74,6 @@ public class RefereeSiteRemote {
         notifyAll();
     }
 
-    // TODO: this method should be in use, check RefereeSiteInterface
-    //x
     public synchronized void waitForBench(){
         trialNum++;
         global.incrementTrialNum();
@@ -91,9 +91,6 @@ public class RefereeSiteRemote {
      */
     public synchronized void declareGameWinner (){
 
-        // TODO: send message back to Ref thread to update its state
-        //((Referee)Thread.currentThread()).setRefereeState(RefereeState.END_OF_A_GAME);
-        x
         global.setRefereeState(RefereeState.END_OF_A_GAME);
 
         //TODO: method in stub for this
@@ -134,9 +131,6 @@ public class RefereeSiteRemote {
      */
     public synchronized void declareMatchWinner (){
 
-        // TODO: send message back to Ref thread to update its state
-        // ((Referee)Thread.currentThread()).setRefereeState(RefereeState.END_OF_THE_MATCH);
-        x
         global.setRefereeState(RefereeState.END_OF_THE_MATCH);
 
         if(teamScore[0]> teamScore[1]){

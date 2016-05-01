@@ -56,7 +56,7 @@ public class Global {
         team1AtRope = new ArrayList<>();
         team2AtRope = new ArrayList<>();
 
-        refereeState = RefereeState.START_OF_THE_MATCH;
+        //refereeState = RefereeState.START_OF_THE_MATCH;
 
         contestantStates = new ContestantState [NUMBER_OF_TEAMS] [NUMBER_OF_PLAYERS_PER_TEAM];
 

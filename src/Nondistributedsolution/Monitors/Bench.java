@@ -106,6 +106,8 @@ public class Bench {
             }
         }
 
+        ((Coach)Thread.currentThread()).setCoachState(CoachState.WAIT_FOR_REFEREE_COMMAND);
+        global.setCoachState(teamID, CoachState.WAIT_FOR_REFEREE_COMMAND);
         while(!trialCalled)
         {
             try {
@@ -175,9 +177,6 @@ public class Bench {
      *
      */
     public synchronized void callContestants (int teamID){
-
-        ((Coach)Thread.currentThread()).setCoachState(CoachState.WAIT_FOR_REFEREE_COMMAND);
-        global.setCoachState(teamID, CoachState.WAIT_FOR_REFEREE_COMMAND);
 
         Random r = new Random();
         int strategy = r.nextInt(2);

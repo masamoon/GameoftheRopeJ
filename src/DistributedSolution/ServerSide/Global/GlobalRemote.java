@@ -5,17 +5,18 @@ import DistributedSolution.ServerSide.States.ContestantState;
 import DistributedSolution.ServerSide.States.RefereeState;
 import genclass.TextFile;
 
+import java.util.ArrayList;
+
 /**
  * Created by jonnybel on 3/8/16.
  */
 public class GlobalRemote {
 
+
     private final int NUMBER_OF_TEAMS = 2;
     private final int NUMBER_OF_PLAYERS_PER_TEAM = 5;
 
     private int gamesNum;
-
-    private int [] teamScore;
 
     private int [] [] contestantStrengths;
 
@@ -25,8 +26,9 @@ public class GlobalRemote {
 
     private CoachState coachStates [];
 
-    private int [] selectedTeam1;
-    private int [] selectedTeam2;
+
+    private ArrayList<Integer> team1AtRope;
+    private ArrayList <Integer> team2AtRope;
 
     private int flagPos;
 
@@ -51,7 +53,7 @@ public class GlobalRemote {
 
         this.path = path;
 
-        refereeState = RefereeState.START_OF_THE_MATCH;
+        //refereeState = RefereeState.START_OF_THE_MATCH;
 
         contestantStates = new ContestantState [NUMBER_OF_TEAMS] [NUMBER_OF_PLAYERS_PER_TEAM];
 
@@ -69,14 +71,6 @@ public class GlobalRemote {
 
         this.gamesNum = 0;
 
-
-        teamScore = new int [NUMBER_OF_TEAMS];
-        for(int i : teamScore) {
-            teamScore [i] = 0;
-        }
-
-        this.selectedTeam1 = new int [] {-1,-1,-1};
-        this.selectedTeam2 = new int [] {-1,-1,-1};
 
         contestantStrengths = new int [NUMBER_OF_TEAMS] [NUMBER_OF_PLAYERS_PER_TEAM];
 
@@ -119,33 +113,35 @@ public class GlobalRemote {
 
         int trial_no = getTrialNum();
 
-
-        int[] sel1 = getSelection(0);
-        int[] sel2 = getSelection(1);
-
         StringBuilder selection1 = new StringBuilder();
         StringBuilder selection2 = new StringBuilder();
 
-        for(int sel: sel1){
-            if(sel==-1){
+        if(!team1AtRope.isEmpty()){
+            for(int sel = 0; sel< team1AtRope.size(); sel++)
+            {
+                int id = team1AtRope.get(sel) +1;
+                selection1.append( id + " ");
+            }
+        }
+        int length = team1AtRope.size();
+        if (length <3){
+            for(int i=0; i<(3-length); i++){
                 selection1.append("- ");
             }
-            else{
-                sel++;
-                selection1.append(sel + " ");
-            }
-
         }
 
-        for(int sel: sel2){
-            if(sel==-1){
+        if(!team2AtRope.isEmpty()){
+            for(int sel = 0; sel< team2AtRope.size(); sel++)
+            {
+                int id = team2AtRope.get(sel) +1;
+                selection2.append( id + " ");
+            }
+        }
+        length = team2AtRope.size();
+        if (length <3){
+            for(int i=0; i<(3-length); i++){
                 selection2.append("- ");
             }
-            else{
-                sel++;
-                selection2.append(sel+ " ");
-            }
-
         }
 
         String line = ref_state +" " + coach_state_1+" " +  team1.toString() + coach_state_2 + " "+ team2.toString()
@@ -175,22 +171,18 @@ public class GlobalRemote {
 
     /**
      * writes line on log file indicating the game's winner
-     * @param ngame game's number
      * @param nteam winner team
-     * @param ntrials number of trials needed to decide the winner
      */
-    public void gameWinnerLinePoints(int ngame, int nteam, int ntrials){
-        f.writelnString("Game "+ngame+" was won by team "+nteam+" by points in "+ntrials+" trials.\n");
+    public synchronized void gameWinnerLinePoints(int nteam){
+        f.writelnString("Game "+gamesNum+" was won by team "+nteam+" by points in "+trialNum+" trials.\n");
     }
 
     /**
      *writes line on log file indicating a knock-out win by a team
-     * @param ngame game number
      * @param nteam winner team
-     * @param ntrials number of trials needed to decide the winner
      */
-    public void gameWinnerLineKO(int ngame, int nteam, int ntrials){
-        f.writelnString("Game "+ngame+" was won by team "+nteam+" by knock-out in "+ntrials+" trials.\n");
+    public synchronized void gameWinnerLineKO(int nteam){
+        f.writelnString("Game "+gamesNum+" was won by team "+nteam+" by knock-out in "+trialNum+" trials.\n");
     }
 
     /**
@@ -208,39 +200,16 @@ public class GlobalRemote {
         f.close();
     }
 
-    /**
-     * Sets the selected team for a trial on a team
-     * @param teamID team's id
-     * @param first first contestant
-     * @param second second contestant
-     * @param third third contestant
-     */
-    public void selectTeam(int teamID, int first, int second, int third) {
-        if(teamID==0)
-            this.selectedTeam1 = new int [] {first,second,third};
-        else
-            this.selectedTeam2 = new int [] {first,second,third};
+    public synchronized void leaveRope (int contestantID, int teamID)
+    {
+        if(teamID==0) team1AtRope.remove(team1AtRope.indexOf(contestantID));
+        if(teamID==1) team2AtRope.remove(team2AtRope.indexOf(contestantID));
+
+        if(!gameFinished()) insertLine();
     }
 
-    /**
-     * Gets the selected team for a trial
-     * @param teamID team's id
-     * @return selected team for trial
-     */
-    public int[] getSelection(int teamID) {
-        if(teamID==0)
-            return selectedTeam1;
-        else
-            return selectedTeam2;
-    }
 
-    /**
-     * Erases the selected teams
-     */
-    public void eraseTeamSelections(){
-        this.selectedTeam1 = new int [] {-1,-1,-1};
-        this.selectedTeam2 = new int [] {-1,-1,-1};
-    }
+
 
     /**
      * Set the state of the current match.
@@ -270,13 +239,16 @@ public class GlobalRemote {
     }
 
     /** Set a new state for a given contestant
-    * @param contestantID contestant's ID
-    * @param state contestant's state to be updated to
+     * @param contestantID contestant's ID
+     * @param state contestant's state to be updated to
      *@param teamID team's ID of this contestant
-    * */
+     * */
     public synchronized void setContestantState (int contestantID, int teamID, ContestantState state){
-
         this.contestantStates[teamID][contestantID] = state;
+        if(state == ContestantState.STAND_IN_POSITION){
+            if(teamID==0) team1AtRope.add(contestantID);
+            if(teamID==1) team2AtRope.add(contestantID);
+        }
         insertLine();
     }
 
@@ -326,23 +298,6 @@ public class GlobalRemote {
     public synchronized CoachState getCoachState (int teamID){
         return this.coachStates[teamID];
 
-    }
-
-    /**
-     * Get the current game score of a given team
-     * @param teamID
-     * @return integer value of the score
-     */
-    public int getTeamScore(int teamID){
-        return teamScore[teamID];
-    }
-
-    /**
-     * Increment the score of a given team
-     * @param teamID
-     */
-    public void incTeamScore(int teamID){
-        teamScore[teamID] +=1;
     }
 
     /**
@@ -406,26 +361,10 @@ public class GlobalRemote {
     }
 
     /**
-     * Gets the number of games played
-     * @return number of games
-     */
-    public int getGamesNum() {
-        return gamesNum;
-    }
-
-    /**
      * increments number of games by 1
      */
     public void incrementGamesNum() {
         this.gamesNum+=1;
-    }
-
-    /**
-     * gets the strength levels of the contestants of a given team
-     * @return array with the strength values
-     */
-    public int[] getTeamStrength(int teamID){
-        return contestantStrengths[teamID];
     }
 
 }

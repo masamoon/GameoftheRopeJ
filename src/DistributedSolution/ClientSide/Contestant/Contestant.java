@@ -74,17 +74,22 @@ public class Contestant extends Thread {
 
         while(contestantGlobalStub.matchInProgress()){
 
+            setContestantState(ContestantState.SIT_AT_THE_BENCH);
             contestantBenchStub.sitDown(contestantID, teamID);
+            // TODO: send message to global or bench and get updated strength
+            setStrength(contestantBenchStub.getStrength(contestantID, teamID));
 
             if(contestantGlobalStub.matchInProgress()){
+                setContestantState(ContestantState.STAND_IN_POSITION);
                 contestantPlaygroundStub.followCoachAdvice(contestantID, teamID);
 
+                setContestantState(ContestantState.DO_YOUR_BEST);
                 contestantPlaygroundStub.getReady(contestantID, teamID, strength);
                 pullRope();
                 contestantPlaygroundStub.done(contestantID, teamID);
-
             }
         }
+        // TODO: check if playground and/or bench are ready to be killed and kill them if so
     }
 
     /**
@@ -98,7 +103,6 @@ public class Contestant extends Thread {
         catch (InterruptedException e) {}
     }
 
-
     public int getStrength() {
         return strength;
     }
@@ -110,6 +114,5 @@ public class Contestant extends Thread {
     public void setContestantState(ContestantState contestantState) {
         this.contestantState = contestantState;
     }
-
 
 }

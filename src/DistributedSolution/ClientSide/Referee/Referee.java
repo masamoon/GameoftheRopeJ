@@ -42,31 +42,47 @@ public class Referee extends Thread {
     public Referee(RefereePlaygroundStub refereePlaygroundStub, RefereeRefereeSiteStub refereeRefereeSiteStub, RefereeGlobalStub refereeGlobalStub){
         this.refereePlaygroundStub = refereePlaygroundStub;
         this.refereeGlobalStub = refereeGlobalStub;
-        this. refereeRefereeSiteStub = refereeRefereeSiteStub;
+        this.refereeRefereeSiteStub = refereeRefereeSiteStub;
     }
 
     /** Life Cycle of the Referee Thread
     */
     @Override
     public void run(){
+        setRefereeState(RefereeState.START_OF_THE_MATCH);
         refereeRefereeSiteStub.announceMatch();
         GenericIO.writelnString("match announced ");
         do{
+            setRefereeState(RefereeState.START_OF_A_GAME);
             refereeRefereeSiteStub.announceGame();
             while(!refereeGlobalStub.gameFinished()){
 
                 // TODO: method in stub for this
                 refereeRefereeSiteStub.waitForBench();
 
+                setRefereeState(RefereeState.TEAMS_READY);
                 refereePlaygroundStub.callTrial();
+                setRefereeState(RefereeState.WAIT_FOR_TRIAL_CONCLUSION);
                 refereePlaygroundStub.startTrial();
+
                 refereePlaygroundStub.assertTrialDecision();
             }
+            setRefereeState(RefereeState.END_OF_A_GAME);
             refereeRefereeSiteStub.declareGameWinner ();
         }while(refereeGlobalStub.matchInProgress());
+        setRefereeState(RefereeState.END_OF_THE_MATCH);
         refereeRefereeSiteStub.declareMatchWinner();
-        //logger.closeFile();
+
+        // TODO: kill referee site
+        refereeGlobalStub.closeFile();
+        // TODO: kill global repository
     }
 
+    public RefereeState getRefereeState() {
+        return refereeState;
+    }
 
+    public void setRefereeState(RefereeState refereeState) {
+        this.refereeState = refereeState;
+    }
 }

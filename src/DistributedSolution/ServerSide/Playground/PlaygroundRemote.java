@@ -77,9 +77,6 @@ public class PlaygroundRemote {
      */
     public synchronized void callTrial(){
 
-        // TODO: send message to Referee Thread with it's new state
-        // ((Referee)Thread.currentThread()).setRefereeState(RefereeState.TEAMS_READY);
-        x
         global.setRefereeState(RefereeState.TEAMS_READY);
 
         teamsReady=0;
@@ -110,9 +107,6 @@ public class PlaygroundRemote {
      */
     public synchronized void waitForContestants(int teamID){
 
-        // TODO: send message to Coach Thread with it's new state
-        // ((Coach)Thread.currentThread()).setCoachState(CoachState.ASSEMBLE_TEAM);
-        x
         global.setCoachState(teamID, CoachState.ASSEMBLE_TEAM);
 
         while(standingInPosition[teamID]<3){
@@ -132,9 +126,6 @@ public class PlaygroundRemote {
      */
     public synchronized void followCoachAdvice (int contestantID, int teamID) {
 
-        // TODO: send message to Contestant Thread with it's new state
-        //((Contestant)Thread.currentThread()).setContestantState(ContestantState.STAND_IN_POSITION);
-        x
         global.setContestantState(contestantID, teamID, ContestantState.STAND_IN_POSITION);
 
         standingInPosition[teamID] +=1;
@@ -160,9 +151,6 @@ public class PlaygroundRemote {
 
     public synchronized void informReferee(int teamID){
 
-        // TODO: send message to Coach Thread with it's new state
-        // ((Coach)Thread.currentThread()).setCoachState(CoachState.WATCH_TRIAL);
-        x
         global.setCoachState(teamID, CoachState.WATCH_TRIAL);
 
         bench.setBenchCalled(teamID, false);
@@ -186,9 +174,6 @@ public class PlaygroundRemote {
      */
     public synchronized  void startTrial(){
 
-        // TODO: send message to Referee Thread with it's new state
-        // ((Referee)Thread.currentThread()).setRefereeState(RefereeState.WAIT_FOR_TRIAL_CONCLUSION);
-        x
         global.setRefereeState(RefereeState.WAIT_FOR_TRIAL_CONCLUSION);
 
         bench.setTrialCalled(false);
@@ -203,10 +188,7 @@ public class PlaygroundRemote {
      */
     public synchronized  void getReady(int contestantID, int teamID, int strength) {
 
-        // TODO: send message to Contestant Thread with it's new state
-        //((Contestant)Thread.currentThread()).setContestantState(ContestantState.STAND_IN_POSITION);
-        x
-        global.setContestantState(contestantID, teamID, ContestantState.STAND_IN_POSITION);
+        global.setContestantState(contestantID, teamID, ContestantState.DO_YOUR_BEST);
 
         teamPower[teamID] += strength;
     }
