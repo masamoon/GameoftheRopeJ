@@ -1,12 +1,6 @@
 package DistributedSolution.ServerSide.Bench;
 
-
-import DistributedSolution.ServerSide.Global.GlobalRemote;
-import DistributedSolution.ServerSide.RefereeSite.RefereeSiteRemote;
-import Nondistributedsolution.Contestant.Contestant;
-import Nondistributedsolution.Monitors.Global;
-import Nondistributedsolution.Monitors.Playground;
-import Nondistributedsolution.Monitors.RefereeSite;
+import DistributedSolution.ServerSide.States.CoachState;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -84,23 +78,26 @@ public class BenchRemote {
 
     public synchronized void reviewNotes (int teamID){
 
-        for(int i = 0; i< TEAM_SIZE; i++){
-            final int finalI = i;
-            boolean contains = IntStream.of(selectedTeam[teamID]).anyMatch(x -> x == finalI);
+        if(refereeSite.getTrialNum()>1){
 
-            strUpdate[teamID][i]=true;
-            if(contains){
-                int str = contestantStrengths[teamID][i];
-                if(str > 0) {
-                    contestantStrengths[teamID][i] = (str - 1);
-                    global.setStrength(i, teamID,--str);
+            for(int i = 0; i< TEAM_SIZE; i++){
+                final int finalI = i;
+                boolean contains = IntStream.of(selectedTeam[teamID]).anyMatch(x -> x == finalI);
+
+                strUpdate[teamID][i]=true;
+                if(contains){
+                    int str = contestantStrengths[teamID][i];
+                    if(str > 0) {
+                        contestantStrengths[teamID][i] = (str - 1);
+                        global.setStrength(i, teamID,--str);
+                    }
                 }
-            }
-            else{
-                int str = contestantStrengths[teamID][i];
-                if(str < 10) {
-                    contestantStrengths[teamID][i] = (str + 1);
-                    global.setStrength(i, teamID, ++str);
+                else{
+                    int str = contestantStrengths[teamID][i];
+                    if(str < 10) {
+                        contestantStrengths[teamID][i] = (str + 1);
+                        global.setStrength(i, teamID, ++str);
+                    }
                 }
             }
         }
@@ -135,8 +132,10 @@ public class BenchRemote {
                 if(strUpdate[teamID][contestantID]){
                     // contestant updates his strength internally
                     strUpdate[teamID][contestantID] = false;
-                    ((Contestant)Thread.currentThread()).setStrength(contestantStrengths[teamID][contestantID]);
-                    System.out.println("STRENGTH UPDATED t" + teamID + "c" + contestantID);
+
+                    //TODO: send message back to Contestant Thread with it's new strength
+                    //((Contestant)Thread.currentThread()).setStrength(contestantStrengths[teamID][contestantID]);
+                    x
                 }
                 wait ();
             }
@@ -171,7 +170,10 @@ public class BenchRemote {
      */
     public synchronized void callContestants (int teamID){
 
-        //global.setCoachState(teamID, CoachState.WAIT_FOR_REFEREE_COMMAND);
+        // TODO: send message to Coach Thread with it's new state
+        // ((Coach)Thread.currentThread()).setCoachState(CoachState.WAIT_FOR_REFEREE_COMMAND);
+        x
+        global.setCoachState(teamID, CoachState.WAIT_FOR_REFEREE_COMMAND);
 
         Random r = new Random();
         int strategy = r.nextInt(2);
@@ -183,7 +185,6 @@ public class BenchRemote {
         else
             team = selectTopteam(teamID);
 
-        global.selectTeam(teamID, team[0],team[1],team[2]);
         selectTeam(teamID, team[0],team[1],team[2]);
 
         System.out.println("Coach " + teamID + " picked: " + team[0]+team[1]+team[2]);
@@ -195,7 +196,7 @@ public class BenchRemote {
 
     /**
      *  This method is used by the Referee in two occasions: when calling a trial to wake contestants and coach OR at the end of the match to free the contestants that stayed on the bench for the last trial.
-     *  @see Playground#assertTrialDecision()
+     *
      */
     public synchronized void wakeBench(){
         notifyAll();
@@ -232,7 +233,7 @@ public class BenchRemote {
     private int[] selectTopteam(int teamID){
         int[] str;
 
-        str= global.getTeamStrength(teamID);
+        str= contestantStrengths[teamID];
 
         HashMap<Integer,Integer> map = new HashMap<>();
 
@@ -269,6 +270,15 @@ public class BenchRemote {
     public void eraseTeamSelections (){
         selectedTeam [0] = new int [] {-1,-1,-1};
         selectedTeam [1] = new int [] {-1,-1,-1};
+    }
+
+    /**
+     * Gets the selected team for a trial
+     * @param teamID team's id
+     * @return selected team for trial
+     */
+    public int[] getSelection(int teamID) {
+        return selectedTeam[teamID];
     }
 
     public synchronized void setStrength (int contestantID, int teamID, int strength){

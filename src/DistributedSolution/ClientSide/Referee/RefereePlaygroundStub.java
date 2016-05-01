@@ -50,7 +50,6 @@ public class RefereePlaygroundStub {
             GenericIO.writelnString(inMessage.toString());
             System.exit(1);
         }
-
         con.close ();
     }
 

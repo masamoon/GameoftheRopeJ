@@ -179,14 +179,14 @@ public class Global {
      * @param score2 score of team2
      * @param winner winner team
      */
-    public void matchWinnerLine(int score1, int score2, int winner) {
+    public synchronized void matchWinnerLine(int score1, int score2, int winner) {
         f.writelnString("Match was won by team " + winner + " (" + score1 + "-" + score2 + ").\n");
     }
 
     /**
      * writes line on log file indicating a draw
      */
-    public void matchTieLine(){
+    public synchronized void matchTieLine(){
         f.writelnString("Match was a draw.\n");
     }
 
@@ -194,7 +194,7 @@ public class Global {
      * writes line on log file indicating the game's winner
      * @param nteam winner team
      */
-    public void gameWinnerLinePoints(int nteam){
+    public synchronized void gameWinnerLinePoints(int nteam){
         f.writelnString("Game "+gamesNum+" was won by team "+nteam+" by points in "+trialNum+" trials.\n");
     }
 
@@ -202,21 +202,21 @@ public class Global {
      *writes line on log file indicating a knock-out win by a team
      * @param nteam winner team
      */
-    public void gameWinnerLineKO(int nteam){
+    public synchronized void gameWinnerLineKO(int nteam){
         f.writelnString("Game "+gamesNum+" was won by team "+nteam+" by knock-out in "+trialNum+" trials.\n");
     }
 
     /**
      *writes line on log file indicating a draw game
      */
-    public void gameTieLine(){
+    public synchronized void gameTieLine(){
         f.writelnString("Game was a draw.\n");
     }
 
     /**
      * closes log file
      */
-    public void closeFile(){
+    public synchronized void closeFile(){
         f.endOfFile();
         f.close();
     }
@@ -226,7 +226,8 @@ public class Global {
     {
         if(teamID==0) team1AtRope.remove(team1AtRope.indexOf(contestantID));
         if(teamID==1) team2AtRope.remove(team2AtRope.indexOf(contestantID));
-        insertLine();
+
+        if(!gameFinished()) insertLine();
     }
 
     /**
@@ -257,10 +258,10 @@ public class Global {
     }
 
     /** Set a new state for a given contestant
-    * @param contestantID contestant's ID
-    * @param state contestant's state to be updated to
+     * @param contestantID contestant's ID
+     * @param state contestant's state to be updated to
      *@param teamID team's ID of this contestant
-    * */
+     * */
     public synchronized void setContestantState (int contestantID, int teamID, ContestantState state){
         this.contestantStates[teamID][contestantID] = state;
         if(state == ContestantState.STAND_IN_POSITION){
@@ -271,10 +272,10 @@ public class Global {
     }
 
     /**
-    * get contestant State
-    * @param contestantID contestant's ID
-    * @param teamID team's ID
-    * @return current contestant's state
+     * get contestant State
+     * @param contestantID contestant's ID
+     * @param teamID team's ID
+     * @return current contestant's state
      */
     public synchronized ContestantState getContestantState (int contestantID, int teamID){
 
@@ -283,7 +284,7 @@ public class Global {
 
     /** set a new state for the Referee
      @param state referee's state to be updated to
-    * */
+      * */
     public synchronized void setRefereeState (RefereeState state){
         this.refereeState = state;
 
@@ -291,28 +292,28 @@ public class Global {
     }
 
     /**
-    * get referee State
-    * @return current Referee's State
+     * get referee State
+     * @return current Referee's State
      */
     public synchronized RefereeState getRefereeState (){
         return this.refereeState;
     }
 
     /**
-    * set Coach State to new state
-    * @param teamID team's id
-    * @param state coach's state to be updated to
+     * set Coach State to new state
+     * @param teamID team's id
+     * @param state coach's state to be updated to
      */
     public synchronized void setCoachState (int teamID, CoachState state){
         this.coachStates[teamID] = state;
         insertLine();
     }
 
-  /**
-   * get coach State
-   * @param teamID team's Id
-   * @return current coach's State
-    */
+    /**
+     * get coach State
+     * @param teamID team's Id
+     * @return current coach's State
+     */
     public synchronized CoachState getCoachState (int teamID){
         return this.coachStates[teamID];
 

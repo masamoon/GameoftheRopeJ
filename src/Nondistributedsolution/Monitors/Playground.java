@@ -25,7 +25,7 @@ public class Playground {
      */
     private final Bench bench;
 
-    private final RefereeSite refereSite;
+    private final RefereeSite refereeSite;
 
     /**
      * Number of complete teams that are standing in position (from 0 to 2)
@@ -63,7 +63,7 @@ public class Playground {
     public Playground( Global global, Bench bench, RefereeSite refereeSite){
         this.global = global;
         this.bench = bench;
-        this.refereSite = refereeSite;
+        this.refereeSite = refereeSite;
 
         this.teamsReady = 0;
         this.contestantsDone = 0;
@@ -193,12 +193,12 @@ public class Playground {
     /**
      * Contestant changes his state to Do_Your_Best before pulling the rope
      */
-    public synchronized  void getReady(int contestantID, int teamID) {
+    public synchronized  void getReady(int contestantID, int teamID, int strength) {
 
         ((Contestant)Thread.currentThread()).setContestantState(ContestantState.DO_YOUR_BEST);
         global.setContestantState(contestantID, teamID, ContestantState.DO_YOUR_BEST);
 
-        teamPower[teamID] += ((Contestant)Thread.currentThread()).getStrength();
+        teamPower[teamID] += strength;
     }
 
 
@@ -223,11 +223,11 @@ public class Playground {
         global.leaveRope(contestantID, teamID);
     }
 
-   /**
-    *   Referee decides who's the winner based on the total strength of both teams.
-    *   He also checks if the game has been finished and if so he checks if the Match is finished.
-    *
-    */
+    /**
+     *   Referee decides who's the winner based on the total strength of both teams.
+     *   He also checks if the game has been finished and if so he checks if the Match is finished.
+     *
+     */
     public synchronized void assertTrialDecision(){
 
         while(contestantsDone<6){
@@ -236,20 +236,10 @@ public class Playground {
             } catch (InterruptedException e) {}
         }
 
-        int team1Power = IntStream.of(teamPower[0]).sum();
-        int team2Power = IntStream.of(teamPower[1]).sum();
-
-        /*
-        System.out.println("trial assertion:");
-        System.out.println("trial number: " + global.getTrialNum());
-
-        System.out.println("team 1 power " + team1Power);
-        System.out.println("team 2 power " + team2Power);
-        */
         int decision;
-        if(team1Power>team2Power)
+        if(teamPower[0]>teamPower[1])
             decision = -1;
-        else if (team1Power<team2Power)
+        else if (teamPower[0]<teamPower[1])
             decision = 1;
         else
             decision = 0;
@@ -261,7 +251,7 @@ public class Playground {
         System.out.println("Trial finished");
 
         if(global.gameFinished()){
-            if(refereSite.getGamesNum()==3)
+            if(refereeSite.getGamesNum()==3)
             {
                 global.setMatchInProgress(false);
                 bench.wakeBench();

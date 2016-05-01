@@ -1,13 +1,8 @@
 package DistributedSolution.ServerSide.Playground;
 
-import DistributedSolution.ServerSide.Bench.BenchRemote;
-import DistributedSolution.ServerSide.Global.GlobalRemote;
-import Nondistributedsolution.Contestant.Contestant;
-import Nondistributedsolution.Monitors.Bench;
-import Nondistributedsolution.Monitors.Global;
-
-import java.util.stream.IntStream;
-
+import DistributedSolution.ServerSide.States.CoachState;
+import DistributedSolution.ServerSide.States.ContestantState;
+import DistributedSolution.ServerSide.States.RefereeState;
 
 /**
  * This Class implements the shared region for the PlaygroundRemote, with synchronization based on monitors
@@ -21,9 +16,14 @@ public class PlaygroundRemote {
     private final PlaygroundGlobalStub global;
 
     /**
-     *  General Information Repository object
+     *  Bench Stub object
      */
     private final PlaygroundBenchStub bench;
+
+    /**
+     *  General Information Repository object
+     */
+    private final PlaygroundRefereeSiteStub refereeSite;
 
     /**
      * Number of complete teams that are standing in position (from 0 to 2)
@@ -57,9 +57,10 @@ public class PlaygroundRemote {
      * Constructor for the PlaygroundRemote
      * @param global
      */
-    public PlaygroundRemote(PlaygroundGlobalStub global, PlaygroundBenchStub bench){
+    public PlaygroundRemote(PlaygroundGlobalStub global, PlaygroundBenchStub bench, PlaygroundRefereeSiteStub refereeSite){
         this.global = global;
         this.bench = bench;
+        this.refereeSite = refereeSite;
 
         this.teamsReady = 0;
         this.contestantsDone = 0;
@@ -76,14 +77,13 @@ public class PlaygroundRemote {
      */
     public synchronized void callTrial(){
 
+        // TODO: send message to Referee Thread with it's new state
+        // ((Referee)Thread.currentThread()).setRefereeState(RefereeState.TEAMS_READY);
+        x
+        global.setRefereeState(RefereeState.TEAMS_READY);
+
         teamsReady=0;
         contestantsDone=0;
-
-        // todo: this will work differently
-        global.eraseTeamSelections();
-
-        // turns out to be unnecessary:
-        //bench.eraseTeamSelections();
 
         for(int i =0; i<teamPower.length; i++)
         {
@@ -110,6 +110,11 @@ public class PlaygroundRemote {
      */
     public synchronized void waitForContestants(int teamID){
 
+        // TODO: send message to Coach Thread with it's new state
+        // ((Coach)Thread.currentThread()).setCoachState(CoachState.ASSEMBLE_TEAM);
+        x
+        global.setCoachState(teamID, CoachState.ASSEMBLE_TEAM);
+
         while(standingInPosition[teamID]<3){
             try
             {
@@ -126,6 +131,11 @@ public class PlaygroundRemote {
      * @param teamID contestant's team ID
      */
     public synchronized void followCoachAdvice (int contestantID, int teamID) {
+
+        // TODO: send message to Contestant Thread with it's new state
+        //((Contestant)Thread.currentThread()).setContestantState(ContestantState.STAND_IN_POSITION);
+        x
+        global.setContestantState(contestantID, teamID, ContestantState.STAND_IN_POSITION);
 
         standingInPosition[teamID] +=1;
 
@@ -150,6 +160,11 @@ public class PlaygroundRemote {
 
     public synchronized void informReferee(int teamID){
 
+        // TODO: send message to Coach Thread with it's new state
+        // ((Coach)Thread.currentThread()).setCoachState(CoachState.WATCH_TRIAL);
+        x
+        global.setCoachState(teamID, CoachState.WATCH_TRIAL);
+
         bench.setBenchCalled(teamID, false);
 
         teamsReady++;
@@ -171,6 +186,11 @@ public class PlaygroundRemote {
      */
     public synchronized  void startTrial(){
 
+        // TODO: send message to Referee Thread with it's new state
+        // ((Referee)Thread.currentThread()).setRefereeState(RefereeState.WAIT_FOR_TRIAL_CONCLUSION);
+        x
+        global.setRefereeState(RefereeState.WAIT_FOR_TRIAL_CONCLUSION);
+
         bench.setTrialCalled(false);
         trialStatus=1;
 
@@ -181,9 +201,14 @@ public class PlaygroundRemote {
     /**
      * Contestant changes his state to Do_Your_Best before pulling the rope
      */
-    public synchronized  void getReady(int teamID) {
-        // todo: add my strength to the total power of my team (for the trial assertion)
-        teamPower[teamID] += ((Contestant)Thread.currentThread()).getStrength();
+    public synchronized  void getReady(int contestantID, int teamID, int strength) {
+
+        // TODO: send message to Contestant Thread with it's new state
+        //((Contestant)Thread.currentThread()).setContestantState(ContestantState.STAND_IN_POSITION);
+        x
+        global.setContestantState(contestantID, teamID, ContestantState.STAND_IN_POSITION);
+
+        teamPower[teamID] += strength;
     }
 
 
@@ -191,7 +216,7 @@ public class PlaygroundRemote {
      * The last contestant to finish pulling the rope wakes the referee
      * @param teamID team's id
      */
-    public synchronized void done(int teamID){
+    public synchronized void done(int contestantID, int teamID){
 
         contestantsDone++;
         if(contestantsDone==6) {
@@ -205,6 +230,7 @@ public class PlaygroundRemote {
         }
 
         standingInPosition[teamID] -=1;
+        global.leaveRope(contestantID, teamID);
     }
 
    /**
@@ -220,20 +246,10 @@ public class PlaygroundRemote {
             } catch (InterruptedException e) {}
         }
 
-        int team1Power = IntStream.of(global.getSelection(0)).sum();
-        int team2Power = IntStream.of(global.getSelection(1)).sum();
-
-        /*
-        System.out.println("trial assertion:");
-        System.out.println("trial number: " + global.getTrialNum());
-
-        System.out.println("team 1 power " + team1Power);
-        System.out.println("team 2 power " + team2Power);
-        */
         int decision;
-        if(team1Power>team2Power)
+        if(teamPower[0]>teamPower[1])
             decision = -1;
-        else if (team1Power<team2Power)
+        else if (teamPower[0]<teamPower[1])
             decision = 1;
         else
             decision = 0;
@@ -245,7 +261,7 @@ public class PlaygroundRemote {
         System.out.println("Trial finished");
 
         if(global.gameFinished()){
-            if(global.getGamesNum()==3)
+            if(refereeSite.getGamesNum()==3)
             {
                 global.setMatchInProgress(false);
                 bench.wakeBench();

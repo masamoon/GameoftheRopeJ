@@ -26,8 +26,9 @@ public class PlaygroundInterface implements ServerInterface {
     public Message processAndReply(Message inMessage, ServerCom scon) throws MessageException {
         Message outMessage = null;                           // mensagem de resposta
 
+        int strength;
         int teamID;
-        int contestantID; inMessage.getInt2();
+        int contestantID;
 
         switch (inMessage.getType()) {
           /*  case Message.WFCALLING:
@@ -60,13 +61,16 @@ public class PlaygroundInterface implements ServerInterface {
                 outMessage = new Message(Message.ACK);
                 break;
             case Message.GREADY:
-                teamID =  inMessage.getInt1();
-                playgroundRemote.getReady(teamID);
+                teamID = inMessage.getInt1();
+                contestantID =  inMessage.getInt2();
+                strength = inMessage.getInt3();
+                playgroundRemote.getReady(contestantID, teamID, strength);
                 outMessage = new Message(Message.ACK);
                 break;
             case Message.DONE:
                 teamID =  inMessage.getInt1();
-                playgroundRemote.done(teamID);
+                contestantID = inMessage.getInt2();
+                playgroundRemote.done(contestantID, teamID);
                 outMessage = new Message(Message.ACK);
                 break;
             case Message.ASSTRIALDEC:

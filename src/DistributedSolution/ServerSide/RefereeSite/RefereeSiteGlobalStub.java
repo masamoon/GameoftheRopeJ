@@ -1,7 +1,6 @@
 package DistributedSolution.ServerSide.RefereeSite;
 
-import DistributedSolution.ClientSide.Coach.CoachState;
-import DistributedSolution.ClientSide.Referee.RefereeState;
+import DistributedSolution.ServerSide.States.RefereeState;
 import DistributedSolution.Communication.ClientCom;
 import DistributedSolution.Communication.CommConst;
 import DistributedSolution.Communication.Message.Message;

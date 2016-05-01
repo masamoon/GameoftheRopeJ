@@ -30,6 +30,7 @@ public class Coach extends Thread{
      */
     private CoachGlobalStub coachGlobalStub;
 
+    private CoachState coachState;
 
     /**
      * Coach object Constructor
@@ -53,18 +54,24 @@ public class Coach extends Thread{
     {
         GenericIO.writelnString("Coach "+teamID+" running!");
         while(coachGlobalStub.matchInProgress()){
-            GenericIO.writelnString("Coach "+teamID+" waitforcalling");
-            coachPlaygroundStub.waitForCalling(teamID);
+
+            GenericIO.writelnString("Coach "+teamID+" reviewNotes");
+            coachPlaygroundStub.reviewNotes(teamID);
+
             GenericIO.writelnString("Coach "+teamID+" callContestants");
             coachBenchStub.callContestants(teamID);
+
             GenericIO.writelnString("Coach "+teamID+" waitforcontestants");
             coachPlaygroundStub.waitForContestants(teamID);
+
             GenericIO.writelnString("Coach "+teamID+" informreferee");
             coachPlaygroundStub.informReferee(teamID);
 
-            coachPlaygroundStub.reviewNotes(teamID);
 
         }
+    }
+    public void setCoachState(CoachState coachState) {
+        this.coachState = coachState;
     }
 
 }

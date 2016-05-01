@@ -1,8 +1,6 @@
 package DistributedSolution.ClientSide.Contestant;
 
-import Nondistributedsolution.Monitors.Bench;
-import Nondistributedsolution.Monitors.Global;
-import Nondistributedsolution.Monitors.Playground;
+import java.util.Random;
 
 /**
  * Created by jonnybel on 3/8/16.
@@ -36,6 +34,16 @@ public class Contestant extends Thread {
      */
     private ContestantGlobalStub contestantGlobalStub;
 
+    /**
+     * Strength level of this Contestant
+     */
+    private int strength;
+
+    /**
+     * Current State of this Contestant
+     */
+    private ContestantState contestantState;
+
 
     /**
      * Contestant Object Constructor
@@ -51,6 +59,9 @@ public class Contestant extends Thread {
         this.contestantBenchStub = contestantBenchStub;
         this.contestantPlaygroundStub = contestantPlaygroundStub;
         this.contestantGlobalStub = contestantGlobalStub;
+
+        Random r = new Random();
+        this.strength = r.nextInt(6) + 5;
     }
 
     /** Life Cycle of the Contestant Thread
@@ -58,16 +69,19 @@ public class Contestant extends Thread {
     @Override
     public void run() {
 
+        // TODO: method in stub for this (and respective message)
+        contestantBenchStub.setStrength(contestantID, teamID, strength);
+
         while(contestantGlobalStub.matchInProgress()){
 
             contestantBenchStub.sitDown(contestantID, teamID);
 
             if(contestantGlobalStub.matchInProgress()){
-                contestantPlaygroundStub.followCoachAdvice(contestantID, teamID); //// TODO: 02/04/2016 verify the location of operations
+                contestantPlaygroundStub.followCoachAdvice(contestantID, teamID);
 
-                contestantPlaygroundStub.getReady(contestantID, teamID);
+                contestantPlaygroundStub.getReady(contestantID, teamID, strength);
                 pullRope();
-                contestantPlaygroundStub.done(teamID);
+                contestantPlaygroundStub.done(contestantID, teamID);
 
             }
         }
@@ -82,6 +96,19 @@ public class Contestant extends Thread {
         { sleep ((long) (1 + 10 * Math.random ()));
         }
         catch (InterruptedException e) {}
+    }
+
+
+    public int getStrength() {
+        return strength;
+    }
+
+    public void setStrength(int strength){
+        this.strength = strength;
+    }
+
+    public void setContestantState(ContestantState contestantState) {
+        this.contestantState = contestantState;
     }
 
 

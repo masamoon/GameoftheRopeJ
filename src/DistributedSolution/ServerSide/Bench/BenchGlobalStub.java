@@ -3,7 +3,7 @@ package DistributedSolution.ServerSide.Bench;
 import DistributedSolution.Communication.ClientCom;
 import DistributedSolution.Communication.CommConst;
 import DistributedSolution.Communication.Message.Message;
-import DistributedSolution.ClientSide.Coach.CoachState;
+import DistributedSolution.ServerSide.States.CoachState;
 import genclass.GenericIO;
 
 import static java.lang.Thread.sleep;

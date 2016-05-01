@@ -1,5 +1,8 @@
 package DistributedSolution.ServerSide.Playground;
 
+import DistributedSolution.ServerSide.States.CoachState;
+import DistributedSolution.ServerSide.States.RefereeState;
+import DistributedSolution.ServerSide.States.ContestantState;
 import DistributedSolution.Communication.ClientCom;
 import DistributedSolution.Communication.CommConst;
 import DistributedSolution.Communication.Message.Message;
@@ -9,6 +12,7 @@ import static java.lang.Thread.sleep;
 
 /**
  * Created by Andre on 30/04/2016.
+ *
  */
 public class PlaygroundGlobalStub {
 
@@ -119,6 +123,75 @@ public class PlaygroundGlobalStub {
             System.exit(1);
         }
 
+        con.close ();
+    }
+
+    public void setRefereeState (RefereeState state){
+        ClientCom con = new ClientCom(CommConst.globalServerName, CommConst.globalServerPort);
+        Message inMessage, outMessage;
+        while (!con.open()) // aguarda ligação
+        {
+            try {
+                GenericIO.writelnString("connection not open");
+                sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+        outMessage = new Message(Message.SREFEREESTATE,state);
+        con.writeObject(outMessage);
+        inMessage = (Message) con.readObject();
+        if (inMessage.getType () != Message.ACK) {
+            GenericIO.writelnString ("Thread: Tipo inválido! teve: " + inMessage.getType () + " esperava " + Message.ACK);
+            GenericIO.writelnString(inMessage.toString());
+            System.exit(1);
+        }
+
+        con.close ();
+    }
+
+    public void setCoachState (int teamID, CoachState state){
+        ClientCom con = new ClientCom(CommConst.globalServerName, CommConst.globalServerPort);
+        Message inMessage, outMessage;
+        while (!con.open()) // aguarda ligação
+        {
+            try {
+                GenericIO.writelnString("connection not open");
+                sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+        outMessage = new Message(Message.SCOACHSTATE,teamID,state);
+        con.writeObject(outMessage);
+        inMessage = (Message) con.readObject();
+        if (inMessage.getType () != Message.ACK) {
+            GenericIO.writelnString ("Thread: Tipo inválido! teve: " + inMessage.getType () + " esperava " + Message.ACK);
+            GenericIO.writelnString(inMessage.toString());
+            System.exit(1);
+        }
+
+        con.close ();
+
+    }
+
+    public void setContestantState (int contestantID, int teamID, ContestantState state){
+        ClientCom con = new ClientCom(CommConst.globalServerName, CommConst.globalServerPort);
+        Message inMessage, outMessage;
+        while (!con.open()) // aguarda ligação
+        {
+            try {
+                GenericIO.writelnString("connection not open");
+                sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+        outMessage = new Message(Message.SCONTESTANTSTATE,contestantID, teamID, state);
+        con.writeObject(outMessage);
+        inMessage = (Message) con.readObject();
+        if (inMessage.getType () != Message.ACK) {
+            GenericIO.writelnString ("Thread: Tipo inválido! teve: " + inMessage.getType () + " esperava " + Message.ACK);
+            GenericIO.writelnString(inMessage.toString());
+            System.exit(1);
+        }
         con.close ();
     }
 }

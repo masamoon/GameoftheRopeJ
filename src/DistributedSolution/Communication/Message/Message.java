@@ -1,8 +1,8 @@
 package DistributedSolution.Communication.Message;
 
-import DistributedSolution.ClientSide.Coach.CoachState;
-import DistributedSolution.ClientSide.Contestant.ContestantState;
-import DistributedSolution.ClientSide.Referee.RefereeState;
+import DistributedSolution.ServerSide.States.CoachState;
+import DistributedSolution.ServerSide.States.ContestantState;
+import DistributedSolution.ServerSide.States.RefereeState;
 
 
 import java.io.Serializable;
@@ -401,7 +401,8 @@ public class Message  implements Serializable{
         this.int1 = int1;
     }
 
-    public Message(int type,RefereeState refereeState){
+
+    public Message(int type, RefereeState refereeState){
         this.type = type;
         this.refereeState = refereeState;
 

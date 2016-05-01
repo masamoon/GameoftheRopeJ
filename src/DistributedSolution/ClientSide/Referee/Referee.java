@@ -23,14 +23,14 @@ public class Referee extends Thread {
     private RefereeRefereeSiteStub refereeRefereeSiteStub;
 
     /**
-     * Logger object
-     */
-    //private Logger logger;
-
-    /**
      * General Informational Repository object
      */
     private RefereeGlobalStub refereeGlobalStub;
+
+    /**
+     * Referee Current State
+     */
+    private RefereeState refereeState;
 
 
     /**
@@ -48,12 +48,16 @@ public class Referee extends Thread {
     /** Life Cycle of the Referee Thread
     */
     @Override
-    public void run(){
+    public void run(){s
         refereeRefereeSiteStub.announceMatch();
         GenericIO.writelnString("match announced ");
         do{
             refereeRefereeSiteStub.announceGame();
             while(!refereeGlobalStub.gameFinished()){
+
+                // TODO: method in stub for this
+                refereeRefereeSiteStub.waitForBench();
+
                 refereePlaygroundStub.callTrial();
                 refereePlaygroundStub.startTrial();
                 refereePlaygroundStub.assertTrialDecision();

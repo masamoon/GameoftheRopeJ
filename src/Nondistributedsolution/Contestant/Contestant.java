@@ -45,11 +45,6 @@ public class Contestant extends Thread {
     private int strength;
 
     /**
-     * Referee Site Object
-     */
-    private RefereeSite refereeSite;
-
-    /**
      * Current State of this Contestant
      */
     private ContestantState contestantState;
@@ -63,13 +58,12 @@ public class Contestant extends Thread {
      * @param playgroundMon
      * @param global
      */
-    public Contestant(int contestantID, int teamID,  Bench benchMon, Playground playgroundMon, RefereeSite refereeSite, Global global) {
+    public Contestant(int contestantID, int teamID,  Bench benchMon, Playground playgroundMon , Global global) {
         this.contestantID = contestantID;
         this.teamID = teamID;
         this.benchMon = benchMon;
         this.playgroundMon = playgroundMon;
         this.global = global;
-        this.refereeSite = refereeSite;
         this.contestantState = ContestantState.INIT;
 
         Random r = new Random();
@@ -91,7 +85,7 @@ public class Contestant extends Thread {
 
                 playgroundMon.followCoachAdvice(contestantID, teamID);
 
-                playgroundMon.getReady(contestantID, teamID);
+                playgroundMon.getReady(contestantID, teamID, strength);
                 pullRope();
                 playgroundMon.done(contestantID, teamID);
 
@@ -100,7 +94,7 @@ public class Contestant extends Thread {
     }
 
     /**
-    *  Internal function for the Contestant thread where he pulls the rope, sleeping for a randomly generated time interval.
+     *  Internal function for the Contestant thread where he pulls the rope, sleeping for a randomly generated time interval.
      */
     private void pullRope ()
     {

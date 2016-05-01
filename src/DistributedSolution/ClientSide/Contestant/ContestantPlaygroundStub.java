@@ -30,7 +30,7 @@ public class ContestantPlaygroundStub {
         this.serverHostName = serverUrl;
     }
 
-    public void followCoachAdvice(int teamID, int contestantID){
+    public void followCoachAdvice(int contestantID, int teamID){
         ClientCom con = new ClientCom(serverHostName, serverPortNumb);
         Message inMessage, outMessage;
 
@@ -54,7 +54,7 @@ public class ContestantPlaygroundStub {
         con.close ();
     }
 
-    public void getReady(int contestantID, int teamID){
+    public void getReady(int contestantID, int teamID, int strength){
         ClientCom con = new ClientCom(serverHostName, serverPortNumb);
         Message inMessage, outMessage;
 
@@ -66,7 +66,7 @@ public class ContestantPlaygroundStub {
             }
         }
 
-        outMessage = new Message(Message.GREADY, teamID,contestantID);
+        outMessage = new Message(Message.GREADY, teamID,contestantID, strength);
         con.writeObject(outMessage);
         inMessage = (Message) con.readObject();
         if (inMessage.getType () != Message.ACK) {
@@ -90,7 +90,7 @@ public class ContestantPlaygroundStub {
             }
         }
 
-        outMessage = new Message(Message.DONE, teamID);
+        outMessage = new Message(Message.DONE, teamID, contestantID);
         con.writeObject(outMessage);
         inMessage = (Message) con.readObject();
         if (inMessage.getType () != Message.ACK) {
