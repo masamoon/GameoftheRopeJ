@@ -7,9 +7,6 @@ import sun.net.www.content.text.Generic;
 
 import static java.lang.Thread.sleep;
 
-/**
- * Created by Andre on 26/04/2016.
- */
 public class CoachGlobalStub {
     /**
      *  Nome do sistema computacional onde está localizado o servidor

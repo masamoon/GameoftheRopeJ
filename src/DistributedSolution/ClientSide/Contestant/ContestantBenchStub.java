@@ -6,9 +6,7 @@ import genclass.GenericIO;
 
 import static java.lang.Thread.sleep;
 
-/**
- * Created by Andre on 19/04/2016.
- */
+
 public class ContestantBenchStub {
 
     /**
@@ -16,7 +14,7 @@ public class ContestantBenchStub {
      *    @serialField serverHostName
      */
 
-    private String serverHostName = null;
+    private String serverHostName;
 
     /**
      *  Número do port de escuta do servidor
@@ -55,6 +53,50 @@ public class ContestantBenchStub {
         con.close ();
     }
 
+    public void setStrength(int contestantID, int teamID, int strength){
+        ClientCom con = new ClientCom(serverHostName, serverPortNumb);
+        Message inMessage, outMessage;
 
+        while (!con.open()) // aguarda ligação
+        {
+            try {
+                sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
 
+        outMessage = new Message(Message.SSTRENGTHB,contestantID,teamID,strength);
+        con.writeObject(outMessage);
+        inMessage = (Message) con.readObject();
+        if (inMessage.getType () != Message.ACK) {
+            GenericIO.writelnString ("Thread: Tipo inválido! teve: " + inMessage.getType () + " esperava " + Message.ACK);
+            GenericIO.writelnString(inMessage.toString());
+            System.exit(1);
+        }
+        con.close ();
+    }
+    public int getStrength(int contestantID, int teamID){
+        ClientCom con = new ClientCom(serverHostName, serverPortNumb);
+        Message inMessage, outMessage;
+
+        while (!con.open()) // aguarda ligação
+        {
+            try {
+                sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+
+        outMessage = new Message(Message.GSTRENGTHB, contestantID, teamID);
+        con.writeObject(outMessage);
+        inMessage = (Message) con.readObject();
+        if (inMessage.getType () != Message.ACK) {
+            GenericIO.writelnString ("Thread: Tipo inválido! teve: " + inMessage.getType () + " esperava " + Message.ACK);
+            GenericIO.writelnString(inMessage.toString());
+            System.exit(1);
+        }
+        con.close ();
+
+        return inMessage.getInt1();
+    }
 }

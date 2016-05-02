@@ -2,9 +2,6 @@ package DistributedSolution.ClientSide.Contestant;
 
 import java.util.Random;
 
-/**
- * Created by jonnybel on 3/8/16.
- */
 
 public class Contestant extends Thread {
 
@@ -69,14 +66,12 @@ public class Contestant extends Thread {
     @Override
     public void run() {
 
-        // TODO: method in stub for this (and respective message)
         contestantBenchStub.setStrength(contestantID, teamID, strength);
 
         while(contestantGlobalStub.matchInProgress()){
 
             setContestantState(ContestantState.SIT_AT_THE_BENCH);
             contestantBenchStub.sitDown(contestantID, teamID);
-            // TODO: send message to global or bench and get updated strength
             setStrength(contestantBenchStub.getStrength(contestantID, teamID));
 
             if(contestantGlobalStub.matchInProgress()){

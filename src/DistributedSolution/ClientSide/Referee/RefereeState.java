@@ -1,11 +1,8 @@
 package DistributedSolution.ClientSide.Referee;
 
-/**
- * Created by jonnybel on 3/8/16.
- */
+
 public enum RefereeState {
 
-    /* todo: add comments */
 
     START_OF_THE_MATCH("SOM"),
 

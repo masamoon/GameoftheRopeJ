@@ -8,24 +8,22 @@ import DistributedSolution.ServerSide.RefereeSite.RefereeSiteRemote;
 
 import java.net.SocketException;
 
-/**
- * Created by Andre on 30/04/2016.
- */
+
 public class PlaygroundExec {
     public static void main(String[] args) throws SocketException {
 
         ServerCom scon, sconi;                             // canais de comunicação
         ClientProxy cliProxy;                               // thread agente prestador do serviço
-        PlaygroundGlobalStub playgroundGlobalStub = new PlaygroundGlobalStub();
-        PlaygroundRefereeSiteStub playgroundRefereeSiteStub = new PlaygroundRefereeSiteStub();
-        PlaygroundBenchStub playgroundBenchStub = new PlaygroundBenchStub();
+        PlaygroundGlobalStub playgroundGlobalStub = new PlaygroundGlobalStub(CommConst.globalServerName, CommConst.globalServerPort);
+        PlaygroundRefereeSiteStub playgroundRefereeSiteStub = new PlaygroundRefereeSiteStub(CommConst.refereeSiteServerName, CommConst.refereeSiteServerPort);
+        PlaygroundBenchStub playgroundBenchStub = new PlaygroundBenchStub(CommConst.benchServerName, CommConst.benchServerPort);
 
         // estabelecimento do servico
         scon = new ServerCom(CommConst.playgroundServerPort);    // criação do canal de escuta e sua associação
         scon.start();                                       // com o endereço público
-        PlaygroundRemote playgroundRemote= new PlaygroundRemote(playgroundGlobalStub,playgroundBenchStub);
+        PlaygroundRemote playgroundRemote= new PlaygroundRemote(playgroundGlobalStub,playgroundBenchStub, playgroundRefereeSiteStub);
         PlaygroundInterface playgroundInterface = new PlaygroundInterface(playgroundRemote);
-        System.out.println("Shop service has started!");
+        System.out.println("Playground service has started!");
         System.out.println("Server is listening.");
 
         // processamento de pedidos

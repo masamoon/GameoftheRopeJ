@@ -1,8 +1,5 @@
 package DistributedSolution.Communication;
 
-/**
- * Created by Andre on 11/04/2016.
- */
 import genclass.GenericIO;
 import java.io.*;
 import java.net.*;

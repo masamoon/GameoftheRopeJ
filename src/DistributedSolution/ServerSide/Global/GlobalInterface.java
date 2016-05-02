@@ -6,14 +6,10 @@ import DistributedSolution.Communication.ServerCom;
 import DistributedSolution.Communication.ServerInterface;
 import genclass.GenericIO;
 
-/**
- * Created by Andre on 12/04/2016.
- */
 public class GlobalInterface implements ServerInterface {
     private GlobalRemote globalRemote;
 
     private boolean serviceEnded;
-
 
     public GlobalInterface(GlobalRemote globalRemote){
 
@@ -44,16 +40,22 @@ public class GlobalInterface implements ServerInterface {
                 else
                     outMessage = new Message(Message.NEGATIVE);
                 break;
-            case Message.STEAM:
-                globalRemote.selectTeam(inMessage.getInt1(),inMessage.getInt2(),inMessage.getInt3(),inMessage.getInt4());
+
+            case Message.LROPE:
+                globalRemote.leaveRope(inMessage.getInt1(),inMessage.getInt2());
                 outMessage = new Message(Message.ACK);
                 break;
+
             case Message.SCOACHSTATE:
                 globalRemote.setCoachState(inMessage.getInt1(),inMessage.getCoachState());
                 outMessage = new Message(Message.ACK);
                 break;
+            case Message.SCONTESTANTSTATE:
+                globalRemote.setContestantState(inMessage.getInt1(), inMessage.getInt2(),inMessage.getContestantState());
+                outMessage = new Message(Message.ACK);
+                break;
             case Message.SSTRENGTH:
-                globalRemote.setStrength(inMessage.getInt2(),inMessage.getInt1(),inMessage.getInt3());
+                globalRemote.setStrength(inMessage.getInt1(),inMessage.getInt2(),inMessage.getInt3());
                 outMessage = new Message(Message.ACK);
                 break;
             case Message.CFLAGPOS:
@@ -70,12 +72,6 @@ public class GlobalInterface implements ServerInterface {
                 globalRemote.incrementTrialNum();
                 outMessage = new Message(Message.ACK);
                 break;
-
-            case Message.ITEAMSCORE:
-                globalRemote.incTeamScore(inMessage.getInt1());
-                outMessage = new Message(Message.ACK);
-                break;
-
             case Message.GWINNERLINEPOINTS:
                 globalRemote.gameWinnerLinePoints(inMessage.getInt1());
                 outMessage = new Message(Message.ACK);
@@ -92,7 +88,7 @@ public class GlobalInterface implements ServerInterface {
                 break;
 
             case Message.MWINNERLINE:
-                globalRemote.matchWinnerLine(inMessage.getInt2(),inMessage.getInt1(),inMessage.getInt3());
+                globalRemote.matchWinnerLine(inMessage.getInt1(),inMessage.getInt2(),inMessage.getInt3());
                 outMessage = new Message(Message.ACK);
                 break;
 
@@ -125,13 +121,10 @@ public class GlobalInterface implements ServerInterface {
                 outMessage = new Message(Message.RESETTRIALNUM);
                 break;
 
-
             default:
                 GenericIO.writelnString("Invalid message type");
                 break;
-
         }
-
 
         return outMessage;
     }

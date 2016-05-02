@@ -26,6 +26,7 @@ public class BenchInterface implements ServerInterface {
         Message outMessage = null;
         int teamID;
         int contestantID;
+        int strength;
         boolean b;
 
         switch (inMessage.getType()) {
@@ -34,10 +35,19 @@ public class BenchInterface implements ServerInterface {
                 benchRemote.callContestants(teamID);
                 outMessage = new Message(Message.ACK);
                 break;
-           /* case Message.WCONTESTANTS:
-                benchRemote.wakeContestants();
+            case Message.SSTRENGTHB:
+                contestantID = inMessage.getInt1();
+                teamID = inMessage.getInt2();
+                strength = inMessage.getInt3();
+                benchRemote.setStrength(contestantID, teamID, strength);
                 outMessage = new Message(Message.ACK);
-                break;*/
+                break;
+            case Message.GSTRENGTHB:
+                contestantID = inMessage.getInt1();
+                teamID = inMessage.getInt2();
+                int ret = benchRemote.getStrength(contestantID, teamID);
+                outMessage = new Message(Message.ACK, ret);
+                break;
             case Message.SDOWN:
                 teamID = inMessage.getInt1();
                 contestantID = inMessage.getInt2();

@@ -1,14 +1,6 @@
 package DistributedSolution.ClientSide.Referee;
 
-
-import Nondistributedsolution.Monitors.Global;
-import Nondistributedsolution.Monitors.Playground;
-import Nondistributedsolution.Monitors.RefereeSite;
 import genclass.GenericIO;
-
-/**
- * Created by jonnybel on 3/8/16.
- */
 
 public class Referee extends Thread {
 
@@ -57,7 +49,6 @@ public class Referee extends Thread {
             refereeRefereeSiteStub.announceGame();
             while(!refereeGlobalStub.gameFinished()){
 
-                // TODO: method in stub for this
                 refereeRefereeSiteStub.waitForBench();
 
                 setRefereeState(RefereeState.TEAMS_READY);
@@ -73,8 +64,10 @@ public class Referee extends Thread {
         setRefereeState(RefereeState.END_OF_THE_MATCH);
         refereeRefereeSiteStub.declareMatchWinner();
 
+        System.out.println("END REACHED");
+
         // TODO: kill referee site
-        refereeGlobalStub.closeFile();
+
         // TODO: kill global repository
     }
 

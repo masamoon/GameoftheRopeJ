@@ -1,8 +1,6 @@
 package DistributedSolution.ClientSide.Contestant;
 
-/**
- * Created by jonnybel on 3/8/16.
- */
+
 public enum ContestantState {
 
 

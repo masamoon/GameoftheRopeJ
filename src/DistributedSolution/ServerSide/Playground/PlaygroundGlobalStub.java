@@ -10,16 +10,28 @@ import genclass.GenericIO;
 
 import static java.lang.Thread.sleep;
 
-/**
- * Created by Andre on 30/04/2016.
- *
- */
+
 public class PlaygroundGlobalStub {
 
-    public PlaygroundGlobalStub(){}
+    /**
+     *  Nome do sistema computacional onde está localizado o servidor
+     *    @serialField serverHostName
+     */
+    private String serverHostName;
 
+    /**
+     *  Número do port de escuta do servidor
+     *    @serialField serverPortNumb
+     */
+    private int serverPortNumb;
+
+
+    public PlaygroundGlobalStub(String serverUrl, int portNumb) {
+        this.serverPortNumb = portNumb;
+        this.serverHostName = serverUrl;
+    }
     public void changeFlagPos(int decision){
-        ClientCom con = new ClientCom(CommConst.refereeSiteServerName, CommConst.refereeSiteServerPort);
+        ClientCom con = new ClientCom(serverHostName, serverPortNumb);
         Message inMessage, outMessage;
         while (!con.open()) // aguarda ligação
         {
@@ -43,7 +55,7 @@ public class PlaygroundGlobalStub {
     }
 
     public boolean gameFinished(){
-        ClientCom con = new ClientCom(CommConst.globalServerName, CommConst.globalServerPort);
+        ClientCom con = new ClientCom(serverHostName, serverPortNumb);
         Message inMessage, outMessage;
 
         while (!con.open()) // aguarda ligação
@@ -67,19 +79,15 @@ public class PlaygroundGlobalStub {
         con.close ();
 
         if (inMessage.getType() == Message.POSITIVE) {
-            GenericIO.writelnString("exiting match in progress POSITIVE");
             return true;
         } else {
-            GenericIO.writelnString("exiting match in progress NEGATIVE");
             return false;
         }
 
     }
 
-
-
     public void setMatchInProgress(boolean matchInProgress){
-        ClientCom con = new ClientCom(CommConst.refereeSiteServerName, CommConst.refereeSiteServerPort);
+        ClientCom con = new ClientCom(serverHostName, serverPortNumb);
         Message inMessage, outMessage;
         while (!con.open()) // aguarda ligação
         {
@@ -89,7 +97,7 @@ public class PlaygroundGlobalStub {
             } catch (InterruptedException e) {
             }
         }
-        outMessage = new Message(Message.SMINPROGRESS,matchInProgress);
+        outMessage = new Message(Message.SMINPROGRESS, matchInProgress);
         con.writeObject(outMessage);
 
         inMessage = (Message) con.readObject();
@@ -103,7 +111,7 @@ public class PlaygroundGlobalStub {
     }
 
     public void leaveRope(int contestantID, int teamID){
-        ClientCom con = new ClientCom(CommConst.refereeSiteServerName, CommConst.refereeSiteServerPort);
+        ClientCom con = new ClientCom(serverHostName, serverPortNumb);
         Message inMessage, outMessage;
         while (!con.open()) // aguarda ligação
         {
@@ -113,7 +121,7 @@ public class PlaygroundGlobalStub {
             } catch (InterruptedException e) {
             }
         }
-        outMessage = new Message(Message.LROPE,teamID,contestantID);
+        outMessage = new Message(Message.LROPE,contestantID,teamID);
         con.writeObject(outMessage);
 
         inMessage = (Message) con.readObject();
@@ -127,7 +135,7 @@ public class PlaygroundGlobalStub {
     }
 
     public void setRefereeState (RefereeState state){
-        ClientCom con = new ClientCom(CommConst.globalServerName, CommConst.globalServerPort);
+        ClientCom con = new ClientCom(serverHostName, serverPortNumb);
         Message inMessage, outMessage;
         while (!con.open()) // aguarda ligação
         {
@@ -150,7 +158,7 @@ public class PlaygroundGlobalStub {
     }
 
     public void setCoachState (int teamID, CoachState state){
-        ClientCom con = new ClientCom(CommConst.globalServerName, CommConst.globalServerPort);
+        ClientCom con = new ClientCom(serverHostName, serverPortNumb);
         Message inMessage, outMessage;
         while (!con.open()) // aguarda ligação
         {
@@ -174,7 +182,7 @@ public class PlaygroundGlobalStub {
     }
 
     public void setContestantState (int contestantID, int teamID, ContestantState state){
-        ClientCom con = new ClientCom(CommConst.globalServerName, CommConst.globalServerPort);
+        ClientCom con = new ClientCom(serverHostName, serverPortNumb);
         Message inMessage, outMessage;
         while (!con.open()) // aguarda ligação
         {

@@ -7,9 +7,7 @@ import DistributedSolution.ServerSide.States.RefereeState;
 
 import java.io.Serializable;
 
-/**
- * Created by Andre on 05/04/2016.
- */
+
 public class Message  implements Serializable{
 
     /**
@@ -138,12 +136,6 @@ public class Message  implements Serializable{
      */
 
     /**
-     * wait for calling
-     * @serialField WFCALLING
-     */
-    public static final int WFCALLING = 19;
-
-    /**
      * Wait for Contestants
      * @serialField WCONTESTANTS
      */
@@ -182,6 +174,11 @@ public class Message  implements Serializable{
      */
     public static final int SDOWN = 8;
 
+
+    public static final int SSTRENGTHB = 19;
+
+
+    public static final int GSTRENGTHB = 47;
     /**
      * CONTESTANT - PLAYGROUND
      */
@@ -357,10 +354,6 @@ public class Message  implements Serializable{
      */
     public static final int GTIELINE = 46;
 
-    /**
-     * Match Winner Line Points
-     */
-    public static final int MWINNERLINEPOINTS = 47;
 
     /**
      * get trial num
@@ -416,12 +409,6 @@ public class Message  implements Serializable{
      * reset trial num
      */
     public static final int RESETTRIALNUM = 58;
-
-
-
-
-
-
 
 
     /**
@@ -541,6 +528,18 @@ public class Message  implements Serializable{
     }
 
     /**
+     *Message form 9
+     * @param type Message's type specifying which operation it's invoking
+     * @param int1 first integer parameter
+     * @param b first boolean parameter
+     */
+    public Message(int type, int int1, boolean b){
+        this.type = type;
+        this.int1 = int1;
+        this.b = b;
+    }
+
+    /**
      *
      * @param type Message's type specifying which operation it's invoking
      * @param int1 first integer parameter
@@ -552,14 +551,6 @@ public class Message  implements Serializable{
         this.int1 = int1;
         this.int2 = int2;
         this.int3 = int3;
-    }
-
-
-
-
-
-    public Message(int setnfic, String fName, int nGames) {
-
     }
 
 
@@ -791,14 +782,6 @@ public class Message  implements Serializable{
      */
     public int getInt4() {
         return int4;
-    }
-
-    /**
-     *
-     * @return contestant's strength
-     */
-    public int getStrength() {
-        return strength;
     }
 
     /**

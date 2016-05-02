@@ -8,24 +8,21 @@ import DistributedSolution.ServerSide.Playground.PlaygroundRemote;
 
 import java.net.SocketException;
 
-/**
- * Created by Andre on 30/04/2016.
- */
 public class BenchExec {
     public static void main(String[] args) throws SocketException {
 
 
        ServerCom scon, sconi;                             // canais de comunicação
         ClientProxy cliProxy;                               // thread agente prestador do serviço
-        BenchGlobalStub benchGlobalStub = new BenchGlobalStub();
-        BenchRefereeSiteStub benchRefereeSiteStub = new BenchRefereeSiteStub();
+        BenchGlobalStub benchGlobalStub = new BenchGlobalStub(CommConst.globalServerName, CommConst.globalServerPort);
+        BenchRefereeSiteStub benchRefereeSiteStub = new BenchRefereeSiteStub(CommConst.refereeSiteServerName, CommConst.refereeSiteServerPort);
 
         // estabelecimento do servico
         scon = new ServerCom(CommConst.benchServerPort);    // criação do canal de escuta e sua associação
         scon.start();                                       // com o endereço público
         BenchRemote benchRemote = new BenchRemote(benchGlobalStub,benchRefereeSiteStub);
         BenchInterface benchInterface = new BenchInterface(benchRemote);
-        System.out.println("Shop service has started!");
+        System.out.println("Bench service has started!");
         System.out.println("Server is listening.");
 
         // processamento de pedidos

@@ -11,9 +11,7 @@ import java.util.Arrays;
 
 import static java.lang.Thread.sleep;
 
-/**
- * Created by Andre on 26/04/2016.
- */
+
 public class ContestantClient {
     /**
      * @param args the command line arguments

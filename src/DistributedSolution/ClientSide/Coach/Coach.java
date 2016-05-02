@@ -5,9 +5,6 @@ import Nondistributedsolution.Monitors.Global;
 import Nondistributedsolution.Monitors.Playground;
 import genclass.GenericIO;
 
-/**
- * Created by jonnybel on 3/8/16.
- */
 public class Coach extends Thread{
 
     /**

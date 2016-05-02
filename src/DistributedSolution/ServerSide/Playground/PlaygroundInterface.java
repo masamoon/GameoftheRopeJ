@@ -6,9 +6,6 @@ import DistributedSolution.Communication.ServerCom;
 import DistributedSolution.Communication.ServerInterface;
 import genclass.GenericIO;
 
-/**
- * Created by Andre on 12/04/2016.
- */
 public class PlaygroundInterface implements ServerInterface {
 
     private PlaygroundRemote playgroundRemote;

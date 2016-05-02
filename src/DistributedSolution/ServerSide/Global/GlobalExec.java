@@ -8,9 +8,6 @@ import DistributedSolution.ServerSide.Playground.PlaygroundRemote;
 
 import java.net.SocketException;
 
-/**
- * Created by Andre on 30/04/2016.
- */
 public class GlobalExec {
     public static void main(String[] args) throws SocketException {
         ServerCom scon, sconi;                             // canais de comunicação

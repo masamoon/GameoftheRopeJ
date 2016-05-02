@@ -7,13 +7,28 @@ import genclass.GenericIO;
 
 import static java.lang.Thread.sleep;
 
-/**
- * Created by Andre on 30/04/2016.
- */
+
 public class BenchRefereeSiteStub {
 
+    /**
+     *  Nome do sistema computacional onde está localizado o servidor
+     *    @serialField serverHostName
+     */
+    private String serverHostName;
+
+    /**
+     *  Número do port de escuta do servidor
+     *    @serialField serverPortNumb
+     */
+    private int serverPortNumb;
+
+    public BenchRefereeSiteStub(String serverUrl, int portNumb) {
+        this.serverPortNumb = portNumb;
+        this.serverHostName = serverUrl;
+    }
+
     public void setReadyForTrial(boolean readyForTrial ){
-        ClientCom con = new ClientCom(CommConst.refereeSiteServerName, CommConst.refereeSiteServerPort);
+        ClientCom con = new ClientCom(serverHostName, serverPortNumb);
         Message inMessage, outMessage;
         while (!con.open()) // aguarda ligação
         {
@@ -23,7 +38,7 @@ public class BenchRefereeSiteStub {
             } catch (InterruptedException e) {
             }
         }
-        outMessage = new Message(Message.SREADYFTRIAL);
+        outMessage = new Message(Message.SREADYFTRIAL, readyForTrial);
         con.writeObject(outMessage);
 
         inMessage = (Message) con.readObject();
@@ -38,7 +53,7 @@ public class BenchRefereeSiteStub {
     }
 
     public void benchWakeRef(){
-        ClientCom con = new ClientCom(CommConst.refereeSiteServerName, CommConst.refereeSiteServerPort);
+        ClientCom con = new ClientCom(serverHostName, serverPortNumb);
         Message inMessage, outMessage;
         while (!con.open()) // aguarda ligação
         {
@@ -62,7 +77,7 @@ public class BenchRefereeSiteStub {
     }
 
     public int getTrialNum(){
-        ClientCom con = new ClientCom(CommConst.refereeSiteServerName, CommConst.refereeSiteServerPort);
+        ClientCom con = new ClientCom(serverHostName, serverPortNumb);
         Message inMessage, outMessage;
         while (!con.open()) // aguarda ligação
         {
@@ -83,6 +98,6 @@ public class BenchRefereeSiteStub {
         }
 
         con.close ();
-        return outMessage.getTrialNum();
+        return outMessage.getInt1();
     }
 }

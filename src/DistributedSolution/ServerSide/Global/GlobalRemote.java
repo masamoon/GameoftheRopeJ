@@ -7,9 +7,6 @@ import genclass.TextFile;
 
 import java.util.ArrayList;
 
-/**
- * Created by jonnybel on 3/8/16.
- */
 public class GlobalRemote {
 
 
@@ -52,8 +49,6 @@ public class GlobalRemote {
         f.writelnString(str2);
 
         this.path = path;
-
-        //refereeState = RefereeState.START_OF_THE_MATCH;
 
         contestantStates = new ContestantState [NUMBER_OF_TEAMS] [NUMBER_OF_PLAYERS_PER_TEAM];
 

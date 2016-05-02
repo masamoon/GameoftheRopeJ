@@ -6,9 +6,7 @@ import genclass.GenericIO;
 
 import static java.lang.Thread.sleep;
 
-/**
- * Created by Andre on 19/04/2016.
- */
+
 public class ContestantPlaygroundStub {
 
     /**

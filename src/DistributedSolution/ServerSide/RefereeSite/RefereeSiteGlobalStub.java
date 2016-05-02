@@ -8,16 +8,30 @@ import genclass.GenericIO;
 
 import static java.lang.Thread.sleep;
 
-/**
- * Created by Andre on 30/04/2016.
- */
+
 public class RefereeSiteGlobalStub {
 
-    public RefereeSiteGlobalStub(){}
+    /**
+     *  Nome do sistema computacional onde está localizado o servidor
+     *    @serialField serverHostName
+     */
+    private String serverHostName;
+
+    /**
+     *  Número do port de escuta do servidor
+     *    @serialField serverPortNumb
+     */
+    private int serverPortNumb;
+
+
+    public RefereeSiteGlobalStub(String serverUrl, int portNumb) {
+        this.serverPortNumb = portNumb;
+        this.serverHostName = serverUrl;
+    }
 
 
     public void incrementTrialNum(){
-        ClientCom con = new ClientCom(CommConst.globalServerName, CommConst.globalServerPort);
+        ClientCom con = new ClientCom(serverHostName, serverPortNumb);
         Message inMessage, outMessage;
         while (!con.open()) // aguarda ligação
         {
@@ -40,32 +54,8 @@ public class RefereeSiteGlobalStub {
         con.close ();
     }
 
-    public void incTeamScore(int teamID){
-        ClientCom con = new ClientCom(CommConst.globalServerName, CommConst.globalServerPort);
-        Message inMessage, outMessage;
-        while (!con.open()) // aguarda ligação
-        {
-            try {
-                GenericIO.writelnString("connection not open");
-                sleep((long) (10));
-            } catch (InterruptedException e) {
-            }
-        }
-        outMessage = new Message(Message.ITEAMSCORE,teamID);
-        con.writeObject(outMessage);
-
-        inMessage = (Message) con.readObject();
-        if (inMessage.getType () != Message.ACK) {
-            GenericIO.writelnString ("Thread: Tipo inválido! teve: " + inMessage.getType () + " esperava " + Message.ACK);
-            GenericIO.writelnString(inMessage.toString());
-            System.exit(1);
-        }
-
-        con.close ();
-    }
-
     public void gameWinnerLinePoints(int teamID){
-        ClientCom con = new ClientCom(CommConst.globalServerName, CommConst.globalServerPort);
+        ClientCom con = new ClientCom(serverHostName, serverPortNumb);
         Message inMessage, outMessage;
         while (!con.open()) // aguarda ligação
         {
@@ -89,7 +79,7 @@ public class RefereeSiteGlobalStub {
     }
 
     public void gameTieLine(){
-        ClientCom con = new ClientCom(CommConst.globalServerName, CommConst.globalServerPort);
+        ClientCom con = new ClientCom(serverHostName, serverPortNumb);
         Message inMessage, outMessage;
         while (!con.open()) // aguarda ligação
         {
@@ -113,7 +103,7 @@ public class RefereeSiteGlobalStub {
     }
 
     public void gameWinnerLineKO(int teamID){
-        ClientCom con = new ClientCom(CommConst.globalServerName, CommConst.globalServerPort);
+        ClientCom con = new ClientCom(serverHostName, serverPortNumb);
         Message inMessage, outMessage;
         while (!con.open()) // aguarda ligação
         {
@@ -137,7 +127,7 @@ public class RefereeSiteGlobalStub {
     }
 
     public void matchWinnerLine(int teamScore1 ,int teamScore2 ,int winnerID){
-        ClientCom con = new ClientCom(CommConst.globalServerName, CommConst.globalServerPort);
+        ClientCom con = new ClientCom(serverHostName, serverPortNumb);
         Message inMessage, outMessage;
         while (!con.open()) // aguarda ligação
         {
@@ -161,7 +151,7 @@ public class RefereeSiteGlobalStub {
     }
 
     public void matchTieLine(){
-        ClientCom con = new ClientCom(CommConst.globalServerName, CommConst.globalServerPort);
+        ClientCom con = new ClientCom(serverHostName, serverPortNumb);
         Message inMessage, outMessage;
         while (!con.open()) // aguarda ligação
         {
@@ -185,7 +175,7 @@ public class RefereeSiteGlobalStub {
     }
 
     public void setRefereeState (RefereeState state){
-        ClientCom con = new ClientCom(CommConst.globalServerName, CommConst.globalServerPort);
+        ClientCom con = new ClientCom(serverHostName, serverPortNumb);
         Message inMessage, outMessage;
         while (!con.open()) // aguarda ligação
         {
@@ -209,7 +199,7 @@ public class RefereeSiteGlobalStub {
     }
 
     public int getFlagPos(){
-        ClientCom con = new ClientCom(CommConst.globalServerName, CommConst.globalServerPort);
+        ClientCom con = new ClientCom(serverHostName, serverPortNumb);
         Message inMessage, outMessage;
         while (!con.open()) // aguarda ligação
         {
@@ -232,7 +222,7 @@ public class RefereeSiteGlobalStub {
     }
 
     public void incrementGamesNum(){
-        ClientCom con = new ClientCom(CommConst.globalServerName, CommConst.globalServerPort);
+        ClientCom con = new ClientCom(serverHostName, serverPortNumb);
         Message inMessage, outMessage;
         while (!con.open()) // aguarda ligação
         {
@@ -255,7 +245,7 @@ public class RefereeSiteGlobalStub {
     }
 
     public void resetFlagPos(){
-        ClientCom con = new ClientCom(CommConst.globalServerName, CommConst.globalServerPort);
+        ClientCom con = new ClientCom(serverHostName, serverPortNumb);
         Message inMessage, outMessage;
         while (!con.open()) // aguarda ligação
         {
@@ -277,7 +267,7 @@ public class RefereeSiteGlobalStub {
     }
 
     public void resetTrialNum(){
-        ClientCom con = new ClientCom(CommConst.globalServerName, CommConst.globalServerPort);
+        ClientCom con = new ClientCom(serverHostName, serverPortNumb);
         Message inMessage, outMessage;
         while (!con.open()) // aguarda ligação
         {

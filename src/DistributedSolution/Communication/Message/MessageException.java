@@ -1,9 +1,6 @@
 package DistributedSolution.Communication.Message;
 
 /**
- * Created by Andre on 11/04/2016.
- */
-/**
  *   Este tipo de dados define uma excepção que é lançada se a mensagem for inválida.
  */
 

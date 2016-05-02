@@ -1,8 +1,5 @@
 package DistributedSolution.Communication;
 
-/**
- * Created by Andre on 11/04/2016.
- */
 import DistributedSolution.Communication.Message.Message;
 import DistributedSolution.Communication.Message.MessageException;
 import DistributedSolution.ServerSide.Bench.BenchInterface;

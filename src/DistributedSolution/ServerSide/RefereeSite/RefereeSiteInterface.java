@@ -6,9 +6,6 @@ import DistributedSolution.Communication.ServerCom;
 import DistributedSolution.Communication.ServerInterface;
 import genclass.GenericIO;
 
-/**
- * Created by Andre on 12/04/2016.
- */
 public class RefereeSiteInterface implements ServerInterface {
 
     private RefereeSiteRemote refereeSiteRemote;
@@ -44,7 +41,7 @@ public class RefereeSiteInterface implements ServerInterface {
                 break;
             case Message.GGAMESNUM:
                 int gamesNum = refereeSiteRemote.getGamesNum();
-                outMessage = new Message(Message.GGAMESNUMR,gamesNum);
+                outMessage = new Message(Message.GGAMESNUMR, gamesNum);
                 break;
             case Message.SREADYFTRIAL:
                 refereeSiteRemote.setReadyForTrial(inMessage.getB());

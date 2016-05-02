@@ -1,8 +1,6 @@
 package DistributedSolution.Communication;
 
-/**
- * Created by Andre on 27/04/2016.
- */
+
 public class CommConst {
     /**
      * Variable that holds the address for the logging server.

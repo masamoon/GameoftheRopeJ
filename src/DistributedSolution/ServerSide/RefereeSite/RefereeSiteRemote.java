@@ -3,9 +3,6 @@ package DistributedSolution.ServerSide.RefereeSite;
 import DistributedSolution.ServerSide.States.RefereeState;
 
 
-/**
- * Created by jonnybel on 3/8/16.
- */
 public class RefereeSiteRemote {
 
     private final int NUMBER_OF_TEAMS = 2;
@@ -93,7 +90,6 @@ public class RefereeSiteRemote {
 
         global.setRefereeState(RefereeState.END_OF_A_GAME);
 
-        //TODO: method in stub for this
         int flagPos = global.getFlagPos();
 
         if(trialNum>= 6){

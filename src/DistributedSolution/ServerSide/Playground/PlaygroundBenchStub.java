@@ -9,13 +9,25 @@ import static java.lang.Thread.sleep;
 
 public class PlaygroundBenchStub {
 
-    public PlaygroundBenchStub(){}
+    /**
+     *  Nome do sistema computacional onde está localizado o servidor
+     *    @serialField serverHostName
+     */
+    private String serverHostName;
 
+    /**
+     *  Número do port de escuta do servidor
+     *    @serialField serverPortNumb
+     */
+    private int serverPortNumb;
 
-
+    public PlaygroundBenchStub(String serverUrl, int portNumb) {
+        this.serverPortNumb = portNumb;
+        this.serverHostName = serverUrl;
+    }
 
     public void setTrialCalled(boolean setTrialCalled){
-        ClientCom con = new ClientCom(CommConst.benchServerName, CommConst.benchServerPort);
+        ClientCom con = new ClientCom(serverHostName, serverPortNumb);
         Message inMessage, outMessage;
         while (!con.open()) // aguarda ligação
         {
@@ -25,7 +37,7 @@ public class PlaygroundBenchStub {
             } catch (InterruptedException e) {
             }
         }
-        outMessage = new Message(Message.STRIALCALLED);
+        outMessage = new Message(Message.STRIALCALLED, setTrialCalled);
         con.writeObject(outMessage);
 
         inMessage = (Message) con.readObject();
@@ -39,7 +51,7 @@ public class PlaygroundBenchStub {
     }
 
     public void wakeBench(){
-        ClientCom con = new ClientCom(CommConst.benchServerName, CommConst.benchServerPort);
+        ClientCom con = new ClientCom(serverHostName, serverPortNumb);
         Message inMessage, outMessage;
         while (!con.open()) // aguarda ligação
         {
@@ -63,7 +75,7 @@ public class PlaygroundBenchStub {
     }
 
     public void setBenchCalled(int teamID, boolean setBenchCalled){
-        ClientCom con = new ClientCom(CommConst.benchServerName, CommConst.benchServerPort);
+        ClientCom con = new ClientCom(serverHostName, serverPortNumb);
         Message inMessage, outMessage;
         while (!con.open()) // aguarda ligação
         {
@@ -73,7 +85,7 @@ public class PlaygroundBenchStub {
             } catch (InterruptedException e) {
             }
         }
-        outMessage = new Message(Message.SBENCHCALLED);
+        outMessage = new Message(Message.SBENCHCALLED, teamID, setBenchCalled);
         con.writeObject(outMessage);
 
         inMessage = (Message) con.readObject();
