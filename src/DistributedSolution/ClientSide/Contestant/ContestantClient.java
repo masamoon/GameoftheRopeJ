@@ -20,7 +20,7 @@ public class ContestantClient {
 
         ContestantBenchStub contestantBenchStub = new ContestantBenchStub(CommConst.benchServerName, CommConst.benchServerPort);
         ContestantPlaygroundStub contestantPlaygroundStub = new ContestantPlaygroundStub(CommConst.playgroundServerName, CommConst.playgroundServerPort);
-        ContestantGlobalStub contestantGlobalStub = new ContestantGlobalStub(CommConst.playgroundServerName, CommConst.playgroundServerPort);
+        ContestantGlobalStub contestantGlobalStub = new ContestantGlobalStub(CommConst.globalServerName, CommConst.globalServerPort);
 
         ArrayList<Contestant> contestants = new ArrayList<>(GameParameters.nContestants*GameParameters.nTeams);
         for(int i = 0; i< GameParameters.nTeams; i++) {

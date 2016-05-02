@@ -4,6 +4,7 @@ import DistributedSolution.Communication.ClientCom;
 import DistributedSolution.Communication.CommConst;
 import DistributedSolution.Communication.Message.Message;
 import DistributedSolution.ServerSide.States.CoachState;
+import DistributedSolution.ServerSide.States.ContestantState;
 import genclass.GenericIO;
 
 import static java.lang.Thread.sleep;
@@ -81,8 +82,31 @@ public class BenchGlobalStub {
         }
 
         con.close ();
+    }
+    public void setContestantState (int contestantID, int teamID, ContestantState state){
+        ClientCom con = new ClientCom(serverHostName, serverPortNumb);
+        Message inMessage, outMessage;
+        while (!con.open()) // aguarda ligação
+        {
+            try {
+                GenericIO.writelnString("connection not open");
+                sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+        outMessage = new Message(Message.SCONTESTANTSTATE,contestantID, teamID,state);
+        con.writeObject(outMessage);
+        inMessage = (Message) con.readObject();
+        if (inMessage.getType () != Message.ACK) {
+            GenericIO.writelnString ("Thread: Tipo inválido! teve: " + inMessage.getType () + " esperava " + Message.ACK);
+            GenericIO.writelnString(inMessage.toString());
+            System.exit(1);
+        }
+
+        con.close ();
 
     }
+
 
     public void setStrength(int contestantID, int teamID, int str ){
         ClientCom con = new ClientCom(serverHostName, serverPortNumb);

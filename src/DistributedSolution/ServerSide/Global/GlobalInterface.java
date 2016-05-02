@@ -99,6 +99,7 @@ public class GlobalInterface implements ServerInterface {
 
             case Message.SREFEREESTATE:
                 globalRemote.setRefereeState(inMessage.getRefereeState());
+                outMessage = new Message(Message.ACK);
                 break;
 
             case Message.GFLAGPOS:
@@ -108,17 +109,17 @@ public class GlobalInterface implements ServerInterface {
 
             case Message.IGAMESNUM:
                 globalRemote.incrementGamesNum();
-                outMessage = new Message(Message.IGAMESNUM);
+                outMessage = new Message(Message.ACK);
                 break;
 
             case Message.RESETFLAGPOS:
                 globalRemote.resetFlagPos();
-                outMessage = new Message(Message.RESETFLAGPOS);
+                outMessage = new Message(Message.ACK);
                 break;
 
             case Message.RESETTRIALNUM:
                 globalRemote.resetTrialNum();
-                outMessage = new Message(Message.RESETTRIALNUM);
+                outMessage = new Message(Message.ACK);
                 break;
 
             default:

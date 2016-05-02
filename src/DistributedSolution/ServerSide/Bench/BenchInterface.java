@@ -72,6 +72,7 @@ public class BenchInterface implements ServerInterface {
                 b = inMessage.getB();
                 teamID = inMessage.getInt1();
                 benchRemote.setBenchCalled(teamID,b);
+                outMessage = new Message(Message.ACK);
                 break;
             default:
                 GenericIO.writelnString("Invalid message type");

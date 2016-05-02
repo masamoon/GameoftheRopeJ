@@ -1,6 +1,7 @@
 package DistributedSolution.ServerSide.Bench;
 
 import DistributedSolution.ServerSide.States.CoachState;
+import DistributedSolution.ServerSide.States.ContestantState;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -121,6 +122,8 @@ public class BenchRemote {
      * @param contestantID contestant's ID
      */
     public synchronized void sitDown(int contestantID, int teamID) {
+
+        global.setContestantState(contestantID, teamID, ContestantState.SIT_AT_THE_BENCH);
 
         this.numSitting++;
 
