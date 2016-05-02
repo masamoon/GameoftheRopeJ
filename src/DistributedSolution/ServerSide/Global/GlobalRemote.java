@@ -52,6 +52,9 @@ public class GlobalRemote {
 
         contestantStates = new ContestantState [NUMBER_OF_TEAMS] [NUMBER_OF_PLAYERS_PER_TEAM];
 
+        team1AtRope = new ArrayList<>();
+        team2AtRope = new ArrayList<>();
+
         for (int i=0; i < NUMBER_OF_TEAMS; i++) {
             for(int j=0; j < NUMBER_OF_PLAYERS_PER_TEAM; j++) {
                 contestantStates [i] [j] = ContestantState.INIT;
