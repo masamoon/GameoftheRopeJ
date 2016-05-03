@@ -84,7 +84,6 @@ public class Contestant extends Thread {
                 contestantPlaygroundStub.done(contestantID, teamID);
             }
         }
-        // TODO: check if playground and/or bench are ready to be killed and kill them if so
     }
 
     /**

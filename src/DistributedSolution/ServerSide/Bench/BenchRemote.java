@@ -49,15 +49,11 @@ public class BenchRemote {
      */
     private int [] [] contestantStrengths;
 
-    /**
-     * true if the contestant strength needs to be updated (on it's object)
-     */
-    private boolean [] [] strUpdate;
-
 
     private final int NUMBER_OF_TEAMS = 2;
     private final int TEAM_SIZE = 5;
 
+    private int terminationSignals;
 
     /**
      *  Constructor for this Shared Region.
@@ -74,18 +70,16 @@ public class BenchRemote {
         this.selectedTeam = new int [] [] {{-1,-1,-1} , {-1,-1,-1}};
 
         this.contestantStrengths = new int [NUMBER_OF_TEAMS] [TEAM_SIZE];
-        this.strUpdate = new boolean[NUMBER_OF_TEAMS] [TEAM_SIZE];
+
+        terminationSignals = 0;
     }
 
     public synchronized void reviewNotes (int teamID){
-
         if(refereeSite.getTrialNum()>1){
-
             for(int i = 0; i< TEAM_SIZE; i++){
                 final int finalI = i;
                 boolean contains = IntStream.of(selectedTeam[teamID]).anyMatch(x -> x == finalI);
 
-                strUpdate[teamID][i]=true;
                 if(contains){
                     int str = contestantStrengths[teamID][i];
                     if(str > 0) {
@@ -134,11 +128,6 @@ public class BenchRemote {
         while ((!benchCalled[teamID] || !imSelected(contestantID, teamID)) && global.matchInProgress()){
             try
             {
-                if(strUpdate[teamID][contestantID]){
-                    // contestant updates his strength internally
-                    strUpdate[teamID][contestantID] = false;
-
-                }
                 wait ();
             }
             catch (InterruptedException e) {}
@@ -184,7 +173,7 @@ public class BenchRemote {
 
         selectTeam(teamID, team[0],team[1],team[2]);
 
-        System.out.println("Coach " + teamID + " picked: " + team[0]+team[1]+team[2]);
+        //System.out.println("Coach " + teamID + " picked: " + team[0]+team[1]+team[2]);
 
         benchCalled[teamID] = true;
 
@@ -266,8 +255,16 @@ public class BenchRemote {
 
     public synchronized void setStrength (int contestantID, int teamID, int strength){
         contestantStrengths[teamID][contestantID] = strength;
+        global.setStrength(contestantID, teamID, strength);
     }
     public synchronized int getStrength (int contestantID, int teamID){
         return contestantStrengths[teamID][contestantID];
+    }
+
+    public synchronized void terminate (){
+
+            System.out.println("Bench Terminating...");
+            System.exit(0);
+
     }
 }

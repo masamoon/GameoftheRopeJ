@@ -1,11 +1,16 @@
 package DistributedSolution.ServerSide.Global;
 
+import DistributedSolution.Communication.ClientCom;
+import DistributedSolution.Communication.CommConst;
+import DistributedSolution.Communication.Message.Message;
 import DistributedSolution.ServerSide.States.CoachState;
 import DistributedSolution.ServerSide.States.ContestantState;
 import DistributedSolution.ServerSide.States.RefereeState;
 import genclass.TextFile;
 
 import java.util.ArrayList;
+
+import static java.lang.Thread.sleep;
 
 public class GlobalRemote {
 
@@ -36,8 +41,11 @@ public class GlobalRemote {
     private TextFile f;
     private String path;
 
+    private int terminationSignals;
+
     public GlobalRemote(String path){
 
+        terminationSignals = 0;
         f = new TextFile();
         f.openForWriting(null,"log.txt");
         String opline = "                       Game of the Rope - Description of the internal state";
@@ -52,6 +60,8 @@ public class GlobalRemote {
 
         contestantStates = new ContestantState [NUMBER_OF_TEAMS] [NUMBER_OF_PLAYERS_PER_TEAM];
 
+        contestantStrengths = new int [NUMBER_OF_TEAMS] [NUMBER_OF_PLAYERS_PER_TEAM];
+
         team1AtRope = new ArrayList<>();
         team2AtRope = new ArrayList<>();
 
@@ -60,6 +70,7 @@ public class GlobalRemote {
                 contestantStates [i] [j] = ContestantState.INIT;
             }
         }
+        refereeState = RefereeState.START_OF_THE_MATCH;
 
         coachStates = new CoachState[2];
 
@@ -67,10 +78,9 @@ public class GlobalRemote {
             coachStates[i] = CoachState.INIT;
         }
 
+
+
         this.gamesNum = 0;
-
-
-        contestantStrengths = new int [NUMBER_OF_TEAMS] [NUMBER_OF_PLAYERS_PER_TEAM];
 
         this.flagPos = 0;
         this.matchInProgress = true;
@@ -363,6 +373,51 @@ public class GlobalRemote {
      */
     public void incrementGamesNum() {
         this.gamesNum+=1;
+    }
+
+    public synchronized void terminate (){
+        terminationSignals++;
+        if(terminationSignals==3){
+
+            System.out.println("Global Closing log file and terminating all servers.");
+            f.close();
+            Message outMessage;
+            ClientCom con = new ClientCom(CommConst.playgroundServerName, CommConst.playgroundServerPort);
+            while (!con.open()) {
+                try {
+                    sleep((long) (10));
+                } catch (InterruptedException e) {
+                }
+            }
+            outMessage = new Message(Message.TERMINATE);
+            con.writeObject(outMessage);
+            con.close();
+
+            con = new ClientCom(CommConst.benchServerName, CommConst.benchServerPort);
+            while (!con.open()) {
+                try {
+                    sleep((long) (10));
+                } catch (InterruptedException e) {
+                }
+            }
+            outMessage = new Message(Message.TERMINATE);
+            con.writeObject(outMessage);
+            con.close();
+
+            con = new ClientCom(CommConst.refereeSiteServerName, CommConst.refereeSiteServerPort);
+            while (!con.open()) {
+                try {
+                    sleep((long) (10));
+                } catch (InterruptedException e) {
+                }
+            }
+            outMessage = new Message(Message.TERMINATE);
+            con.writeObject(outMessage);
+            con.close();
+
+            System.out.println("Shutting Down...");
+            System.exit(0);
+        }
     }
 
 }

@@ -270,22 +270,9 @@ public class Bench {
         selectedTeam [teamID] = new int [] {first,second,third};
     }
 
-    public void eraseTeamSelections (){
-        selectedTeam [0] = new int [] {-1,-1,-1};
-        selectedTeam [1] = new int [] {-1,-1,-1};
-    }
-
-    /**
-     * Gets the selected team for a trial
-     * @param teamID team's id
-     * @return selected team for trial
-     */
-    public int[] getSelection(int teamID) {
-        return selectedTeam[teamID];
-    }
-
     public synchronized void setStrength (int contestantID, int teamID, int strength){
         contestantStrengths[teamID][contestantID] = strength;
+        global.setStrength(contestantID, teamID, strength);
     }
 
 

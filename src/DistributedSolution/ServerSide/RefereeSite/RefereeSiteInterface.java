@@ -59,6 +59,9 @@ public class RefereeSiteInterface implements ServerInterface {
                 refereeSiteRemote.waitForBench();
                 outMessage = new Message(Message.ACK);
                 break;
+            case Message.TERMINATE:
+                refereeSiteRemote.terminate();
+                break;
 
             default:
                 GenericIO.writelnString("Invalid message type");

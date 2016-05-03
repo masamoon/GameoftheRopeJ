@@ -1,6 +1,7 @@
 package DistributedSolution.ClientSide.Contestant;
 
 import DistributedSolution.Communication.ClientCom;
+import DistributedSolution.Communication.CommConst;
 import DistributedSolution.Communication.Message.Message;
 import genclass.GenericIO;
 
@@ -99,4 +100,18 @@ public class ContestantBenchStub {
 
         return inMessage.getInt1();
     }
+
+        public void terminate (){
+            Message  outMessage;
+            ClientCom con = new ClientCom(CommConst.benchServerName, CommConst.benchServerPort);
+            while (!con.open()) {
+                try {
+                    sleep((long) (10));
+                } catch (InterruptedException e) {
+                }
+            }
+            outMessage = new Message(Message.TERMINATE);
+            con.writeObject(outMessage);
+            con.close();
+        }
 }

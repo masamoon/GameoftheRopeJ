@@ -98,6 +98,6 @@ public class BenchRefereeSiteStub {
         }
 
         con.close ();
-        return outMessage.getInt1();
+        return inMessage.getInt1();
     }
 }

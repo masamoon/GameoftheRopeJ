@@ -37,19 +37,15 @@ public class RefereeSiteRemote {
      */
     public synchronized void announceGame(){
 
-        // todo: send message back to ref thread with new state
-        //((Referee)Thread.currentThread()).setRefereeState(RefereeState.START_OF_A_GAME);
         global.setRefereeState(RefereeState.START_OF_A_GAME);
 
         gamesNum++;
-        // TODO: method in stub for this
         global.incrementGamesNum();
 
-        // TODO: method in stub for this
         global.resetFlagPos();
 
         trialNum = 0;
-        // TODO: method in stub for this
+
         global.resetTrialNum();
     }
 
@@ -58,8 +54,6 @@ public class RefereeSiteRemote {
      */
     public synchronized void announceMatch(){
 
-        // TODO: send message back to Ref thread to update its state
-        //((Referee)Thread.currentThread()).setRefereeState(RefereeState.START_OF_THE_MATCH);
         global.setRefereeState(RefereeState.START_OF_THE_MATCH);
     }
 
@@ -135,7 +129,7 @@ public class RefereeSiteRemote {
         }
         else if(teamScore[0] < teamScore[1]){
             //team2 takes match
-            global.matchWinnerLine(teamScore[1],teamScore[1],2);
+            global.matchWinnerLine(teamScore[0],teamScore[1],2);
         }
         else{
             //draw
@@ -148,7 +142,7 @@ public class RefereeSiteRemote {
     }
 
     public int getTrialNum() {
-        return trialNum;
+        return this.trialNum;
     }
 
 
@@ -158,5 +152,10 @@ public class RefereeSiteRemote {
      */
     public int getGamesNum() {
         return gamesNum;
+    }
+
+    public void terminate(){
+        System.out.println("RefereeSite Terminating...");
+        System.exit(0);
     }
 }

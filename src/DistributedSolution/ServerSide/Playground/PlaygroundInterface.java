@@ -74,6 +74,9 @@ public class PlaygroundInterface implements ServerInterface {
                 playgroundRemote.assertTrialDecision();
                 outMessage = new Message(Message.ACK);
                 break;
+            case Message.TERMINATE:
+                playgroundRemote.terminate();
+                break;
 
 
 

@@ -1,6 +1,7 @@
 package DistributedSolution.ClientSide.Referee;
 
 import DistributedSolution.Communication.ClientCom;
+import DistributedSolution.Communication.CommConst;
 import DistributedSolution.Communication.Message.Message;
 import genclass.GenericIO;
 
@@ -96,6 +97,20 @@ public class RefereePlaygroundStub {
         }
 
         con.close ();
+    }
+    public void terminate(){
+
+        Message  outMessage;
+        ClientCom con = new ClientCom(CommConst.playgroundServerName, CommConst.playgroundServerPort);
+        while (!con.open()) {
+            try {
+                sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+        outMessage = new Message(Message.TERMINATE);
+        con.writeObject(outMessage);
+        con.close();
     }
 
 }

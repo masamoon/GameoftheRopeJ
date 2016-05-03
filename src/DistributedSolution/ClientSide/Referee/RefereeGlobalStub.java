@@ -1,8 +1,12 @@
 package DistributedSolution.ClientSide.Referee;
 
 import DistributedSolution.Communication.ClientCom;
+import DistributedSolution.Communication.CommConst;
 import DistributedSolution.Communication.Message.Message;
+import com.sun.deploy.util.SessionState;
 import genclass.GenericIO;
+
+import java.util.Arrays;
 
 import static java.lang.Thread.sleep;
 
@@ -84,5 +88,20 @@ public class RefereeGlobalStub {
         } else {
             return false;
         }
+
+
+    }
+    public void terminate (){
+        Message  outMessage;
+        ClientCom con = new ClientCom(CommConst.globalServerName, CommConst.globalServerPort);
+        while (!con.open()) {
+            try {
+                sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+        outMessage = new Message(Message.TERMINATE);
+        con.writeObject(outMessage);
+        con.close();
     }
 }

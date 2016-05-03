@@ -121,6 +121,9 @@ public class GlobalInterface implements ServerInterface {
                 globalRemote.resetTrialNum();
                 outMessage = new Message(Message.ACK);
                 break;
+            case Message.TERMINATE:
+                globalRemote.terminate();
+                break;
 
             default:
                 GenericIO.writelnString("Invalid message type");

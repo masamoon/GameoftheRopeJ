@@ -44,7 +44,6 @@ public class Referee extends Thread {
     public void run(){
         setRefereeState(RefereeState.START_OF_THE_MATCH);
         refereeRefereeSiteStub.announceMatch();
-        GenericIO.writelnString("match announced ");
         do{
             setRefereeState(RefereeState.START_OF_A_GAME);
             refereeRefereeSiteStub.announceGame();
@@ -66,10 +65,6 @@ public class Referee extends Thread {
         refereeRefereeSiteStub.declareMatchWinner();
 
         System.out.println("END REACHED");
-
-        // TODO: kill referee site
-
-        // TODO: kill global repository
     }
 
     public RefereeState getRefereeState() {

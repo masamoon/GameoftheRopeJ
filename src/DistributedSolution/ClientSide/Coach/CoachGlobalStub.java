@@ -1,6 +1,7 @@
 package DistributedSolution.ClientSide.Coach;
 
 import DistributedSolution.Communication.ClientCom;
+import DistributedSolution.Communication.CommConst;
 import DistributedSolution.Communication.Message.Message;
 import genclass.GenericIO;
 import sun.net.www.content.text.Generic;
@@ -28,11 +29,8 @@ public class CoachGlobalStub {
     }
 
     public boolean matchInProgress(){
-        GenericIO.writelnString("entering match in progress...");
         ClientCom con = new ClientCom(serverHostName, serverPortNumb);
-        GenericIO.writelnString("Client com instantiated");
         Message inMessage, outMessage;
-        GenericIO.writelnString("Checking connection");
         while (!con.open()) // aguarda ligação
         {
             try {
@@ -41,15 +39,10 @@ public class CoachGlobalStub {
             } catch (InterruptedException e) {
             }
         }
-        GenericIO.writelnString("sending message match in progress...");
         outMessage = new Message(Message.MINPROGRESS);
-        GenericIO.writelnString("outcoming message to server (coach): "+outMessage.getType());
         con.writeObject(outMessage);
-        GenericIO.writelnString("wrote message to server (coach): "+outMessage.getType());
 
-//        GenericIO.writelnString("incoming message from server (coach): "+con.readObject().toString());
         inMessage = (Message) con.readObject();
-        GenericIO.writelnString("received message from server (coach): "+inMessage.getType());
         if ((inMessage.getType() != Message.POSITIVE) && (inMessage.getType() != Message.NEGATIVE)) {
             GenericIO.writelnString ("Thread: Tipo inválido! teve: " + inMessage.getType () + " esperava " + Message.NEGATIVE +
                     " ou " + Message.POSITIVE);
@@ -59,14 +52,24 @@ public class CoachGlobalStub {
         con.close ();
 
         if (inMessage.getType() == Message.POSITIVE) {
-            GenericIO.writelnString("exiting match in progress POSITIVE");
             return true;
         } else {
-            GenericIO.writelnString("exiting match in progress NEGATIVE");
             return false;
         }
 
-
+    }
+    public void terminate (){
+        Message  outMessage;
+        ClientCom con = new ClientCom(CommConst.globalServerName, CommConst.globalServerPort);
+        while (!con.open()) {
+            try {
+                sleep((long) (10));
+            } catch (InterruptedException e) {
+            }
+        }
+        outMessage = new Message(Message.TERMINATE);
+        con.writeObject(outMessage);
+        con.close();
     }
 
 

@@ -53,6 +53,8 @@ public class PlaygroundRemote {
      */
     private int [] teamPower;
 
+    private int terminationSignals;
+
     /**
      * Constructor for the PlaygroundRemote
      * @param global
@@ -70,6 +72,8 @@ public class PlaygroundRemote {
         this.trialStatus = -1;
 
         this.teamPower = new int [] {0,0};
+
+        this.terminationSignals = 0;
     }
 
     /**
@@ -250,6 +254,13 @@ public class PlaygroundRemote {
             }
         }
         notifyAll();
+    }
+
+    public synchronized void terminate (){
+
+            System.out.println("Playground Terminating...");
+            System.exit(0);
+
     }
 
 }

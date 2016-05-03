@@ -134,7 +134,7 @@ public class RefereeSite {
         }
         else if(teamScore[0] < teamScore[1]){
             //team2 takes match
-            global.matchWinnerLine(teamScore[1],teamScore[1],2);
+            global.matchWinnerLine(teamScore[0],teamScore[1],2);
         }
         else{
             //draw
