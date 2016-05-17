@@ -1,0 +1,30 @@
+SERVIDORES
+
+Bench
+IP	192.168.8.174
+Port	22410
+
+Playground
+IP	192.168.8.175
+Port	22411
+
+RefereeSite
+IP	192.168.8.176
+Port	22412
+
+Global
+IP	192.168.8.177
+Port	22413
+
+########
+
+CLIENTES
+
+Referee
+IP	192.168.8.171
+
+Contestants
+IP	192.168.8.172
+
+Coaches
+IP	192.168.8.173

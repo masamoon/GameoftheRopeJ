@@ -32,5 +32,7 @@ public class RefereeClient {
 
         // SEND THE TERMINATE MESSAGES
         refereeGlobalStub.terminate();
+
+        System.out.println("Referee Finished");
     }
 }

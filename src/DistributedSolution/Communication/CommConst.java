@@ -2,59 +2,49 @@ package DistributedSolution.Communication;
 
 
 public class CommConst {
-    /**
-     * Variable that holds the address for the logging server.
-     */
-
-    public final static String loggServerName = "localhost";
-
-    /**
-     * Variable that holds the port number for the logging server.
-     */
-    public final static int loggServerPort = 9091;
 
     /**
      * Variable that holds the address for the bench server.
      */
 
-    public final static String benchServerName = "localhost";
+    public final static String benchServerName = "192.168.8.174";
 
     /**
      * Variable that holds the port number for the bench server.
      */
-    public final static int benchServerPort = 9093;
+    public final static int benchServerPort = 22410;
 
     /**
      * Variable that holds the address for the playground server.
      */
 
-    public final static String playgroundServerName = "localhost";
+    public final static String playgroundServerName = "192.168.8.175";
 
     /**
      * Variable that holds the port number for the playground server.
      */
-    public final static int playgroundServerPort = 9095;
+    public final static int playgroundServerPort = 22411;
 
     /**
      * Variable that holds the address for the referee site server.
      */
 
-    public final static String refereeSiteServerName = "localhost";
+    public final static String refereeSiteServerName = "192.168.8.176";
 
     /**
      * Variable that holds the port number for the referee site server.
      */
-    public final static int refereeSiteServerPort = 9097;
+    public final static int refereeSiteServerPort = 22412;
 
     /**
      * Variable that holds the address for the global repository server.
      */
-    public final static String globalServerName ="localhost";
+    public final static String globalServerName ="192.168.8.177";
 
     /**
-     * Variable that holds the port number for the global respository server.
+     * Variable that holds the port number for the global repository server.
      */
-    public final static int globalServerPort = 9099;
+    public final static int globalServerPort = 22413;
 
     /**
      * Variable that holds the timeout value for the server sockets.

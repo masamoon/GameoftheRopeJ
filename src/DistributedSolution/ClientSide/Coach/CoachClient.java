@@ -39,5 +39,7 @@ public class CoachClient {
 
         System.out.println("Sending TERMINATE message to the Global");
         coachGlobalStub.terminate();
+        System.out.println("Coach Client Finished");
+
     }
 }

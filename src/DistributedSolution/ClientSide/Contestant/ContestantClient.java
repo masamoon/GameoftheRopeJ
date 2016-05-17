@@ -42,6 +42,8 @@ public class ContestantClient {
         System.out.println("Sending TERMINATE message to the Global");
         contestantGlobalStub.terminate();
 
+        System.out.println("Contestant Client Finished");
+
 
     }
 }
