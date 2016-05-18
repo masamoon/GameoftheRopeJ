@@ -1,30 +1,35 @@
+CLIENTES
+
+Referee
+sd0402@l040101-ws01
+IP	192.168.8.171
+
+Contestants
+sd0402@l040101-ws02
+IP	192.168.8.172
+
+Coaches
+sd0402@l040101-ws03
+IP	192.168.8.173
+
 SERVIDORES
 
 Bench
+sd0402@l040101-ws04
 IP	192.168.8.174
 Port	22410
 
 Playground
+sd0402@l040101-ws05
 IP	192.168.8.175
 Port	22411
 
 RefereeSite
+sd0402@l040101-ws06
 IP	192.168.8.176
 Port	22412
 
 Global
+sd0402@l040101-ws07
 IP	192.168.8.177
 Port	22413
-
-########
-
-CLIENTES
-
-Referee
-IP	192.168.8.171
-
-Contestants
-IP	192.168.8.172
-
-Coaches
-IP	192.168.8.173

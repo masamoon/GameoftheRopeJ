@@ -17,30 +17,9 @@ public class Message  implements Serializable{
     private static final long serialVersionUID = 1L;
 
 
-    /**
-     *
-     */
-
-
-    /**
-     *
-     */
-
-
-    private int id;
-
-    private int team1, team2, team3;
 
     private int int1,int2,int3,int4;
 
-
-
-    private int contestantID;
-
-
-    private int score;
-
-    private int gamesNum;
 
     private boolean b;
 
@@ -49,25 +28,6 @@ public class Message  implements Serializable{
     private int type = -1;
 
     String fname = null;
-
-    private int portNumBench;
-
-    private String serverUrlBench;
-
-    private int portNumPlayground;
-
-    private String serverUrlPlayground;
-
-    private int portNumRSite;
-
-    private String serverUrlRSite;
-
-    private int portNumGlobal;
-
-    private int strength;
-
-    private int trialNum;
-
 
 
     private String serverUrlGlobal;
@@ -175,9 +135,14 @@ public class Message  implements Serializable{
     public static final int SDOWN = 8;
 
 
+    /**
+     *  Set strength of contestant at the bench
+     */
     public static final int SSTRENGTHB = 19;
 
-
+    /**
+     * get the contestant strength from the bench
+     */
     public static final int GSTRENGTHB = 47;
     /**
      * CONTESTANT - PLAYGROUND
@@ -553,137 +518,6 @@ public class Message  implements Serializable{
         this.int3 = int3;
     }
 
-
-    /**
-     *
-     * @return portNumBench Bench's server port number
-     */
-    public int getPortNumBench() {
-        return portNumBench;
-    }
-
-    /**
-     *
-     * @param portNumBench Bench's server port number
-     */
-    public void setPortNumBench(int portNumBench) {
-        this.portNumBench = portNumBench;
-    }
-
-    /**
-     *
-     * @return Bench's server server URL
-     */
-    public String getServerUrlBench() {
-        return serverUrlBench;
-    }
-
-    /**
-     *
-     * @param serverUrlBench Bench's server server URL
-     */
-    public void setServerUrlBench(String serverUrlBench) {
-        this.serverUrlBench = serverUrlBench;
-    }
-
-    /**
-     *
-     * @return Playground's server port number
-     */
-    public int getPortNumPlayground() {
-        return portNumPlayground;
-    }
-
-    /**
-     *
-     * @param portNumPlayground Playground's server port number
-     */
-    public void setPortNumPlayground(int portNumPlayground) {
-        this.portNumPlayground = portNumPlayground;
-    }
-
-    /**
-     *
-     * @return Playground's server server URL
-     */
-    public String getServerUrlPlayground() {
-        return serverUrlPlayground;
-    }
-
-    /**
-     *
-     * @param serverUrlPlayground Playground's server server URL
-     */
-    public void setServerUrlPlayground(String serverUrlPlayground) {
-        this.serverUrlPlayground = serverUrlPlayground;
-    }
-
-
-
-    /**
-     *
-     * @return RefereeSite's server port number
-     */
-    public int getPortNumRSite() {
-        return portNumRSite;
-    }
-
-    /**
-     *
-     * @param portNumRSite RefereeSite's server port number
-     */
-    public void setPortNumRSite(int portNumRSite) {
-        this.portNumRSite = portNumRSite;
-    }
-
-    /**
-     *
-     * @return RefereeSite's server URL
-     */
-    public String getServerUrlRSite() {
-        return serverUrlRSite;
-    }
-
-    /**
-     *
-     * @param serverUrlRSite RefereeSite's server URL
-     */
-    public void setServerUrlRSite(String serverUrlRSite) {
-        this.serverUrlRSite = serverUrlRSite;
-    }
-
-    /**
-     *
-     * @return global respository's server port number
-     */
-    public int getPortNumGlobal() {
-        return portNumGlobal;
-    }
-
-    /**
-     *
-     * @param portNumGlobal global respository's server port number
-     */
-    public void setPortNumGlobal(int portNumGlobal) {
-        this.portNumGlobal = portNumGlobal;
-    }
-
-    /**
-     *
-     * @return global respository's server URL
-     */
-    public String getServerUrlGlobal() {
-        return serverUrlGlobal;
-    }
-
-    /**
-     *
-     * @param serverUrlGlobal global respository's server URL
-     */
-    public void setServerUrlGlobal(String serverUrlGlobal) {
-        this.serverUrlGlobal = serverUrlGlobal;
-    }
-
     /**
      *
      * @return
@@ -724,22 +558,6 @@ public class Message  implements Serializable{
      */
     public CoachState getCoachState() {
         return coachState;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public int getGamesNum() {
-        return gamesNum;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public int getTrialNum() {
-        return trialNum;
     }
 
 
