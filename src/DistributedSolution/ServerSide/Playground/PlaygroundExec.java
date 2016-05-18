@@ -31,7 +31,7 @@ public class PlaygroundExec {
             //scon.setTimeout(500);
             try {
                 sconi = scon.accept();                         // entrada em processo de escuta
-                cliProxy = new ClientProxy(scon, sconi, playgroundInterface);    // lançamento do agente prestador do serviço
+                cliProxy = new ClientProxy(sconi, playgroundInterface);    // lançamento do agente prestador do serviço
                 cliProxy.start();
             } catch (Exception e) {
                 System.exit(0);

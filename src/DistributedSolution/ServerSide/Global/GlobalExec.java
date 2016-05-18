@@ -26,7 +26,7 @@ public class GlobalExec {
             //scon.setTimeout(500);
             try {
                 sconi = scon.accept();                         // entrada em processo de escuta
-                cliProxy = new ClientProxy(scon, sconi, globalInterface);    // lançamento do agente prestador do serviço
+                cliProxy = new ClientProxy(sconi, globalInterface);    // lançamento do agente prestador do serviço
                 cliProxy.start();
                 System.out.println("Server is listening.");
             } catch (Exception e) {

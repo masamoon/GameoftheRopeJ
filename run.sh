@@ -29,7 +29,7 @@ echo "Waiting for the simulation to finish..."
 
 wait $logReady
 echo "Simulation Finished! Fetching the log file to the local directory and displaying on this terminal:"
-sleep 1
+sleep 3
 
 sshpass -p fortykk3ks scp sd0402@l040101-ws07.ua.pt:log.txt .
 cat log.txt

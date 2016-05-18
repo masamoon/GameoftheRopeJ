@@ -56,7 +56,7 @@ public class ClientProxy extends Thread
      * @param serverInterface
      */
 
-    public ClientProxy (ServerCom scon ,ServerCom sconi, ServerInterface serverInterface)
+    public ClientProxy (ServerCom sconi, ServerInterface serverInterface)
     {
         super ("Proxy_" + getProxyId ());
 
