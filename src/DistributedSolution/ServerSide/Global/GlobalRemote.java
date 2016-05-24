@@ -14,10 +14,11 @@ import static java.lang.Thread.sleep;
 
 public class GlobalRemote {
 
-
     private final int NUMBER_OF_TEAMS = 2;
     private final int NUMBER_OF_PLAYERS_PER_TEAM = 5;
 
+    private final String header = "Ref Coa1 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5 Coa2 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5      Trial\n" +
+                                  "Sta Stat Sta SG Sta SG Sta SG Sta SG Sta SG Stat Sta SG Sta SG Sta SG Sta SG Sta SG 3 2 1 . 1 2 3 NB PS";
     private int gamesNum;
 
     private int [] [] contestantStrengths;
@@ -29,7 +30,7 @@ public class GlobalRemote {
     private CoachState coachStates [];
 
 
-    private ArrayList<Integer> team1AtRope;
+    private ArrayList <Integer> team1AtRope;
     private ArrayList <Integer> team2AtRope;
 
     private int flagPos;
@@ -48,13 +49,10 @@ public class GlobalRemote {
         terminationSignals = 0;
         f = new TextFile();
         f.openForWriting(null,"log.txt");
-        String opline = "                       Game of the Rope - Description of the internal state";
-        String str =  "Ref Coa1 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5 Coa2 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5      Trial";
-        String str2 = "Sta Stat Sta SG Sta SG Sta SG Sta SG Sta SG Stat Sta SG Sta SG Sta SG Sta SG Sta SG 3 2 1 . 1 2 3 NB PS";
-        f.writelnString(opline);
+        String title = "                       Game of the Rope - Description of the internal state";
+        f.writelnString(title);
         f.writelnString("");
-        f.writelnString(str);
-        f.writelnString(str2);
+        f.writelnString(header);
 
         this.path = path;
 
@@ -151,7 +149,6 @@ public class GlobalRemote {
                 selection2.append("- ");
             }
         }
-
         String line = ref_state +" " + coach_state_1+" " +  team1.toString() + coach_state_2 + " "+ team2.toString()
                 +selection1.toString() +". "+selection2.toString() + " " + trial_no+"  " + flagPos;
 
@@ -183,6 +180,7 @@ public class GlobalRemote {
      */
     public synchronized void gameWinnerLinePoints(int nteam){
         f.writelnString("Game "+gamesNum+" was won by team "+nteam+" by points in "+trialNum+" trials.\n");
+        f.writelnString(header);
     }
 
     /**
@@ -191,6 +189,7 @@ public class GlobalRemote {
      */
     public synchronized void gameWinnerLineKO(int nteam){
         f.writelnString("Game "+gamesNum+" was won by team "+nteam+" by knock-out in "+trialNum+" trials.\n");
+        f.writelnString(header);
     }
 
     /**
@@ -198,6 +197,7 @@ public class GlobalRemote {
      */
     public void gameTieLine(){
         f.writelnString("Game was a draw.\n");
+        f.writelnString(header);
     }
 
     /**
@@ -380,7 +380,8 @@ public class GlobalRemote {
         if(terminationSignals==3){
 
             System.out.println("Global Closing log file and terminating all servers.");
-            f.close();
+            closeFile();
+
             Message outMessage;
             ClientCom con = new ClientCom(CommConst.playgroundServerName, CommConst.playgroundServerPort);
             while (!con.open()) {
