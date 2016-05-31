@@ -1,10 +1,12 @@
-package Nondistributedsolution.Monitors;
+package RMISolution.Bench;
 
-
-import Nondistributedsolution.Coach.Coach;
-import Nondistributedsolution.Coach.CoachState;
-import Nondistributedsolution.Contestant.Contestant;
-import Nondistributedsolution.Contestant.ContestantState;
+import RMISolution.Coach.CoachState;
+import RMISolution.Global.Global;
+import RMISolution.RefereeSite.RefereeSite;
+import RMISolution.Coach.Coach;
+import RMISolution.Coach.CoachState;
+import RMISolution.Contestant.Contestant;
+import RMISolution.Contestant.ContestantState;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -12,7 +14,7 @@ import java.util.Random;
 import java.util.stream.IntStream;
 
 /**
- * This Class implements the shared region for the BenchRemote, with synchronization based on monitors
+ * Created by jonnybel on 5/31/16.
  */
 public class Bench {
 
@@ -198,7 +200,6 @@ public class Bench {
 
     /**
      *  This method is used by the Referee in two occasions: when calling a trial to wake contestants and coach OR at the end of the match to free the contestants that stayed on the bench for the last trial.
-     *  @see Playground#assertTrialDecision()
      */
     public synchronized void wakeBench(){
         notifyAll();
@@ -273,6 +274,4 @@ public class Bench {
         contestantStrengths[teamID][contestantID] = strength;
         global.setStrength(contestantID, teamID, strength);
     }
-
-
 }

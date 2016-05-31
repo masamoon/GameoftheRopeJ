@@ -1,14 +1,13 @@
-package Nondistributedsolution.Coach;
+package RMISolution.Coach;
 
-
-import Nondistributedsolution.Monitors.Bench;
-import Nondistributedsolution.Monitors.Global;
-import Nondistributedsolution.Monitors.Playground;
+import RMISolution.Bench.Bench;
+import RMISolution.Global.Global;
+import RMISolution.Playground.Playground;
 
 /**
- * Created by jonnybel on 3/8/16.
+ * Created by jonnybel on 5/31/16.
  */
-public class Coach extends Thread{
+public class Coach extends Thread {
 
     /**
      * Team ID of this Coach: either 0 (team1) or 1 (team2);
