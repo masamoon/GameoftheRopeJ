@@ -6,6 +6,7 @@ import Nondistributedsolution.Referee.RefereeState;
 import genclass.TextFile;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 
 public class Global {
@@ -164,6 +165,17 @@ public class Global {
     }
 
     public synchronized void gameWinnerLinePoints(int nteam){
+        Iterator<Integer> it = team1AtRope.iterator();
+        while(it.hasNext()){
+            it.remove();
+            insertLine();
+        }
+        it = team2AtRope.iterator();
+        while(it.hasNext()){
+            it.remove();
+            insertLine();
+        }
+
         f.writelnString("Game "+gamesNum+" was won by team "+nteam+" by points in "+trialNum+" trials.\n");
         f.writelnString(header);
     }
@@ -173,6 +185,17 @@ public class Global {
      * @param nteam winner team
      */
     public synchronized void gameWinnerLineKO(int nteam){
+        Iterator<Integer> it = team1AtRope.iterator();
+        while(it.hasNext()){
+            it.remove();
+            insertLine();
+        }
+        it = team2AtRope.iterator();
+        while(it.hasNext()){
+            it.remove();
+            insertLine();
+        }
+
         f.writelnString("Game "+gamesNum+" was won by team "+nteam+" by knock-out in "+trialNum+" trials.\n");
         f.writelnString(header);
     }
@@ -181,6 +204,17 @@ public class Global {
      *writes line on log file indicating a draw game
      */
     public void gameTieLine(){
+        Iterator<Integer> it = team1AtRope.iterator();
+        while(it.hasNext()){
+            it.remove();
+            insertLine();
+        }
+        it = team2AtRope.iterator();
+        while(it.hasNext()){
+            it.remove();
+            insertLine();
+        }
+
         f.writelnString("Game was a draw.\n");
         f.writelnString(header);
     }
@@ -196,10 +230,12 @@ public class Global {
 
     public synchronized void leaveRope (int contestantID, int teamID)
     {
-        if(teamID==0) team1AtRope.remove(team1AtRope.indexOf(contestantID));
-        if(teamID==1) team2AtRope.remove(team2AtRope.indexOf(contestantID));
+        if(!gameFinished()) {
+            if (teamID == 0) team1AtRope.remove(team1AtRope.indexOf(contestantID));
+            if (teamID == 1) team2AtRope.remove(team2AtRope.indexOf(contestantID));
 
-        if(!gameFinished()) insertLine();
+            insertLine();
+        }
     }
 
     /**
@@ -254,7 +290,7 @@ public class Global {
         return this.contestantStates[teamID][contestantID];
     }
 
-    /** set a new state for the Referee
+    /** set a new state for the RefereeThread
      @param state referee's state to be updated to
       * */
     public synchronized void setRefereeState (RefereeState state){
@@ -265,14 +301,14 @@ public class Global {
 
     /**
      * get referee State
-     * @return current Referee's State
+     * @return current RefereeThread's State
      */
     public synchronized RefereeState getRefereeState (){
         return this.refereeState;
     }
 
     /**
-     * set Coach State to new state
+     * set CoachThread State to new state
      * @param teamID team's id
      * @param state coach's state to be updated to
      */
@@ -292,7 +328,7 @@ public class Global {
     }
     /**
      * Get a contestant's current strength level
-     * @param id Contestant's id
+     * @param id ContestantThread's id
      * @param teamID team's id
      * @return the strength of this contestant
      */
@@ -303,7 +339,7 @@ public class Global {
 
     /**
      * Set a contestant's strength level
-     * @param id Contestant's id
+     * @param id ContestantThread's id
      * @param teamID team's id
      * @param str the strength of this contestant to bet set
      */

@@ -1,19 +1,23 @@
-package RMISolution.Coach;
+package RMISolution.Common.EntityStates;
+
+/**
+ * Created by jonnybel on 5/31/16.
+ */
+public enum ContestantState {
 
 
-public enum CoachState {
+    INIT("   "),
 
-    INIT("    "),
+    SIT_AT_THE_BENCH("SIT"),
 
-    WAIT_FOR_REFEREE_COMMAND("WFRC"),
+    STAND_IN_POSITION("POS"),
 
-    ASSEMBLE_TEAM("ASMT"),
+    DO_YOUR_BEST("DYB");
 
-    WATCH_TRIAL("WTRL");
 
     private final String acronym;
 
-    private CoachState(String acronym)
+    private ContestantState(String acronym)
     {
         this.acronym = acronym;
     }
@@ -27,3 +31,4 @@ public enum CoachState {
         return acronym;
     }
 }
+

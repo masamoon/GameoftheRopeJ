@@ -76,7 +76,7 @@ public class Playground {
     }
 
     /**
-     *  Referee calls a trial
+     *  RefereeThread calls a trial
      */
     public synchronized void callTrial(){
 
@@ -106,7 +106,7 @@ public class Playground {
     }
 
     /**
-     * Coach waits for his selected team to be standing in position
+     * CoachThread waits for his selected team to be standing in position
      * @param teamID coach's teamID
      */
     public synchronized void waitForContestants(int teamID){
@@ -124,7 +124,7 @@ public class Playground {
     }
 
     /**
-     * Contestant stands in position and waits for the trial to start
+     * ContestantThread stands in position and waits for the trial to start
      * If he is the 3rd contestant of his team to get ready, he wakes the Coaches.
      * @param contestantID contestant's ID
      * @param teamID contestant's team ID
@@ -150,7 +150,7 @@ public class Playground {
     }
 
     /**
-     * Coach informs Referee of the readiness of his team and waits for the trial to end.
+     * CoachThread informs RefereeThread of the readiness of his team and waits for the trial to end.
      * @param teamID team's ID
      */
 
@@ -191,7 +191,7 @@ public class Playground {
 
 
     /**
-     * Contestant changes his state to Do_Your_Best before pulling the rope
+     * ContestantThread changes his state to Do_Your_Best before pulling the rope
      */
     public synchronized  void getReady(int contestantID, int teamID, int strength) {
 
@@ -224,7 +224,7 @@ public class Playground {
     }
 
     /**
-     *   Referee decides who's the winner based on the total strength of both teams.
+     *   RefereeThread decides who's the winner based on the total strength of both teams.
      *   He also checks if the game has been finished and if so he checks if the Match is finished.
      *
      */

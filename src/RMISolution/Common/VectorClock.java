@@ -1,4 +1,4 @@
-package RMISolution;
+package RMISolution.Common;
 
 import java.io.Serializable;
 
@@ -41,25 +41,26 @@ public class VectorClock implements Cloneable, Serializable{
      *  Updates the vector clock
      * @param vector new vector clock object to update to
      */
-    public synchronized void update(VectorClock vector)
+    public synchronized VectorClock update(VectorClock vector)
     {
         for(int i = 0; i < vector.timeStamp.length; i++){
             timeStamp[i] = Math.max(this.timeStamp[i], vector.timeStamp[i]);
         }
+        return getCopy();
     }
 
     /**
      * Gets a full copy (object clone) of the vector clock object
      * @return the clone of the vector clock
-     * @throws java.lang.CloneNotSupportedException
      */
-    public synchronized VectorClock getCopy() throws CloneNotSupportedException
+    public synchronized VectorClock getCopy()
     {
-        VectorClock copy = (VectorClock) super.clone();
-
-        copy.localIndex = localIndex;
-        copy.timeStamp = timeStamp.clone();
-
+        VectorClock copy = null;
+        try {
+            copy = (VectorClock) this.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
         return copy;
     }
 

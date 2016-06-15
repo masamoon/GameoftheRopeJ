@@ -32,7 +32,7 @@ public class Bench {
     private int numSitting;
 
     /**
-     * True if a new trial has been called by the Referee
+     * True if a new trial has been called by the RefereeThread
      */
     private boolean trialCalled;
 
@@ -117,8 +117,8 @@ public class Bench {
 
 
     /**
-     * The Contestant sits on the bench. He changes its state to to SIT_AT_THE_BENCH and waits until he is called by the coach.
-     * When the last contestant (the 10th) sits, he enables a flag to signal this event and notifies the Referee at the PlaygroundRemote so that a trial can be called.
+     * The ContestantThread sits on the bench. He changes its state to to SIT_AT_THE_BENCH and waits until he is called by the coach.
+     * When the last contestant (the 10th) sits, he enables a flag to signal this event and notifies the RefereeThread at the PlaygroundRemote so that a trial can be called.
      * The conditions for the contestant to leave his waiting cycle are: a trial being called AND being selected by the coach of his team. He is also freed from the waiting cycle if the match has been finished.
      *
      * @param teamID Team ID the contestant
@@ -172,7 +172,7 @@ public class Bench {
     /**
      *  Call contestants for the next trial based on a selection.
      *  He makes a selection and notifies the BenchRemote.
-     * @param teamID Team of the Coach
+     * @param teamID Team of the CoachThread
      *
      */
     public synchronized void callContestants (int teamID){
@@ -181,7 +181,7 @@ public class Bench {
         int strategy = r.nextInt(2);
 
         int team[];
-        //System.out.println("Coach from team " + teamID + " rolled the strategy: "+strategy);
+        //System.out.println("CoachThread from team " + teamID + " rolled the strategy: "+strategy);
         if(strategy == 0)
             team = selectRandom();
         else
@@ -189,7 +189,7 @@ public class Bench {
 
         selectTeam(teamID, team[0],team[1],team[2]);
 
-        System.out.println("Coach " + teamID + " picked: " + team[0]+team[1]+team[2]);
+        System.out.println("CoachThread " + teamID + " picked: " + team[0]+team[1]+team[2]);
 
         benchCalled[teamID] = true;
 
@@ -197,7 +197,7 @@ public class Bench {
     }
 
     /**
-     *  This method is used by the Referee in two occasions: when calling a trial to wake contestants and coach OR at the end of the match to free the contestants that stayed on the bench for the last trial.
+     *  This method is used by the RefereeThread in two occasions: when calling a trial to wake contestants and coach OR at the end of the match to free the contestants that stayed on the bench for the last trial.
      *  @see Playground#assertTrialDecision()
      */
     public synchronized void wakeBench(){

@@ -59,21 +59,21 @@ public class Gameoftherope {
             referee.join();
         }
         catch (InterruptedException e) {}
-        GenericIO.writelnString ("Referee Finished.");
+        GenericIO.writelnString ("RefereeThread Finished.");
 
         try
         {
             coach_t1.join();
         }
         catch (InterruptedException e) {}
-        GenericIO.writelnString ("Coach from Team 1 Finished.");
+        GenericIO.writelnString ("CoachThread from Team 1 Finished.");
 
         try
         {
             coach_t2.join();
         }
         catch (InterruptedException e) {}
-        GenericIO.writelnString ("Coach from Team 1 Finished.");
+        GenericIO.writelnString ("CoachThread from Team 1 Finished.");
 
         GenericIO.writelnString ();
         for (int i = 0; i < 5; i++)
@@ -82,7 +82,7 @@ public class Gameoftherope {
                 contestants_t1[i].join();
             }
             catch (InterruptedException e) {}
-            GenericIO.writelnString ("Contestant " + i + " from Team 1 Finished.");
+            GenericIO.writelnString ("ContestantThread " + i + " from Team 1 Finished.");
         }
         for (int i = 0; i < 5; i++)
         {
@@ -90,7 +90,7 @@ public class Gameoftherope {
                 contestants_t2[i].join();
             }
             catch (InterruptedException e) {}
-            GenericIO.writelnString ("Contestant " + i + " from Team 2 has Finished.");
+            GenericIO.writelnString ("ContestantThread " + i + " from Team 2 has Finished.");
         }
 
         GenericIO.writelnString ();

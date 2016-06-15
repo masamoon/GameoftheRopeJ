@@ -113,7 +113,7 @@ public class ClientProxy extends Thread
         int proxyId;                                         // identificador da instanciação
 
         try
-        { cl = (Class<ClientProxy>) Class.forName ("DistributedSolution.Communication.ClientProxy");
+        { cl = (Class<ClientProxy>) Class.forName ("DistributedSolution.Common.ClientProxy");
         }
         catch (ClassNotFoundException e)
         { GenericIO.writelnString ("O tipo de dados ClientProxy não foi encontrado!");

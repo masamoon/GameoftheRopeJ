@@ -1,14 +1,17 @@
-package RMISolution.Playground;
+package RMISolution.ServerSide.Playground;
 
-import RMISolution.Bench.Bench;
-import RMISolution.Global.Global;
-import RMISolution.RefereeSite.RefereeSite;
-import RMISolution.Referee.Referee;
-import RMISolution.Referee.RefereeState;
-import RMISolution.Contestant.Contestant;
-import RMISolution.Contestant.ContestantState;
-import RMISolution.Coach.Coach;
-import RMISolution.Coach.CoachState;
+import RMISolution.Common.VectorClock;
+import RMISolution.Interfaces.BenchInterface;
+import RMISolution.Interfaces.GlobalInterface;
+import RMISolution.Interfaces.RefereeSiteInterface;
+import RMISolution.ServerSide.Global.Global;
+import RMISolution.ServerSide.RefereeSite.RefereeSite;
+import RMISolution.Common.EntityStates.RefereeState;
+import RMISolution.Common.EntityStates.ContestantState;
+import RMISolution.Common.EntityStates.CoachState;
+import RMISolution.ServerSide.Bench.Bench;
+
+import java.rmi.RemoteException;
 
 /**
  * Created by jonnybel on 5/31/16.
@@ -19,13 +22,13 @@ public class Playground {
     /**
      *  General Information Repository object
      */
-    private final Global global;
+    private final GlobalInterface global;
 
     /**
      */
-    private final Bench bench;
+    private final BenchInterface bench;
 
-    private final RefereeSite refereeSite;
+    private final RefereeSiteInterface refereeSite;
 
     /**
      * Number of complete teams that are standing in position (from 0 to 2)
@@ -60,7 +63,7 @@ public class Playground {
      * Constructor for the PlaygroundRemote
      * @param global
      */
-    public Playground( Global global, Bench bench, RefereeSite refereeSite){
+    public Playground( GlobalInterface global, BenchInterface bench, RefereeSiteInterface refereeSite){
         this.global = global;
         this.bench = bench;
         this.refereeSite = refereeSite;
@@ -76,12 +79,12 @@ public class Playground {
     }
 
     /**
-     *  Referee calls a trial
+     *  RefereeThread calls a trial
      */
-    public synchronized void callTrial(){
+    public synchronized void callTrial(VectorClock vc) throws RemoteException{
 
-        ((Referee)Thread.currentThread()).setRefereeState(RefereeState.TEAMS_READY);
-        global.setRefereeState(RefereeState.TEAMS_READY);
+        //((RefereeThread)Thread.currentThread()).setRefereeState(RefereeState.TEAMS_READY);
+        global.setRefereeState(vc, RefereeState.TEAMS_READY);
 
         teamsReady=0;
         contestantsDone=0;
@@ -106,13 +109,13 @@ public class Playground {
     }
 
     /**
-     * Coach waits for his selected team to be standing in position
+     * CoachThread waits for his selected team to be standing in position
      * @param teamID coach's teamID
      */
-    public synchronized void waitForContestants(int teamID){
+    public synchronized void waitForContestants(VectorClock vc, int teamID) throws RemoteException{
 
-        ((Coach)Thread.currentThread()).setCoachState(CoachState.ASSEMBLE_TEAM);
-        global.setCoachState(teamID, CoachState.ASSEMBLE_TEAM);
+        //((CoachThread)Thread.currentThread()).setCoachState(CoachState.ASSEMBLE_TEAM);
+        global.setCoachState(vc, teamID, CoachState.ASSEMBLE_TEAM);
 
         while(standingInPosition[teamID]<3){
             try
@@ -124,15 +127,15 @@ public class Playground {
     }
 
     /**
-     * Contestant stands in position and waits for the trial to start
+     * ContestantThread stands in position and waits for the trial to start
      * If he is the 3rd contestant of his team to get ready, he wakes the Coaches.
      * @param contestantID contestant's ID
      * @param teamID contestant's team ID
      */
-    public synchronized void followCoachAdvice (int contestantID, int teamID) {
+    public synchronized void followCoachAdvice (VectorClock vc, int contestantID, int teamID) throws RemoteException{
 
-        ((Contestant)Thread.currentThread()).setContestantState(ContestantState.STAND_IN_POSITION);
-        global.setContestantState(contestantID, teamID, ContestantState.STAND_IN_POSITION);
+        //((ContestantThread)Thread.currentThread()).setContestantState(ContestantState.STAND_IN_POSITION);
+        global.setContestantState(vc, contestantID, teamID, ContestantState.STAND_IN_POSITION);
         standingInPosition[teamID] +=1;
 
         System.out.println("contestant " + contestantID + " from team " + teamID + " standing, total standing: " + standingInPosition[teamID]);
@@ -150,14 +153,14 @@ public class Playground {
     }
 
     /**
-     * Coach informs Referee of the readiness of his team and waits for the trial to end.
+     * CoachThread informs RefereeThread of the readiness of his team and waits for the trial to end.
      * @param teamID team's ID
      */
 
-    public synchronized void informReferee(int teamID){
+    public synchronized void informReferee (VectorClock vc, int teamID) throws RemoteException{
 
-        ((Coach)Thread.currentThread()).setCoachState(CoachState.WATCH_TRIAL);
-        global.setCoachState(teamID, CoachState.WATCH_TRIAL);
+        //((CoachThread)Thread.currentThread()).setCoachState(CoachState.WATCH_TRIAL);
+        global.setCoachState(vc, teamID, CoachState.WATCH_TRIAL);
 
         bench.setBenchCalled(teamID, false);
 
@@ -178,10 +181,10 @@ public class Playground {
     /**
      *   Waits for both the teams to be ready and begins the trial
      */
-    public synchronized  void startTrial(){
+    public synchronized  void startTrial(VectorClock vc) throws RemoteException{
 
-        ((Referee)Thread.currentThread()).setRefereeState(RefereeState.WAIT_FOR_TRIAL_CONCLUSION);
-        global.setRefereeState(RefereeState.WAIT_FOR_TRIAL_CONCLUSION);
+        //((RefereeThread)Thread.currentThread()).setRefereeState(RefereeState.WAIT_FOR_TRIAL_CONCLUSION);
+        global.setRefereeState(vc, RefereeState.WAIT_FOR_TRIAL_CONCLUSION);
 
         bench.setTrialCalled(false);
         trialStatus=1;
@@ -191,12 +194,12 @@ public class Playground {
 
 
     /**
-     * Contestant changes his state to Do_Your_Best before pulling the rope
+     * ContestantThread changes his state to Do_Your_Best before pulling the rope
      */
-    public synchronized  void getReady(int contestantID, int teamID, int strength) {
+    public synchronized  void getReady(VectorClock vc, int contestantID, int teamID, int strength) throws RemoteException{
 
-        ((Contestant)Thread.currentThread()).setContestantState(ContestantState.DO_YOUR_BEST);
-        global.setContestantState(contestantID, teamID, ContestantState.DO_YOUR_BEST);
+        //((ContestantThread)Thread.currentThread()).setContestantState(ContestantState.DO_YOUR_BEST);
+        global.setContestantState(vc, contestantID, teamID, ContestantState.DO_YOUR_BEST);
 
         teamPower[teamID] += strength;
     }
@@ -206,7 +209,7 @@ public class Playground {
      * The last contestant to finish pulling the rope wakes the referee
      * @param teamID team's id
      */
-    public synchronized void done(int contestantID, int teamID){
+    public synchronized VectorClock done(VectorClock vc, int contestantID, int teamID) throws RemoteException{
 
         contestantsDone++;
         if(contestantsDone==6) {
@@ -220,15 +223,17 @@ public class Playground {
         }
 
         standingInPosition[teamID] -=1;
-        global.leaveRope(contestantID, teamID);
+        VectorClock tmp = global.leaveRope(vc, contestantID, teamID);
+
+        return tmp.getCopy();
     }
 
     /**
-     *   Referee decides who's the winner based on the total strength of both teams.
+     *   RefereeThread decides who's the winner based on the total strength of both teams.
      *   He also checks if the game has been finished and if so he checks if the Match is finished.
      *
      */
-    public synchronized void assertTrialDecision(){
+    public synchronized void assertTrialDecision(VectorClock vc) throws RemoteException{
 
         while(contestantsDone<6){
             try {
@@ -244,7 +249,7 @@ public class Playground {
         else
             decision = 0;
 
-        global.changeFlagPos(decision);
+        global.changeFlagPos(vc, decision);
 
         trialStatus = 2;
 

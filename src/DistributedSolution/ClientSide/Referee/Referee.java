@@ -21,13 +21,13 @@ public class Referee extends Thread {
     private RefereeGlobalStub refereeGlobalStub;
 
     /**
-     * Referee Current State
+     * RefereeThread Current State
      */
     private RefereeState refereeState;
 
 
     /**
-     * Referee Object Constructor
+     * RefereeThread Object Constructor
      * @param refereePlaygroundStub
      * @param refereeRefereeSiteStub
      * @param refereeGlobalStub
@@ -38,7 +38,7 @@ public class Referee extends Thread {
         this.refereeRefereeSiteStub = refereeRefereeSiteStub;
     }
 
-    /** Life Cycle of the Referee Thread
+    /** Life Cycle of the RefereeThread Thread
     */
     @Override
     public void run(){

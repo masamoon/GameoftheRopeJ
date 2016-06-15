@@ -15,7 +15,7 @@ public class Contestant extends Thread {
 
 
     /**
-     * ID of this Contestant
+     * ID of this ContestantThread
      */
     private int contestantID;
 
@@ -40,18 +40,18 @@ public class Contestant extends Thread {
     private Global global;
 
     /**
-     * Strength level of this Contestant
+     * Strength level of this ContestantThread
      */
     private int strength;
 
     /**
-     * Current State of this Contestant
+     * Current State of this ContestantThread
      */
     private ContestantState contestantState;
 
 
     /**
-     * Contestant Object Constructor
+     * ContestantThread Object Constructor
      * @param contestantID
      * @param teamID
      * @param benchMon
@@ -70,7 +70,7 @@ public class Contestant extends Thread {
         this.strength = r.nextInt(6) + 5;
     }
 
-    /** Life Cycle of the Contestant Thread
+    /** Life Cycle of the ContestantThread Thread
      */
     @Override
     public void run() {
@@ -95,7 +95,7 @@ public class Contestant extends Thread {
     }
 
     /**
-     *  Internal function for the Contestant thread where he pulls the rope, sleeping for a randomly generated time interval.
+     *  Internal function for the ContestantThread thread where he pulls the rope, sleeping for a randomly generated time interval.
      */
     private void pullRope ()
     {

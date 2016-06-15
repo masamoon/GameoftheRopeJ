@@ -1,15 +1,16 @@
-package RMISolution.Global;
+package RMISolution.ServerSide.Global;
 
-import RMISolution.Coach.CoachState;
-import RMISolution.Contestant.ContestantState;
-import RMISolution.Referee.RefereeState;
+import RMISolution.Common.EntityStates.CoachState;
+import RMISolution.Common.EntityStates.ContestantState;
+import RMISolution.Common.EntityStates.RefereeState;
+import RMISolution.Common.VectorClock;
 import genclass.TextFile;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.concurrent.TimeUnit;
 
-/**
- * Created by jonnybel on 5/31/16.
- */
 public class Global {
 
     private final int NUMBER_OF_TEAMS = 2;
@@ -40,11 +41,15 @@ public class Global {
     private TextFile f;
     private String path;
 
+    private int terminationSignals;
+
     public Global(String path){
+
+        terminationSignals = 0;
 
         f = new TextFile();
         f.openForWriting(null,"log.txt");
-        String title = "                       Game of the Rope - Description of the internal state";
+        String title = "                                 Game of the Rope - Description of the internal state";
         f.writelnString(title);
         f.writelnString("");
         f.writelnString(header);
@@ -54,7 +59,7 @@ public class Global {
         team1AtRope = new ArrayList<>();
         team2AtRope = new ArrayList<>();
 
-        //refereeState = RefereeState.START_OF_THE_MATCH;
+        refereeState = RefereeState.START_OF_THE_MATCH;
 
         contestantStates = new ContestantState [NUMBER_OF_TEAMS] [NUMBER_OF_PLAYERS_PER_TEAM];
 
@@ -82,7 +87,7 @@ public class Global {
     /**
      * Inserts new line into logger
      */
-    public synchronized void insertLine(){
+    public synchronized void insertLine(VectorClock vc){
 
         String ref_state = getRefereeState().getAcronym();
         String coach_state_1 = getCoachState(0).getAcronym();
@@ -155,6 +160,7 @@ public class Global {
      * @param winner winner team
      */
     public synchronized void matchWinnerLine(int score1, int score2, int winner) {
+
         f.writelnString("Match was won by team " + winner + " (" + score1 + "-" + score2 + ").\n");
     }
 
@@ -162,27 +168,61 @@ public class Global {
      * writes line on log file indicating a draw
      */
     public synchronized void matchTieLine(){
+
         f.writelnString("Match was a draw.\n");
     }
 
-    public synchronized void gameWinnerLinePoints(int nteam){
+    public synchronized void gameWinnerLinePoints(VectorClock vc, int nteam){
+        Iterator<Integer> it = team1AtRope.iterator();
+        while(it.hasNext()){
+            it.remove();
+            insertLine(vc);
+        }
+        it = team2AtRope.iterator();
+        while(it.hasNext()){
+            it.remove();
+            insertLine(vc);
+        }
+
         f.writelnString("Game "+gamesNum+" was won by team "+nteam+" by points in "+trialNum+" trials.\n");
         f.writelnString(header);
     }
 
     /**
-     *writes line on log file indicating a knock-out win by a team
+     * writes line on log file indicating a knock-out win by a team
      * @param nteam winner team
      */
-    public synchronized void gameWinnerLineKO(int nteam){
+    public synchronized void gameWinnerLineKO(VectorClock vc, int nteam){
+        Iterator<Integer> it = team1AtRope.iterator();
+        while(it.hasNext()){
+            it.remove();
+            insertLine(vc);
+        }
+        it = team2AtRope.iterator();
+        while(it.hasNext()){
+            it.remove();
+            insertLine(vc);
+        }
+
         f.writelnString("Game "+gamesNum+" was won by team "+nteam+" by knock-out in "+trialNum+" trials.\n");
         f.writelnString(header);
     }
 
     /**
-     *writes line on log file indicating a draw game
+     * writes line on log file indicating a draw game
      */
-    public void gameTieLine(){
+    public void gameTieLine(VectorClock vc){
+        Iterator<Integer> it = team1AtRope.iterator();
+        while(it.hasNext()){
+            it.remove();
+            insertLine(vc);
+        }
+        it = team2AtRope.iterator();
+        while(it.hasNext()){
+            it.remove();
+            insertLine(vc);
+        }
+
         f.writelnString("Game was a draw.\n");
         f.writelnString(header);
     }
@@ -196,12 +236,15 @@ public class Global {
     }
 
 
-    public synchronized void leaveRope (int contestantID, int teamID)
+    public synchronized void leaveRope (VectorClock vc, int contestantID, int teamID)
     {
-        if(teamID==0) team1AtRope.remove(team1AtRope.indexOf(contestantID));
-        if(teamID==1) team2AtRope.remove(team2AtRope.indexOf(contestantID));
+        if(!gameFinished()) {
+            if (teamID == 0) team1AtRope.remove(team1AtRope.indexOf(contestantID));
+            if (teamID == 1) team2AtRope.remove(team2AtRope.indexOf(contestantID));
 
-        if(!gameFinished()) insertLine();
+            insertLine(vc);
+        }
+        //if(!gameFinished()) insertLine();
     }
 
     /**
@@ -236,13 +279,13 @@ public class Global {
      * @param state contestant's state to be updated to
      *@param teamID team's ID of this contestant
      * */
-    public synchronized void setContestantState (int contestantID, int teamID, ContestantState state){
+    public synchronized void setContestantState (VectorClock vc, int contestantID, int teamID, ContestantState state){
         this.contestantStates[teamID][contestantID] = state;
         if(state == ContestantState.STAND_IN_POSITION){
             if(teamID==0) team1AtRope.add(contestantID);
             if(teamID==1) team2AtRope.add(contestantID);
         }
-        insertLine();
+        insertLine(vc);
     }
 
     /**
@@ -256,31 +299,31 @@ public class Global {
         return this.contestantStates[teamID][contestantID];
     }
 
-    /** set a new state for the Referee
+    /** set a new state for the RefereeThread
      @param state referee's state to be updated to
       * */
-    public synchronized void setRefereeState (RefereeState state){
-        this.refereeState = state;
+    public synchronized void setRefereeState (VectorClock vc, RefereeState state){
 
-        insertLine();
+        this.refereeState = state;
+        insertLine(vc);
     }
 
     /**
      * get referee State
-     * @return current Referee's State
+     * @return current RefereeThread's State
      */
     public synchronized RefereeState getRefereeState (){
         return this.refereeState;
     }
 
     /**
-     * set Coach State to new state
+     * set CoachThread State to new state
      * @param teamID team's id
      * @param state coach's state to be updated to
      */
-    public synchronized void setCoachState (int teamID, CoachState state){
+    public synchronized void setCoachState (VectorClock vc, int teamID, CoachState state){
         this.coachStates[teamID] = state;
-        insertLine();
+        insertLine(vc);
     }
 
     /**
@@ -294,7 +337,7 @@ public class Global {
     }
     /**
      * Get a contestant's current strength level
-     * @param id Contestant's id
+     * @param id ContestantThread's id
      * @param teamID team's id
      * @return the strength of this contestant
      */
@@ -305,7 +348,7 @@ public class Global {
 
     /**
      * Set a contestant's strength level
-     * @param id Contestant's id
+     * @param id ContestantThread's id
      * @param teamID team's id
      * @param str the strength of this contestant to bet set
      */

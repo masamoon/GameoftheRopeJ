@@ -8,7 +8,7 @@ import genclass.GenericIO;
 public class Coach extends Thread{
 
     /**
-     * Team ID of this Coach: either 0 (team1) or 1 (team2);
+     * Team ID of this CoachThread: either 0 (team1) or 1 (team2);
      */
     private int teamID;
 
@@ -31,7 +31,7 @@ public class Coach extends Thread{
     private CoachState coachState;
 
     /**
-     * Coach object Constructor
+     * CoachThread object Constructor
      * @param teamID teamID
      * @param coachBenchStub
      * @param coachPlaygroundStub
@@ -45,27 +45,27 @@ public class Coach extends Thread{
     }
 
     /**
-     *  Coach Thread life cycle.
+     *  CoachThread Thread life cycle.
      */
     @Override
     public void run()
     {
-        GenericIO.writelnString("Coach "+teamID+" running!");
+        GenericIO.writelnString("CoachThread "+teamID+" running!");
         while(coachGlobalStub.matchInProgress()){
 
             setCoachState(CoachState.WAIT_FOR_REFEREE_COMMAND);
-            GenericIO.writelnString("Coach "+teamID+" reviewNotes");
+            GenericIO.writelnString("CoachThread "+teamID+" reviewNotes");
             coachBenchStub.reviewNotes(teamID);
 
-            GenericIO.writelnString("Coach "+teamID+" callContestants");
+            GenericIO.writelnString("CoachThread "+teamID+" callContestants");
             coachBenchStub.callContestants(teamID);
 
             setCoachState(CoachState.ASSEMBLE_TEAM);
-            GenericIO.writelnString("Coach "+teamID+" waitforcontestants");
+            GenericIO.writelnString("CoachThread "+teamID+" waitforcontestants");
             coachPlaygroundStub.waitForContestants(teamID);
 
             setCoachState(CoachState.WATCH_TRIAL);
-            GenericIO.writelnString("Coach "+teamID+" informreferee");
+            GenericIO.writelnString("CoachThread "+teamID+" informreferee");
             coachPlaygroundStub.informReferee(teamID);
 
 

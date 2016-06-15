@@ -23,7 +23,7 @@ public class RefereeClient {
 
         referee.start();
 
-        GenericIO.writelnString("Referee starting");
+        GenericIO.writelnString("RefereeThread starting");
 
         try {
             referee.join ();
@@ -33,6 +33,6 @@ public class RefereeClient {
         // SEND THE TERMINATE MESSAGES
         refereeGlobalStub.terminate();
 
-        System.out.println("Referee Finished");
+        System.out.println("RefereeThread Finished");
     }
 }

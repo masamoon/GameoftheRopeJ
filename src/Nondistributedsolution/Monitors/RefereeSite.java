@@ -38,7 +38,7 @@ public class RefereeSite {
         }
     }
     /**
-     * Referee Announces new game
+     * RefereeThread Announces new game
      */
     public synchronized void announceGame(){
 
@@ -55,7 +55,7 @@ public class RefereeSite {
     }
 
     /**
-     * Referee Announces a new Match
+     * RefereeThread Announces a new Match
      */
     public synchronized void announceMatch(){
         global.setRefereeState(RefereeState.START_OF_THE_MATCH);

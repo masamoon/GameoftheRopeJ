@@ -33,7 +33,7 @@ public class RefereeSiteRemote {
         }
     }
     /**
-     * Referee Announces new game
+     * RefereeThread Announces new game
      */
     public synchronized void announceGame(){
 
@@ -50,7 +50,7 @@ public class RefereeSiteRemote {
     }
 
     /**
-     * Referee Announces a new Match
+     * RefereeThread Announces a new Match
      */
     public synchronized void announceMatch(){
 

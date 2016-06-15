@@ -1,17 +1,19 @@
-package RMISolution.RefereeSite;
+package RMISolution.ServerSide.RefereeSite;
 
-import RMISolution.Global.Global;
-import RMISolution.Referee.Referee;
-import RMISolution.Referee.RefereeState;
+import RMISolution.ClientSide.Referee.RefereeThread;
+import RMISolution.Common.VectorClock;
+import RMISolution.Interfaces.GlobalInterface;
+import RMISolution.ServerSide.Global.Global;
+import RMISolution.Common.EntityStates.RefereeState;
 
-/**
- * Created by jonnybel on 5/31/16.
- */
+import java.rmi.RemoteException;
+
+
 public class RefereeSite {
     private final int NUMBER_OF_TEAMS = 2;
     private final int NUMBER_OF_PLAYERS_PER_TEAM = 5;
 
-    private Global global;
+    private GlobalInterface global;
 
     private int trialNum;
 
@@ -24,7 +26,7 @@ public class RefereeSite {
 
 
 
-    public RefereeSite(Global global) {
+    public RefereeSite(GlobalInterface global) {
 
         this.global = global;
         this.readyForTrial = false;
@@ -38,12 +40,10 @@ public class RefereeSite {
         }
     }
     /**
-     * Referee Announces new game
+     * RefereeThread Announces new game
      */
-    public synchronized void announceGame(){
+    public synchronized void announceGame(VectorClock vc) throws RemoteException{
 
-        ((Referee)Thread.currentThread()).setRefereeState(RefereeState.START_OF_A_GAME);
-        global.setRefereeState(RefereeState.START_OF_A_GAME);
 
         gamesNum++;
         global.incrementGamesNum();
@@ -52,13 +52,17 @@ public class RefereeSite {
 
         trialNum = 0;
         global.resetTrialNum();
+
+        global.setRefereeState(vc, RefereeState.START_OF_A_GAME);
+
+        //global.newGame(vc);
     }
 
     /**
-     * Referee Announces a new Match
+     * RefereeThread Announces a new Match
      */
-    public synchronized void announceMatch(){
-        global.setRefereeState(RefereeState.START_OF_THE_MATCH);
+    public synchronized void announceMatch(VectorClock vc) throws RemoteException{
+        global.setRefereeState(vc, RefereeState.START_OF_THE_MATCH);
     }
 
     /**
@@ -69,9 +73,11 @@ public class RefereeSite {
         notifyAll();
     }
 
-    public synchronized void waitForBench(){
+    public synchronized void waitForBench() throws RemoteException{
         trialNum++;
+
         global.incrementTrialNum();
+
         System.out.println(trialNum);
 
         while(!readyForTrial){
@@ -84,10 +90,9 @@ public class RefereeSite {
     /**
      * Checks what team is the game's winner
      */
-    public synchronized void declareGameWinner (){
+    public synchronized void declareGameWinner (VectorClock vc) throws RemoteException{
 
-        ((Referee)Thread.currentThread()).setRefereeState(RefereeState.END_OF_A_GAME);
-        global.setRefereeState(RefereeState.END_OF_A_GAME);
+        global.setRefereeState(vc, RefereeState.END_OF_A_GAME);
 
         int flagPos = global.getFlagPos();
 
@@ -95,28 +100,28 @@ public class RefereeSite {
             if(flagPos < 0){
                 //team1 winner
                 teamScore[0]++;
-                global.gameWinnerLinePoints(1);
+                global.gameWinnerLinePoints(vc, 1);
             }
             else if(flagPos > 0){
                 //team 2 winner
                 teamScore[1]++;
-                global.gameWinnerLinePoints(2);
+                global.gameWinnerLinePoints(vc, 2);
             }
             else{
                 //tie
-                global.gameTieLine();
+                global.gameTieLine(vc);
             }
         }
         else{
             if(flagPos <= -4){
                 //team1 knockout
                 teamScore[0]++;
-                global.gameWinnerLineKO(1);
+                global.gameWinnerLineKO(vc, 1);
             }
             else if(flagPos >= 4){
                 //team2 knockout
                 teamScore[1]++;
-                global.gameWinnerLineKO(2);
+                global.gameWinnerLineKO(vc, 2);
             }
         }
     }
@@ -124,21 +129,21 @@ public class RefereeSite {
     /**
      * Checks what team is the match's winner
      */
-    public synchronized void declareMatchWinner (){
-        ((Referee)Thread.currentThread()).setRefereeState(RefereeState.END_OF_THE_MATCH);
-        global.setRefereeState(RefereeState.END_OF_THE_MATCH);
+    public synchronized void declareMatchWinner (VectorClock vc) throws RemoteException{
+        //((RefereeThread)Thread.currentThread()).setRefereeState(RefereeState.END_OF_THE_MATCH);
+        global.setRefereeState(vc, RefereeState.END_OF_THE_MATCH);
 
         if(teamScore[0]> teamScore[1]){
             //team1 takes match
-            global.matchWinnerLine(teamScore[0],teamScore[1],1);
+            global.matchWinnerLine(vc, teamScore[0],teamScore[1],1);
         }
         else if(teamScore[0] < teamScore[1]){
             //team2 takes match
-            global.matchWinnerLine(teamScore[0],teamScore[1],2);
+            global.matchWinnerLine(vc, teamScore[0],teamScore[1],2);
         }
         else{
             //draw
-            global.matchTieLine();
+            global.matchTieLine(vc);
         }
     }
 
@@ -149,7 +154,6 @@ public class RefereeSite {
     public int getTrialNum() {
         return trialNum;
     }
-
 
     /**
      * Gets the number of games played

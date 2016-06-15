@@ -28,12 +28,12 @@ public class Referee extends Thread {
 
 
     /**
-     * Referee Current State
+     * RefereeThread Current State
      */
     private RefereeState refereeState;
 
     /**
-     * Referee Object Constructor
+     * RefereeThread Object Constructor
      * @param playground
      * @param refereeSite
      * @param global
@@ -44,7 +44,7 @@ public class Referee extends Thread {
         this.global = global;
     }
 
-    /** Life Cycle of the Referee Thread
+    /** Life Cycle of the RefereeThread Thread
     */
     @Override
     public void run(){

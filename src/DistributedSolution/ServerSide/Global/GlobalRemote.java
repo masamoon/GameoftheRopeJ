@@ -271,7 +271,7 @@ public class GlobalRemote {
         return this.contestantStates[teamID][contestantID];
     }
 
-    /** set a new state for the Referee
+    /** set a new state for the RefereeThread
      @param state referee's state to be updated to
     * */
     public synchronized void setRefereeState (RefereeState state){
@@ -282,14 +282,14 @@ public class GlobalRemote {
 
     /**
     * get referee State
-    * @return current Referee's State
+    * @return current RefereeThread's State
      */
     public synchronized RefereeState getRefereeState (){
         return this.refereeState;
     }
 
     /**
-    * set Coach State to new state
+    * set CoachThread State to new state
     * @param teamID team's id
     * @param state coach's state to be updated to
      */
@@ -310,7 +310,7 @@ public class GlobalRemote {
 
     /**
      * Get a contestant's current strength level
-     * @param id Contestant's id
+     * @param id ContestantThread's id
      * @param teamID team's id
      * @return the strength of this contestant
      */
@@ -321,7 +321,7 @@ public class GlobalRemote {
 
     /**
      * Set a contestant's strength level
-     * @param id Contestant's id
+     * @param id ContestantThread's id
      * @param teamID team's id
      * @param str the strength of this contestant to bet set
      */
