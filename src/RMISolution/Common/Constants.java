@@ -4,9 +4,9 @@ public class Constants {
 
     public static final String registryAddr = "l040101-ws01.ua.pt";
 
-    public static final int registryServerPort = 22410;
+    public static final int registryObjectPort = 22410;
 
-    public static final int RMIregistryListenPort = 22411;
+    public static final int registryServerPort = 22411;
 
     public static final int benchServerPort = 22412;
 
@@ -16,12 +16,11 @@ public class Constants {
 
     public static final int globalServerPort = 22415;
 
-
     public static final String registry = "Registry";
 
     public static final String bench = "Bench";
 
-    public static final String playground = "Registry";
+    public static final String playground = "Playground";
 
     public static final String refereeSite = "RefereeSite";
 

@@ -1,5 +1,6 @@
 package RMISolution.Registry;
 
+import RMISolution.Common.Constants;
 import RMISolution.Interfaces.Register;
 
 import java.rmi.registry.Registry;
@@ -30,7 +31,7 @@ public class RegisterRemoteObject implements Register
      *    @serialField sconi
      */
 
-    private int rmiRegPortNumb = 1099;
+    private int rmiRegPortNumb = Constants.registryServerPort;
 
     /**
      *  Instantiation of a registering object.

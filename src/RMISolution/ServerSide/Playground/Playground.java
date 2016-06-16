@@ -13,9 +13,6 @@ import RMISolution.ServerSide.Bench.Bench;
 
 import java.rmi.RemoteException;
 
-/**
- * Created by jonnybel on 5/31/16.
- */
 public class Playground {
 
 

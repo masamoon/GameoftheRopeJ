@@ -43,7 +43,7 @@ public class ServerRegisterRemoteObject
 
         RegisterRemoteObject regEngine = new RegisterRemoteObject (rmiRegHostName, rmiRegPortNumb);
         Register regEngineStub = null;
-        int listeningPort = Constants.RMIregistryListenPort;                            /* it should be set accordingly in each case */
+        int listeningPort = Constants.registryObjectPort;                            /* it should be set accordingly in each case */
 
         try
         { regEngineStub = (Register) UnicastRemoteObject.exportObject (regEngine, listeningPort);

@@ -1,0 +1,1 @@
+./dir_ClientSide/contestant_com.sh

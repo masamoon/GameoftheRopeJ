@@ -27,7 +27,7 @@ public class PlaygroundRemoteCom implements PlaygroundInterface{
     public VectorClock callTrial(VectorClock vc) throws RemoteException {
         this.vc.update(vc);
 
-        playground.callTrial(vc);
+        playground.callTrial(this.vc);
 
         return this.vc.getCopy();
     }
@@ -42,7 +42,7 @@ public class PlaygroundRemoteCom implements PlaygroundInterface{
     public VectorClock waitForContestants(VectorClock vc, int teamID) throws RemoteException {
         this.vc.update(vc);
 
-        playground.waitForContestants(vc,teamID);
+        playground.waitForContestants(this.vc,teamID);
 
         return this.vc.getCopy();
     }

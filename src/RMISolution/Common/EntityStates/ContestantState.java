@@ -1,8 +1,6 @@
 package RMISolution.Common.EntityStates;
 
-/**
- * Created by jonnybel on 5/31/16.
- */
+
 public enum ContestantState {
 
 

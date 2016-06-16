@@ -26,7 +26,7 @@ public class RefereeSiteRemoteCom implements RefereeSiteInterface{
     public VectorClock announceGame(VectorClock vc) throws RemoteException {
         this.vc.update(vc);
 
-        refereeSite.announceGame(vc);
+        refereeSite.announceGame(this.vc);
 
         return this.vc.getCopy();
     }
@@ -40,7 +40,7 @@ public class RefereeSiteRemoteCom implements RefereeSiteInterface{
     public VectorClock announceMatch(VectorClock vc) throws RemoteException {
         this.vc.update(vc);
 
-        refereeSite.announceMatch(vc);
+        refereeSite.announceMatch(this.vc);
 
         return this.vc.getCopy();
     }
@@ -63,7 +63,7 @@ public class RefereeSiteRemoteCom implements RefereeSiteInterface{
     public VectorClock declareGameWinner(VectorClock vc) throws RemoteException {
         this.vc.update(vc);
 
-        refereeSite.declareGameWinner(vc);
+        refereeSite.declareGameWinner(this.vc);
 
         return this.vc.getCopy();
     }
@@ -77,7 +77,7 @@ public class RefereeSiteRemoteCom implements RefereeSiteInterface{
     public VectorClock declareMatchWinner(VectorClock vc) throws RemoteException {
         this.vc.update(vc);
 
-        refereeSite.declareMatchWinner(vc);
+        refereeSite.declareMatchWinner(this.vc);
 
         return this.vc.getCopy();
     }
