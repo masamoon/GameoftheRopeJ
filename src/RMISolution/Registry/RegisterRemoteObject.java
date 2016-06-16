@@ -112,4 +112,9 @@ public class RegisterRemoteObject implements Register
         registry = LocateRegistry.getRegistry (rmiRegHostName, rmiRegPortNumb);
         registry.rebind (name, ref);
     }
+
+    public void shutdown() throws RemoteException
+    {
+        ServerRegisterRemoteObject.finish();
+    }
 }

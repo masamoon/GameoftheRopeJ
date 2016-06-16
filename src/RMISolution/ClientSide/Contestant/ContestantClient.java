@@ -1,7 +1,6 @@
 package RMISolution.ClientSide.Contestant;
 
 
-import RMISolution.ClientSide.Coach.CoachThread;
 import RMISolution.Common.Constants;
 import RMISolution.Interfaces.BenchInterface;
 import RMISolution.Interfaces.GlobalInterface;
@@ -24,7 +23,7 @@ public class ContestantClient {
 
 
         try {
-            registry = LocateRegistry.getRegistry(Constants.registryAddr, Constants.registryPort);
+            registry = LocateRegistry.getRegistry(Constants.registryAddr, Constants.registryServerPort);
             bench = (BenchInterface) registry.lookup(Constants.bench);
             global = (GlobalInterface) registry.lookup(Constants.global);
             playground = (PlaygroundInterface) registry.lookup(Constants.playground);
@@ -54,7 +53,17 @@ public class ContestantClient {
             }
         }
 
-        // todo: shutdown
+        try
+        {
+            bench.shutdown();
+            playground.shutdown();
+            global.shutdown();
+        }
+        catch (RemoteException e)
+        {
+            e.printStackTrace ();
+            System.exit (1);
+        }
 
     }
 }

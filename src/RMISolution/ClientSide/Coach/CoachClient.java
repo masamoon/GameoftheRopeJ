@@ -23,7 +23,7 @@ public class CoachClient {
 
 
         try {
-            registry = LocateRegistry.getRegistry(Constants.registryAddr, Constants.registryPort);
+            registry = LocateRegistry.getRegistry(Constants.registryAddr, Constants.registryServerPort);
             bench = (BenchInterface) registry.lookup(Constants.bench);
             global = (GlobalInterface) registry.lookup(Constants.global);
             playground = (PlaygroundInterface) registry.lookup(Constants.playground);
@@ -52,7 +52,17 @@ public class CoachClient {
             }
         }
 
-        // todo: shutdown
+        try
+        {
+            bench.shutdown();
+            playground.shutdown();
+            global.shutdown();
+        }
+        catch (RemoteException e)
+        {
+            e.printStackTrace ();
+            System.exit (1);
+        }
 
     }
 }

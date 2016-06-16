@@ -1,5 +1,6 @@
 package RMISolution.ServerSide.RefereeSite;
 
+import RMISolution.Common.Constants;
 import RMISolution.Common.VectorClock;
 import RMISolution.Interfaces.RefereeSiteInterface;
 
@@ -11,8 +12,8 @@ public class RefereeSiteRemoteCom implements RefereeSiteInterface{
 
     private final RefereeSite refereeSite;
 
-    public RefereeSiteRemoteCom(VectorClock vc, RefereeSite refereeSite) {
-        this.vc = vc;
+    public RefereeSiteRemoteCom(RefereeSite refereeSite) {
+        this.vc = new VectorClock(Constants.ENTITIES_NUM, 0);
         this.refereeSite = refereeSite;
     }
 
@@ -92,5 +93,8 @@ public class RefereeSiteRemoteCom implements RefereeSiteInterface{
 
     public int getGamesNum() throws RemoteException {
         return refereeSite.getGamesNum();
+    }
+    public void shutdown() throws RemoteException{
+        RefereeSiteServer.finish();
     }
 }

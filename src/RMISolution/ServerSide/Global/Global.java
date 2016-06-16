@@ -16,8 +16,8 @@ public class Global {
     private final int NUMBER_OF_TEAMS = 2;
     private final int NUMBER_OF_PLAYERS_PER_TEAM = 5;
 
-    private final String header = "Ref Coa1 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5 Coa2 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5      Trial\n" +
-            "Sta Stat Sta SG Sta SG Sta SG Sta SG Sta SG Stat Sta SG Sta SG Sta SG Sta SG Sta SG 3 2 1 . 1 2 3 NB PS";
+    private final String header = "Ref Coa1 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5 Coa2 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5      Trial                                VCk" +
+            "Sta Stat Sta SG Sta SG Sta SG Sta SG Sta SG Stat Sta SG Sta SG Sta SG Sta SG Sta SG 3 2 1 . 1 2 3 NB PS  0  1  2  3  4  5  6  7  8  9 10 11 12";
     private int gamesNum;
 
     private int [] [] contestantStrengths;
@@ -39,22 +39,18 @@ public class Global {
     private boolean matchInProgress;
 
     private TextFile f;
-    private String path;
 
-    private int terminationSignals;
 
-    public Global(String path){
+    public Global(){
 
-        terminationSignals = 0;
 
         f = new TextFile();
         f.openForWriting(null,"log.txt");
-        String title = "                                 Game of the Rope - Description of the internal state";
+        String title = "                                      Game of the Rope - Description of the internal state";
         f.writelnString(title);
         f.writelnString("");
         f.writelnString(header);
 
-        this.path = path;
 
         team1AtRope = new ArrayList<>();
         team2AtRope = new ArrayList<>();
@@ -146,8 +142,18 @@ public class Global {
                 selection2.append("- ");
             }
         }
+
+        int [] clocks = vc.toIntArray();
+        String [] clks = new String[clocks.length];
+        for(int i=0; i<clocks.length; i++) {
+            if (clocks[i] < 9) clks[i] = " " + clocks[i];
+            else clks[i] = "" + clocks[i];
+        }
+
         String line = ref_state +" " + coach_state_1+" " +  team1.toString() + coach_state_2 + " "+ team2.toString()
-                +selection1.toString() +". "+selection2.toString() + " " + trial_no+"  " + flagPos;
+                +selection1.toString() +". "+selection2.toString() + " " + trial_no+"  " + flagPos
+                + " " + clks[0] + " " + clks[1] + " " + clks[2] + " " + clks[3] + " " + clks[4] + " " + clks[5] + " " + clks[6] + " " +
+                clks[7] + " " +clks[8] + " " +clks[9] + " " +clks[10] + " " +clks[11] + " " +clks[12];
 
         f.writelnString(line);
 

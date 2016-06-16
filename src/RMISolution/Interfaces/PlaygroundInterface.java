@@ -67,4 +67,7 @@ public interface PlaygroundInterface extends Remote{
      * @throws RemoteException
      */
     public VectorClock assertTrialDecision (VectorClock vc) throws RemoteException;
+
+    public void shutdown() throws RemoteException;
+
 }

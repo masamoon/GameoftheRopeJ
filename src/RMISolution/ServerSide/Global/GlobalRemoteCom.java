@@ -1,6 +1,7 @@
 package RMISolution.ServerSide.Global;
 
 
+import RMISolution.Common.Constants;
 import RMISolution.Common.EntityStates.CoachState;
 import RMISolution.Common.EntityStates.ContestantState;
 import RMISolution.Common.EntityStates.RefereeState;
@@ -16,8 +17,8 @@ public class GlobalRemoteCom implements GlobalInterface{
 
     private final Global global;
 
-    public GlobalRemoteCom(VectorClock vc, Global global) {
-        this.vc = vc;
+    public GlobalRemoteCom(Global global) {
+        this.vc = new VectorClock(Constants.ENTITIES_NUM, 0);
         this.global = global;
     }
 
@@ -166,5 +167,9 @@ public class GlobalRemoteCom implements GlobalInterface{
         global.resetTrialNum();
 
         return null;
+    }
+
+    public void shutdown() throws RemoteException{
+        GlobalServer.finish();
     }
 }

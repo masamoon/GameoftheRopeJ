@@ -27,13 +27,12 @@ public class RefereeThread extends Thread {
 
     /**
      * Referee Thread Object Constructor
-     * @param bench
      * @param playground
      * @param refereeSite
      * @param global
      */
-    public RefereeThread(BenchInterface bench, PlaygroundInterface playground, RefereeSiteInterface refereeSite, GlobalInterface global){
-        this.remote = new RefereeRemoteCom(bench, playground, refereeSite, global);
+    public RefereeThread(PlaygroundInterface playground, RefereeSiteInterface refereeSite, GlobalInterface global){
+        this.remote = new RefereeRemoteCom(playground, refereeSite, global);
     }
 
     /** Life Cycle of the RefereeThread Thread

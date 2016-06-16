@@ -1,5 +1,6 @@
 package RMISolution.ServerSide.Bench;
 
+import RMISolution.Common.Constants;
 import RMISolution.Common.VectorClock;
 import RMISolution.Interfaces.BenchInterface;
 
@@ -11,9 +12,9 @@ public class BenchRemoteCom implements BenchInterface {
 
     private final Bench bench;
 
-    public BenchRemoteCom(VectorClock vc, Bench bench) {
-        this.vc = vc;
+    public BenchRemoteCom(Bench bench) {
         this.bench = bench;
+        this.vc = new VectorClock(Constants.ENTITIES_NUM, 0);
     }
 
     /**
@@ -79,7 +80,6 @@ public class BenchRemoteCom implements BenchInterface {
      * @throws RemoteException
      */
     public void setStrength(int contestantID, int teamID, int strength) throws RemoteException {
-
         bench.setStrength(contestantID, teamID, strength);
     }
 
@@ -92,5 +92,9 @@ public class BenchRemoteCom implements BenchInterface {
      */
     public int getStrength(int contestantID, int teamID) throws RemoteException {
         return bench.getStrength(contestantID, teamID);
+    }
+
+    public void shutdown() throws RemoteException{
+        BenchServer.finish();
     }
 }

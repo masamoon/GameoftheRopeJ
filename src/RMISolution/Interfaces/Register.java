@@ -46,4 +46,7 @@ public interface Register extends Remote
      *                            service fails
      */
     public void rebind (String name, Remote ref) throws RemoteException;
+
+
+    public void shutdown() throws RemoteException;
 }

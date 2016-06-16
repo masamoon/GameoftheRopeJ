@@ -77,4 +77,7 @@ public interface GlobalInterface extends Remote {
 
     public VectorClock newGame (VectorClock vc) throws RemoteException;
 
+    public void shutdown() throws RemoteException;
+
+
 }

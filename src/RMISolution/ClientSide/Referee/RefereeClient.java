@@ -1,9 +1,7 @@
 package RMISolution.ClientSide.Referee;
 
 
-import RMISolution.ClientSide.Coach.CoachThread;
 import RMISolution.Common.Constants;
-import RMISolution.Interfaces.BenchInterface;
 import RMISolution.Interfaces.GlobalInterface;
 import RMISolution.Interfaces.PlaygroundInterface;
 import RMISolution.Interfaces.RefereeSiteInterface;
@@ -18,7 +16,6 @@ public class RefereeClient {
     public static void main (String [] args)
     {
 
-        BenchInterface bench = null;
         GlobalInterface global = null;
         PlaygroundInterface playground = null;
         RefereeSiteInterface refereeSite = null;
@@ -26,8 +23,7 @@ public class RefereeClient {
         Registry registry;
 
         try {
-            registry = LocateRegistry.getRegistry(Constants.registryAddr, Constants.registryPort);
-            bench = (BenchInterface) registry.lookup(Constants.bench);
+            registry = LocateRegistry.getRegistry(Constants.registryAddr, Constants.registryServerPort);
             global = (GlobalInterface) registry.lookup(Constants.global);
             playground = (PlaygroundInterface) registry.lookup(Constants.playground);
             refereeSite = (RefereeSiteInterface) registry.lookup(Constants.refereeSite);
@@ -39,7 +35,7 @@ public class RefereeClient {
             e.printStackTrace();
         }
 
-        RefereeThread referee = new RefereeThread(bench, playground, refereeSite, global);
+        RefereeThread referee = new RefereeThread(playground, refereeSite, global);
 
         referee.start();
 
@@ -48,7 +44,17 @@ public class RefereeClient {
         } catch (InterruptedException e) {
         }
 
-        // todo: shutdown
+        try
+        {
+            refereeSite.shutdown();
+            playground.shutdown();
+            global.shutdown();
+        }
+        catch (RemoteException e)
+        {
+            e.printStackTrace ();
+            System.exit (1);
+        }
 
     }
 }

@@ -57,4 +57,6 @@ public interface BenchInterface extends Remote {
      */
     public int getStrength (int contestantID, int teamID) throws RemoteException;
 
+    public void shutdown() throws RemoteException;
+
 }

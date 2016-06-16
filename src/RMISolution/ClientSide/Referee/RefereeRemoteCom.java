@@ -17,16 +17,13 @@ public class RefereeRemoteCom {
 
     private final VectorClock vc;
 
-    private final BenchInterface bench;
-
     private final PlaygroundInterface playground;
 
     private final GlobalInterface global;
 
     private final RefereeSiteInterface refereeSite;
 
-    public RefereeRemoteCom (BenchInterface bench, PlaygroundInterface playground, RefereeSiteInterface refereeSite, GlobalInterface global){
-        this.bench = bench;
+    public RefereeRemoteCom (PlaygroundInterface playground, RefereeSiteInterface refereeSite, GlobalInterface global){
         this.playground = playground;
         this.global = global;
         this.refereeSite = refereeSite;

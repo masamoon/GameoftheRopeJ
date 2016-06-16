@@ -50,4 +50,7 @@ public interface RefereeSiteInterface extends Remote {
 
     public int getGamesNum() throws RemoteException;
 
+    public void shutdown() throws RemoteException;
+
+
 }

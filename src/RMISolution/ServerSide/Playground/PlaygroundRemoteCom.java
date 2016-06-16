@@ -1,6 +1,7 @@
 package RMISolution.ServerSide.Playground;
 
 
+import RMISolution.Common.Constants;
 import RMISolution.Common.VectorClock;
 import RMISolution.Interfaces.PlaygroundInterface;
 
@@ -12,8 +13,8 @@ public class PlaygroundRemoteCom implements PlaygroundInterface{
 
     private final Playground playground;
 
-    public PlaygroundRemoteCom(VectorClock vc, Playground playground) {
-        this.vc = vc;
+    public PlaygroundRemoteCom(Playground playground) {
+        this.vc = new VectorClock(Constants.ENTITIES_NUM, 0);
         this.playground = playground;
     }
 
@@ -138,5 +139,9 @@ public class PlaygroundRemoteCom implements PlaygroundInterface{
         playground.assertTrialDecision(this.vc);
 
         return this.vc.getCopy();
+    }
+
+    public void shutdown () throws RemoteException{
+        PlaygroundServer.finish();
     }
 }
