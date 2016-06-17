@@ -1,6 +1,8 @@
 echo "Compressing source files into a package..."
 
-zip -r src.zip ./src/RMISolution/
+rm src.zip
+
+zip -r src.zip ./src/
 
 echo "Sending the package to the machines and uncompressing them..."
 

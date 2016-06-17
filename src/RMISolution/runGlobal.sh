@@ -1,1 +1,0 @@
-./dir_ServerSide/global_com.sh

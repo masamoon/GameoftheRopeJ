@@ -1,1 +1,0 @@
-./dir_ClientSide/referee_com.sh

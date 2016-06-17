@@ -1,2 +1,0 @@
-
-package RMISolution.Common.EntityStates;
